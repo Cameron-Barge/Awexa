@@ -1,0 +1,12 @@
+GetChoresIntent What chores does {child_name} have
+GetChoresIntent Tell me the chores for {child_name} 
+GetChoresIntent What are {child_name}'s chores
+GetChoresIntent What are {child_name}'s chores for today 
+GetChoresIntent What chores do I have 
+GetChoresIntent Tell me my chores 
+GetChoresIntent What are today's chores
+GetChoresIntent What are my chores 
+GetChoresIntent What are my chores for today 
+
+GetNameIntent My name is {name}
+GetNameIntent {name}

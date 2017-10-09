@@ -1,0 +1,18 @@
+{
+    "intents": [
+        {"intent": "AMAZON.YesIntent"},
+        {"intent": "AMAZON.NoIntent"},
+        {"intent": "AMAZON.RepeatIntent"},
+        {"intent": "AMAZON.HelpIntent"},
+        {"intent": "AMAZON.StopIntent"},
+        {"intent": "AMAZON.CancelIntent"},
+        {
+            "intent": "GetChoresIntent",
+            "slots": [{"name": "child_name", "type": "AMAZON.US_FirstName"}]
+        },
+        {
+            "intent": "GetNameIntent",
+            "slots": [{"name": "name", "type": "AMAZON.US_FirstName"}]
+        },
+    ]
+}
