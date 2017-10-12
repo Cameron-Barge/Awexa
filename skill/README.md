@@ -11,21 +11,10 @@
     + In Windows it will be in `.\venv\Scripts\deactivate.bat`
 5. Install the requirements `pip install -r requirements.txt` with the virtual environment activated
 
-## Setting Up Alexa Skill in the Developer Console
-1. Interaction Model:
-    + current intent schema is in speech-assets\intent\_schema.json
-    + current sample_utterances is in speech-assets\sample\_utterances.txt
-2. Configuration
-    + Service Endpoint Type: https
-    + region: NA
-    + service endpoint link: <https://b7f4tdxhtd.execute-api.us-east-1.amazonaws.com/dev>
-3. SSL Certificate
-    + <null>
-
 ## Setting up Alexa Skill in the Developer Console
 1. Interaction Model:
-    + current intent schema is in intent\_schema.txt
-    + current sample_utterances is in sample\_utterances.txt
+    + current intent schema is in speechAssets\intent\_schema.txt
+    + current sample utterances are in speechAssets\sample\_utterances.txt
 2. Configuration
     + Service Endpoint Type: https
     + region: NA
