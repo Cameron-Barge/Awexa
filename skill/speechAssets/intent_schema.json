@@ -10,9 +10,5 @@
             "intent": "GetChoresIntent",
             "slots": [{"name": "child_name", "type": "AMAZON.US_FirstName"}]
         },
-        {
-            "intent": "GetNameIntent",
-            "slots": [{"name": "name", "type": "AMAZON.US_FirstName"}]
-        },
     ]
 }
