@@ -8,7 +8,11 @@
         {"intent": "AMAZON.CancelIntent"},
         {
             "intent": "GetChoresIntent",
-            "slots": [{"name": "child_name", "type": "AMAZON.US_FirstName"}]
+            "slots": [{"name": "child_name", "type": "AMAZON.US_FIRST_NAME"}]
         },
+        {
+            "intent": "GetRewardsIntent",
+            "slots": [{"name": "child_name", "type": "AMAZON.US_FIRST_NAME"}]
+        }
     ]
 }

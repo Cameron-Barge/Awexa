@@ -1,38 +1,67 @@
 import logging
-from operator import itemgetter
-
 import requests
 from flask import Flask
 from flask_ask import Ask, statement
 
-
-REPOSITORY = 'Cameron-Barge/Awexa'
-ENDPOINT = 'https://api.github.com/repos/{}'.format(REPOSITORY)
-
+ENDPOINT = ''  # TODO
 app = Flask(__name__)
 ask = Ask(app, '/')
-logger = logging.getLogger()
 
 
 @ask.launch
 def launch():
-    return stats()
+    return statement("Hello, how can I help you today?")
 
 
-@ask.intent("StatsIntent")
-def stats():
-    r = requests.get(ENDPOINT)
-    repo_json = r.json()
+@ask.intent("GetChoresIntent")
+def getChores(child_name):
+    # r = requests.get(ENDPOINT)
+    # chore_json = r.json()
+    chore_json = {
+        'chores': [
+            {
+                'name': 'Wash dishes',
+                'reward': '1 hour screen time'
+            },
+            {
+                'name': 'Make bed',
+                'reward': 'Popcorn'
+            }
+        ]
+    }
 
-    if r.status_code == 200:
-        repo_name = ENDPOINT.split('/')[-1]
-        keys = ['stargazers_count', 'subscribers_count', 'forks_count']
-        stars, watchers, forks = itemgetter(*keys)(repo_json)
-        speech = "{} has {} stars, {} watchers, and {} forks. " \
-            .format(repo_name, stars, watchers, forks)
+    if True:  # r.status_code == 200:
+        return statement("{} has {} chores.".format(child_name, len(chore_json['chores'])))
     else:
-        message = repo_json['message']
-        speech = "There was a problem calling the GitHub API: {}.".format(message)
+        message = chore_json['message']
+        speech = "There was a problem accessing the database."
+
+    logger.info('speech = {}'.format(speech))
+    return statement(speech)
+
+
+@ask.intent("GetRewardsIntent")
+def getRewards(child_name):
+    # r = requests.get(ENDPOINT)
+    # rewards = r.json()
+    rewards = {
+        'rewards': [
+            {
+                'name': 'Wash dishes',
+                'reward': '1 hour screen time'
+            },
+            {
+                'name': 'Make bed',
+                'reward': 'Popcorn'
+            }
+        ]
+    }
+
+    if True:  # r.status_code == 200:
+        return statement("{} has {} rewards.".format(child_name, len(rewards['rewards'])))
+    else:
+        message = rewards['message']
+        speech = "There was a problem accessing the database."
 
     logger.info('speech = {}'.format(speech))
     return statement(speech)
