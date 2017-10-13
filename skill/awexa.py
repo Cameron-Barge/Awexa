@@ -31,7 +31,9 @@ def getChores(child_name):
     }
 
     if True:  # r.status_code == 200:
-        return statement("{} has {} chores.".format(child_name, len(chore_json['chores'])))
+        count = len(chore_json['chores'])
+        chores = [c['name'] for c in chore_json['chores']]
+        return statement("{} has {} chores: {}".format(child_name, count, chores))
     else:
         message = chore_json['message']
         speech = "There was a problem accessing the database."
@@ -43,24 +45,24 @@ def getChores(child_name):
 @ask.intent("GetRewardsIntent")
 def getRewards(child_name):
     # r = requests.get(ENDPOINT)
-    # rewards = r.json()
-    rewards = {
+    # reward_json = r.json()
+    reward_json = {
         'rewards': [
             {
-                'name': 'Wash dishes',
-                'reward': '1 hour screen time'
+                'name': '1 hour screen time'
             },
             {
-                'name': 'Make bed',
-                'reward': 'Popcorn'
+                'name': 'Popcorn'
             }
         ]
     }
 
     if True:  # r.status_code == 200:
-        return statement("{} has {} rewards.".format(child_name, len(rewards['rewards'])))
+        count = len(reward_json['rewards'])
+        rewards = [r['name'] for r in reward_json['rewards']]
+        return statement("{} has {} rewards: {}".format(child_name, count, rewards))
     else:
-        message = rewards['message']
+        message = reward_json['message']
         speech = "There was a problem accessing the database."
 
     logger.info('speech = {}'.format(speech))
