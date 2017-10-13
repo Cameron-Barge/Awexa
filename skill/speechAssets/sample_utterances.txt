@@ -1,5 +1,7 @@
 GetChoresIntent What chores does {child_name} have
 GetChoresIntent Tell me the chores for {child_name} 
+GetChoresIntent Tell me what chores {child_name} has
 
 GetRewardsIntent What rewards does {child_name} have
 GetRewardsIntent Tell me the rewards for {child_name} 
+GetChoresIntent Tell me what rewards {child_name} has
