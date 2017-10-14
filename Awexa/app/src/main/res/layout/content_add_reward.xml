@@ -33,12 +33,6 @@
                 android:layout_height="30dp" />
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.13" />
-
-            <TextView
                 android:id="@+id/nameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,13 +47,13 @@
                 android:text="New Reward Name" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/costText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Reward Points" />
+                android:text="Reward Cost" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/cost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -67,7 +61,7 @@
                 android:text="0" />
 
             <MultiAutoCompleteTextView
-                android:id="@+id/multiAutoCompleteTextView"
+                android:id="@+id/rewardSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
