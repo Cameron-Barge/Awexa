@@ -89,6 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="openNewRewardActivity"
                 android:text="Add New Reward" />
 
             <TextView
@@ -103,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="openNewChoreActivity"
                 android:text="Add New Chore" />
 
         </LinearLayout>
