@@ -13,10 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_add_chore">AddChoreActivity</string>
-    <string name="title_activity_add_child">AddChildActivity</string>
-    <string name="title_activity_add_reward">AddRewardActivity</string>
-    <string name="title_activity_child_progress">ChildProgressActivity</string>
+    <string name="title_activity_add_chore">New Chore</string>
+    <string name="title_activity_add_child">Add Child</string>
+    <string name="title_activity_add_reward">New Reward</string>
+    <string name="title_activity_child_progress">Child Progress</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
