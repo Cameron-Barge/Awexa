@@ -34,26 +34,26 @@
             android:name=".AddChoreActivity"
             android:parentActivityName=".ChildProgressActivity"
             android:label="@string/title_activity_add_chore"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AddChildActivity"
             android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_add_child"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AddRewardActivity"
             android:parentActivityName=".ChildProgressActivity"
             android:label="@string/title_activity_add_reward"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ChildProgressActivity"
             android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_child_progress"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
