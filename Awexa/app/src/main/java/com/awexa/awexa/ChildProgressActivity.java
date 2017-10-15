@@ -1,5 +1,6 @@
 package com.awexa.awexa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,5 +25,15 @@ public class ChildProgressActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    /** Called when the user taps the Add New Reward button */
+    public void openNewRewardActivity(View view) {
+        startActivity(new Intent(this, AddRewardActivity.class));
+    }
+
+    /** Called when the user taps the Add New Chore button */
+    public void openNewChoreActivity(View view) {
+        startActivity(new Intent(this, AddChoreActivity.class));
     }
 }
