@@ -10,9 +10,11 @@ public class ChildProgressActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String child = getIntent().getExtras().getString("name","defaultKey");
-        String title = getString(R.string.child_progress_title, child);
-        setTitle(title);
+        if (getIntent().getExtras() != null) {
+            String child = getIntent().getExtras().getString("name","defaultKey");
+            String title = getString(R.string.child_progress_title, child);
+            setTitle(title);
+        }
         setContentView(R.layout.activity_child_progress);
     }
 

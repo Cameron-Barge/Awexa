@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,22 +9,34 @@
     tools:showIn="@layout/activity_child_progress">
 
     <ScrollView
-        android:layout_width="344dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="10dp">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:id="@+id/dailyProgressTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="-3dp"
                 android:text="Daily Progress"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                tools:layout_editor_absoluteX="8dp" />
 
             <ProgressBar
                 android:id="@+id/dailyProgressBar"
@@ -56,6 +68,13 @@
                 android:layout_height="32dp"
                 android:progress="0" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/weeklyPoints"
                 android:layout_width="match_parent"
@@ -64,13 +83,6 @@
                 android:text="Points: 0"
                 android:textAlignment="center"
                 android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-            </LinearLayout>
 
             <Spinner
                 android:id="@+id/spinner"
@@ -90,14 +102,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="openNewRewardActivity"
-                android:text="Add New Reward" />
+                android:text="Add New Reward"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="254dp" />
 
             <TextView
                 android:id="@+id/choresTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chores"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="308dp" />
 
             <Button
                 android:id="@+id/addNewChore"
@@ -105,9 +121,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="openNewChoreActivity"
-                android:text="Add New Chore" />
+                android:text="Add New Chore"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="336dp" />
 
         </LinearLayout>
     </ScrollView>
 
-</android.support.v4.widget.NestedScrollView>
+</android.support.constraint.ConstraintLayout>
