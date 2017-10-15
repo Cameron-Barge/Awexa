@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,8 +26,17 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, children);
 
-        ListView listView = (ListView) findViewById(R.id.children_list);
+        final ListView listView = (ListView) findViewById(R.id.children_list);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String child = ((TextView) view).getText().toString();
+                Toast.makeText(getApplicationContext(), child,
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, ChildProgressActivity.class));
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
