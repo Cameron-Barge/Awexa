@@ -31,10 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String child = ((TextView) view).getText().toString();
-                Toast.makeText(getApplicationContext(), child,
+                String name = ((TextView) view).getText().toString();
+                Toast.makeText(getApplicationContext(), name,
                         Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, ChildProgressActivity.class));
+                Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
+                intent.putExtra("name", name);
+                startActivity(intent);
             }
         });
 
