@@ -109,4 +109,14 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="child_progress_title">%1$s\'s Progress</string>
+    <string-array name="dummy_chores">
+        <item>Mow lawn: 50 pts</item>
+        <item>Take out trash: 10 pts</item>
+        <item>Wash dishes: 5 pts</item>
+    </string-array>
+    <string-array name="dummy_rewards">
+        <item>$5: 50 pts</item>
+        <item>Destiny 2: 500 pts</item>
+        <item>Puppy: 10000 pts</item>
+    </string-array>
 </resources>
