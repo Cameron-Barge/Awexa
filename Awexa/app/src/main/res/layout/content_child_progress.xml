@@ -8,124 +8,127 @@
     tools:context="com.awexa.awexa.ChildProgressActivity"
     tools:showIn="@layout/activity_child_progress">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/dailyProgressTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/linearLayout">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-3dp"
+            android:text="Daily Progress"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            tools:layout_editor_absoluteX="8dp" />
 
-            <TextView
-                android:id="@+id/dailyProgressTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-3dp"
-                android:text="Daily Progress"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                tools:layout_editor_absoluteX="8dp" />
+        <ProgressBar
+            android:id="@+id/dailyProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:progress="30" />
 
-            <ProgressBar
-                android:id="@+id/dailyProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:progress="0" />
+        <TextView
+            android:id="@+id/dailyPoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Points: 30"
+            android:textAlignment="center"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/dailyPoints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Points: 0"
-                android:textAlignment="center"
-                android:textSize="14sp" />
+        <TextView
+            android:id="@+id/weeklyProgressTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weekly Progress"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/weeklyProgressTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Weekly Progress"
-                android:textSize="24sp" />
+        <ProgressBar
+            android:id="@+id/weeklyProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:progress="85" />
 
-            <ProgressBar
-                android:id="@+id/weeklyProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:progress="0" />
+        <TextView
+            android:id="@+id/weeklyPoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Points: 85"
+            android:textAlignment="center"
+            android:textSize="14sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            </LinearLayout>
+        <TextView
+            android:id="@+id/rewardsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rewards"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/weeklyPoints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Points: 0"
-                android:textAlignment="center"
-                android:textSize="14sp" />
+        <ListView
+            android:id="@+id/rewards_list"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:entries="@array/dummy_rewards" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/addNewReward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="openNewRewardActivity"
+            android:text="Add New Reward"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="254dp" />
 
-            <TextView
-                android:id="@+id/rewardsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Rewards"
-                android:textSize="24sp" />
+        <TextView
+            android:id="@+id/choresTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chores"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="308dp" />
 
-            <Button
-                android:id="@+id/addNewReward"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="openNewRewardActivity"
-                android:text="Add New Reward"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="254dp" />
+        <ListView
+            android:id="@+id/chores_list"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:entries="@array/dummy_chores" />
 
-            <TextView
-                android:id="@+id/choresTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chores"
-                android:textSize="24sp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="308dp" />
+        <Button
+            android:id="@+id/addNewChore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="openNewChoreActivity"
+            android:text="Add New Chore"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="336dp" />
 
-            <Button
-                android:id="@+id/addNewChore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="openNewChoreActivity"
-                android:text="Add New Chore"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="336dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
