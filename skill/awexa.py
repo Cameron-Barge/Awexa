@@ -3,7 +3,9 @@ import requests
 from flask import Flask
 from flask_ask import Ask, statement
 
-ENDPOINT = ''  # TODO
+ENDPOINT = 'https://awexa-4bad0.firebaseio.com/families/'
+device_id = 'family1.json'  # TODO: get actual device ID
+
 app = Flask(__name__)
 ask = Ask(app, '/')
 
@@ -15,55 +17,44 @@ def launch():
 
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
-    # r = requests.get(ENDPOINT)
-    # chore_json = r.json()
-    chore_json = {
-        'chores': [
-            {
-                'name': 'Wash dishes',
-                'reward': '1 hour screen time'
-            },
-            {
-                'name': 'Make bed',
-                'reward': 'Popcorn'
-            }
-        ]
-    }
+    r = requests.get(ENDPOINT + device_id)
+    family_json = r.json()
 
-    if True:  # r.status_code == 200:
-        count = len(chore_json['chores'])
-        chores = [c['name'] for c in chore_json['chores']]
-        return statement("{} has {} chores: {}".format(child_name, count, chores))
+    if r.status_code == 200 and family_json is not None:
+        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
+        chores = [family_json['chores'][str(c)]['name'] for c in child_chores]
+        return statement("{} has {} chores: {}".format(child_name, len(chores), listToAndString(chores)))
     else:
-        message = chore_json['message']
         speech = "There was a problem accessing the database."
-
-    logger.info('speech = {}'.format(speech))
-    return statement(speech)
+        logger.info('speech = {}'.format(speech))
+        return statement(speech)
 
 
 @ask.intent("GetRewardsIntent")
 def getRewards(child_name):
-    # r = requests.get(ENDPOINT)
-    # reward_json = r.json()
-    reward_json = {
-        'rewards': [
-            {
-                'name': '1 hour screen time'
-            },
-            {
-                'name': 'Popcorn'
-            }
-        ]
-    }
+    r = requests.get(ENDPOINT + device_id)
+    family_json = r.json()
 
-    if True:  # r.status_code == 200:
-        count = len(reward_json['rewards'])
-        rewards = [r['name'] for r in reward_json['rewards']]
-        return statement("{} has {} rewards: {}".format(child_name, count, rewards))
+    if r.status_code == 200 and family_json is not None:
+        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
+        rewards = [family_json['chores'][str(c)]['rewardId'] for c in child_chores]
+        reward_list = [family_json['rewards'][r]['name'] for r in rewards]
+        return statement("{} has {} rewards: {}".format(child_name, len(reward_list), listToAndString(reward_list)))
     else:
-        message = reward_json['message']
-        speech = "There was a problem accessing the database."
+        return statement(handleError(r))
 
+
+def listToAndString(itemList):
+    if len(itemList) > 1:
+        return ', '.join(itemList[:-1]) + ', and ' + itemList[-1]
+    elif len(itemList) == 1:
+        return itemList[0]
+    else:  # len(itemList) < 1
+        return ""
+
+
+def handleError(response):
+    speech = "There was a problem accessing the database."
     logger.info('speech = {}'.format(speech))
-    return statement(speech)
+    logger.info('response = {}'.format(response.content))
+    return speech
