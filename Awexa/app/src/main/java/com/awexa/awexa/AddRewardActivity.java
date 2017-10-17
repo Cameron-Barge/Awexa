@@ -14,6 +14,9 @@ public class AddRewardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reward);
+        if (getIntent().getExtras() != null) {
+            childName = getIntent().getExtras().getString("name", "Child");
+        }
     }
 
     public void addReward(View view) {
@@ -21,22 +24,24 @@ public class AddRewardActivity extends AppCompatActivity {
         EditText nameField = (EditText)findViewById(R.id.newRewardName);
         String rewardName = nameField.getText().toString();
         EditText costField = (EditText)findViewById(R.id.cost);
-        int rewardCost = Integer.parseInt(costField.getText().toString());
+        String rewardCost = costField.getText().toString();
+        // int rewardCost = Integer.parseInt(costField.getText().toString());
         EditText descriptionField = (EditText)findViewById(R.id.description);
         String rewardDescription = descriptionField.getText().toString();
 
-        //TODO: implementation for adding reward to db/list/whatever
         Toast.makeText(getApplicationContext(), rewardName + " was added...",
                 Toast.LENGTH_SHORT).show();
 
         // pass variables to child progress activity
-        Intent intent = new Intent(getApplicationContext(), ChildProgressActivity.class);
-        childName = getIntent().getExtras().getString("name","defaultKey");
-        intent.putExtra("rewardName", rewardName);
-        intent.putExtra("rewardCost", rewardCost);
-        intent.putExtra("description", rewardDescription);
-        intent.putExtra("name", childName);
+        Intent intent = new Intent(this, ChildProgressActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("name", childName);
+        String[] reward = {rewardName, rewardDescription};
+        extras.putStringArray("reward", reward);
+        intent.putExtras(extras);
         startActivity(intent);
+
+
 
     }
 }

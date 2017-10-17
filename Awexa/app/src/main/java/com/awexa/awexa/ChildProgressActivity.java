@@ -22,7 +22,7 @@ public class ChildProgressActivity extends AppCompatActivity {
         // check for passed extras from intent
         if (getIntent().getExtras() != null) {
             // set title as child's name
-            childName = getIntent().getExtras().getString("name","defaultKey");
+            childName = getIntent().getExtras().getString("name","Child");
             String title = getString(R.string.child_progress_title, childName);
             setTitle(title);
             // check for new reward
