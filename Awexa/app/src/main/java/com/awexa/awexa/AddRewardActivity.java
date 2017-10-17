@@ -28,6 +28,7 @@ public class AddRewardActivity extends AppCompatActivity {
         //TODO: implementation for adding reward to db/list/whatever
         Toast.makeText(getApplicationContext(), rewardName + " was added...",
                 Toast.LENGTH_SHORT).show();
+
         // pass variables to child progress activity
         Intent intent = new Intent(getApplicationContext(), ChildProgressActivity.class);
         childName = getIntent().getExtras().getString("name","defaultKey");

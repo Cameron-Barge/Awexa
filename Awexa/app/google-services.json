@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "184111011333",
+    "firebase_url": "https://awexa-54fed.firebaseio.com",
+    "project_id": "awexa-54fed",
+    "storage_bucket": "awexa-54fed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184111011333:android:228a6a3a00b8d497",
+        "android_client_info": {
+          "package_name": "com.awexa.awexa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184111011333-i14jp2b4pulj6pbm797bofus3lt5mce7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awexa.awexa",
+            "certificate_hash": "c4a1f2803ac9295408dc9ddf82f8189395e373f3"
+          }
+        },
+        {
+          "client_id": "184111011333-p1s8j9ihs5ep7isjcijikmaaljjp84hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAm0eptv3ngjORDlG-DmwyiLSOBpugvkw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184111011333-p1s8j9ihs5ep7isjcijikmaaljjp84hf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
