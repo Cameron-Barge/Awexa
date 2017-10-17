@@ -59,6 +59,19 @@
             android:layout_weight="1"
             android:text="Search Reward" />
 
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description" />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
