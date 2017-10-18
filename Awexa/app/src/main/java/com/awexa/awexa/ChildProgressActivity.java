@@ -10,28 +10,31 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChildProgressActivity extends AppCompatActivity {
     private String childName = null;
     private List<String> rewards = null;
+    private ArrayAdapter<String> rewardsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // check for passed extras from intent
+        ListView rewardsList = (ListView) findViewById(R.id.rewards_list);
+
+        // check for passed variables from intent
         if (getIntent().getExtras() != null) {
             // set title as child's name
             childName = getIntent().getExtras().getString("name","Child");
             String title = getString(R.string.child_progress_title, childName);
             setTitle(title);
+
             // check for new reward
-            if (getIntent().getExtras().getString("rewardName") != null) {
-                ArrayAdapter rewardsAdapter = new ArrayAdapter<String>(this,
-                        R.layout.activity_listview, rewards);
-                final ListView rewardsListView = (ListView)findViewById(R.id.rewards_list);
-                rewardsListView.setAdapter(rewardsAdapter);
-                
+            String reward = getIntent().getExtras().getString("rewardName");
+            if (reward != null) {
+                ArrayList<String> newReward = getIntent().getExtras().getStringArrayList("reward");
+
                 /* Todo: implement rewards detail activity on click
                 rewardsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view, int position,

@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AddRewardActivity extends AppCompatActivity {
     String childName = null;
 
@@ -36,8 +39,9 @@ public class AddRewardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChildProgressActivity.class);
         Bundle extras = new Bundle();
         extras.putString("name", childName);
-        String[] reward = {rewardName, rewardDescription};
-        extras.putStringArray("reward", reward);
+        ArrayList<String> reward = new ArrayList<String>(Arrays.asList(rewardName,
+                rewardDescription));
+        extras.putStringArrayList("reward", reward);
         intent.putExtras(extras);
         startActivity(intent);
 
