@@ -1,7 +1,16 @@
 GetChoresIntent What chores does {child_name} have
 GetChoresIntent Tell me the chores for {child_name} 
 GetChoresIntent Tell me what chores {child_name} has
+GetChoresIntent the chores for {child_name}
 
 GetRewardsIntent What rewards does {child_name} have
 GetRewardsIntent Tell me the rewards for {child_name} 
-GetChoresIntent Tell me what rewards {child_name} has
+GetRewardsIntent Tell me what rewards {child_name} has
+GetRewardsIntent the rewards for {child_name}
+
+FinishChoreIntent {child_name} finished {chore}
+FinishChoreIntent {child_name} completed {chore}
+FinishChoreIntent {child_name} did {chore}
+FinishChoreIntent {chore} was finished by {child_name}
+FinishChoreIntent {chore} was completed by {child_name}
+FinishChoreIntent {chore} was done by {child_name}
