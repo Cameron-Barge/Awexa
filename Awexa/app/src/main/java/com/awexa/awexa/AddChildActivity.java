@@ -6,6 +6,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddChildActivity extends AppCompatActivity {
 
     @Override
@@ -17,9 +23,19 @@ public class AddChildActivity extends AppCompatActivity {
     /** Called when the user taps the Submit button */
     public void addChild(View view) {
         EditText text = (EditText)findViewById(R.id.childName);
-        String child = text.getText().toString();
+        String childName = text.getText().toString();
         //TODO: implementation for adding child to db/list/whatever
-        Toast.makeText(getApplicationContext(), child + " was added...",
+        Toast.makeText(getApplicationContext(), childName + " was added...",
                 Toast.LENGTH_SHORT).show();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference childDb = database.getReference("children");
+        Map<String, Object> childUpdates = new HashMap<>();
+        Child c = new Child();
+        c.name = childName;
+        c.childId = childDb.push().getKey();
+        childUpdates.put("children/" + c.childId, c);
+        childUpdates.put("families/family1/children/" + c.childId, true);
+        database.getReference().updateChildren(childUpdates);
+        finish();
     }
 }

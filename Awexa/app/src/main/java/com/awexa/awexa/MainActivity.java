@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView) findViewById(R.id.children_list);;
+        listView = (ListView) findViewById(R.id.children_list);
         adapter = new ArrayAdapter<>(this,
             R.layout.activity_listview, children);
         listView.setAdapter(adapter);
         thisAct = this;
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("families");
 
         //TODO: update based on family login
@@ -54,16 +54,32 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 children = new ArrayList<>();
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    String name = messageSnapshot.getKey();
-                    HashMap<String, String> message = (HashMap<String, String>) messageSnapshot.getValue();
-                    Log.e("2", message.get("chores"));
-                    children.add(new Child(name, message.get("chores").split(",")));
+                    final String childId = messageSnapshot.getKey();
+                    Log.d("child id", childId);
+                    database.getReference("children").child(childId)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                Child c = snapshot.getValue(Child.class);
+                                c.setChildId(childId);
+                                if (children.contains(c)) {
+                                    int index = children.indexOf(c);
+                                    children.remove(index);
+                                    children.add(index, c);
+                                } else {
+                                    children.add(c);
+                                }
+                                adapter = new ArrayAdapter<>(thisAct,
+                                    R.layout.activity_listview, children);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
                 }
-                Log.d("size", String.valueOf(children.size()));
-                adapter = new ArrayAdapter<>(thisAct,
-                    R.layout.activity_listview, children);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -81,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), name,
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
-                intent.putExtra("name", name);
+                intent.putExtra("childId", children.get(position).childId);
                 startActivity(intent);
             }
         });
@@ -90,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AddChildActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, AddChildActivity.class), 0);
             }
         });
     }

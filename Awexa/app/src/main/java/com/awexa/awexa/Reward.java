@@ -5,8 +5,9 @@ package com.awexa.awexa;
  */
 
 public class Reward extends Family {
-    private String name;
-    private String description;
+    String name;
+    String description;
+    String rewardId;
 
     public Reward() {
         name = "";
@@ -27,6 +28,10 @@ public class Reward extends Family {
         return name;
     }
 
+    public void setRewardId(String rewardId) {
+        this.rewardId = rewardId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -38,4 +43,10 @@ public class Reward extends Family {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }

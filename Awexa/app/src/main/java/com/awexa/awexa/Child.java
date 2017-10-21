@@ -2,37 +2,28 @@ package com.awexa.awexa;
 
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Kath on 10/16/2017.
  */
 
 public class Child {
-    public String name;
-    public List<String> chores; // These are chore IDs
+    String name;
+    HashMap<String, Boolean> chores; // These are chore IDs
+    HashMap<String, Boolean> earnedRewards; // These are chore IDs
+    String childId;
 
     public Child() {
-        name = "testchild";
-        chores = new ArrayList<>();
-    }
-
-    public Child(String name) {
-        this.name = name;
-        this.chores = new ArrayList<>();
-    }
-
-    public Child(String name, List<String> chores) {
-        this.name = name;
-        this.chores = chores;
-    }
-
-    public Child(String name, String[] chores) {
-        this(name);
-        for (String chore: chores) {
-            this.chores.add(chore);
-        }
+        chores = new HashMap<>();
+        earnedRewards = new HashMap<>();
     }
 
     public String getName() {
@@ -43,15 +34,25 @@ public class Child {
         this.name = name;
     }
 
-    public List<String> getChoreIds() { return chores; }
+    public void setChildId(String childId) {
+        this.childId = childId;
+    }
 
-    public void setChores(List<String> chores) {
+    public void setChores(HashMap<String, Boolean> chores) {
         this.chores = chores;
+    }
+
+    public void setEarnedRewards(HashMap<String, Boolean> earnedRewards) {
+        this.earnedRewards = earnedRewards;
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof Child) && ((Child) other).childId.equals(this.childId);
     }
 }
