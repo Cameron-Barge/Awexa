@@ -26,7 +26,7 @@ public class DashboardController {
     }
 
     public Result addParent() {
-        return ok(views.html.newparent.render());
+        return ok(views.html.newparent.render(""));
     }
 
     public Result parentRequest() {

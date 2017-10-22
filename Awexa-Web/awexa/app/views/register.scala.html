@@ -1,4 +1,4 @@
-@(message:String)
+@(message:String)(error:String)
 
 @main("Awexa Login") {
   <p> @message </p>
@@ -12,6 +12,7 @@
     <div class ="form-group">
       <input type ="password"  name ="pass2" placeholder ="Confirm Password">
     </div>
+    <p> @error </p>
     <div class ="form-group">
       <button type ="submit" class ="btn btn-primary">Register</button>
       <button type="reset" class ="btn btn-danger">Cancel</button>
