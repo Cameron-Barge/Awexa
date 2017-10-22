@@ -32,11 +32,11 @@ public class HomeController extends Controller {
     public Result index() {
         //getFamily("family4");
 
-        System.out.println("Session Test");
-        session().put("connected","test");
+        //System.out.println("Session Test");
+        //session().put("connected","test");
         //session("connected","test");
         //System.out.println("Assigned : " + session("connected"));
-        System.out.println("Assigned : " + session().get("connected"));
+        //System.out.println("Assigned : " + session().get("connected"));
 
         return ok(views.html.index.render("Welcome to Awexa"));
     }
