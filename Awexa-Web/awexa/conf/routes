@@ -9,7 +9,7 @@ POST    /login                       controllers.LoginController.login
 GET     /login                       controllers.LoginController.getLogin
 
 GET     /register                    controllers.LoginController.getRegistration
-
+POST    /register                    controllers.LoginController.register
 
 GET     /postLogin                   controllers.DashboardController.postLogin
 

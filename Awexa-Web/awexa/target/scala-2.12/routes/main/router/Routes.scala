@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/routes
-// @DATE:Sat Oct 21 15:49:12 EDT 2017
+// @DATE:Sun Oct 22 00:08:38 EDT 2017
 
 package router
 
@@ -52,6 +52,7 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """login""", """controllers.LoginController.login"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """login""", """controllers.LoginController.getLogin"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """register""", """controllers.LoginController.getRegistration"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """register""", """controllers.LoginController.register"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """postLogin""", """controllers.DashboardController.postLogin"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """logout""", """controllers.LoginController.logout"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """child""", """controllers.DashboardController.childView"""),
@@ -141,11 +142,29 @@ class Routes(
     )
   )
 
+  // @LINE:12
+  private[this] lazy val controllers_LoginController_register4_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("register")))
+  )
+  private[this] lazy val controllers_LoginController_register4_invoker = createInvoker(
+    LoginController_2.register,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.LoginController",
+      "register",
+      Nil,
+      "POST",
+      this.prefix + """register""",
+      """""",
+      Seq()
+    )
+  )
+
   // @LINE:14
-  private[this] lazy val controllers_DashboardController_postLogin4_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_postLogin5_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("postLogin")))
   )
-  private[this] lazy val controllers_DashboardController_postLogin4_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_postLogin5_invoker = createInvoker(
     DashboardController_3.postLogin,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -160,10 +179,10 @@ class Routes(
   )
 
   // @LINE:16
-  private[this] lazy val controllers_LoginController_logout5_route = Route("GET",
+  private[this] lazy val controllers_LoginController_logout6_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("logout")))
   )
-  private[this] lazy val controllers_LoginController_logout5_invoker = createInvoker(
+  private[this] lazy val controllers_LoginController_logout6_invoker = createInvoker(
     LoginController_2.logout,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -178,10 +197,10 @@ class Routes(
   )
 
   // @LINE:18
-  private[this] lazy val controllers_DashboardController_childView6_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_childView7_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("child")))
   )
-  private[this] lazy val controllers_DashboardController_childView6_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_childView7_invoker = createInvoker(
     DashboardController_3.childView,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -196,10 +215,10 @@ class Routes(
   )
 
   // @LINE:20
-  private[this] lazy val controllers_DashboardController_addParent7_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_addParent8_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("newparent")))
   )
-  private[this] lazy val controllers_DashboardController_addParent7_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_addParent8_invoker = createInvoker(
     DashboardController_3.addParent,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -214,10 +233,10 @@ class Routes(
   )
 
   // @LINE:22
-  private[this] lazy val controllers_DashboardController_parentView8_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_parentView9_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("parent")))
   )
-  private[this] lazy val controllers_DashboardController_parentView8_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_parentView9_invoker = createInvoker(
     DashboardController_3.parentView,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -232,10 +251,10 @@ class Routes(
   )
 
   // @LINE:24
-  private[this] lazy val controllers_DashboardController_parentRequest9_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_parentRequest10_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("parentauth")))
   )
-  private[this] lazy val controllers_DashboardController_parentRequest9_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_parentRequest10_invoker = createInvoker(
     DashboardController_3.parentRequest,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -250,10 +269,10 @@ class Routes(
   )
 
   // @LINE:25
-  private[this] lazy val controllers_DashboardController_parentAuth10_route = Route("POST",
+  private[this] lazy val controllers_DashboardController_parentAuth11_route = Route("POST",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("parentauth")))
   )
-  private[this] lazy val controllers_DashboardController_parentAuth10_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_parentAuth11_invoker = createInvoker(
     DashboardController_3.parentAuth,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -268,10 +287,10 @@ class Routes(
   )
 
   // @LINE:27
-  private[this] lazy val controllers_DashboardController_addChore11_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_addChore12_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("newchore")))
   )
-  private[this] lazy val controllers_DashboardController_addChore11_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_addChore12_invoker = createInvoker(
     DashboardController_3.addChore,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -286,10 +305,10 @@ class Routes(
   )
 
   // @LINE:29
-  private[this] lazy val controllers_DashboardController_addReward12_route = Route("GET",
+  private[this] lazy val controllers_DashboardController_addReward13_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("newreward")))
   )
-  private[this] lazy val controllers_DashboardController_addReward12_invoker = createInvoker(
+  private[this] lazy val controllers_DashboardController_addReward13_invoker = createInvoker(
     DashboardController_3.addReward,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -304,10 +323,10 @@ class Routes(
   )
 
   // @LINE:31
-  private[this] lazy val controllers_Assets_versioned13_route = Route("GET",
+  private[this] lazy val controllers_Assets_versioned14_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("assets/"), DynamicPart("file", """.+""",false)))
   )
-  private[this] lazy val controllers_Assets_versioned13_invoker = createInvoker(
+  private[this] lazy val controllers_Assets_versioned14_invoker = createInvoker(
     Assets_1.versioned(fakeValue[String], fakeValue[Asset]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -348,64 +367,70 @@ class Routes(
         controllers_LoginController_getRegistration3_invoker.call(LoginController_2.getRegistration)
       }
   
-    // @LINE:14
-    case controllers_DashboardController_postLogin4_route(params@_) =>
+    // @LINE:12
+    case controllers_LoginController_register4_route(params@_) =>
       call { 
-        controllers_DashboardController_postLogin4_invoker.call(DashboardController_3.postLogin)
+        controllers_LoginController_register4_invoker.call(LoginController_2.register)
+      }
+  
+    // @LINE:14
+    case controllers_DashboardController_postLogin5_route(params@_) =>
+      call { 
+        controllers_DashboardController_postLogin5_invoker.call(DashboardController_3.postLogin)
       }
   
     // @LINE:16
-    case controllers_LoginController_logout5_route(params@_) =>
+    case controllers_LoginController_logout6_route(params@_) =>
       call { 
-        controllers_LoginController_logout5_invoker.call(LoginController_2.logout)
+        controllers_LoginController_logout6_invoker.call(LoginController_2.logout)
       }
   
     // @LINE:18
-    case controllers_DashboardController_childView6_route(params@_) =>
+    case controllers_DashboardController_childView7_route(params@_) =>
       call { 
-        controllers_DashboardController_childView6_invoker.call(DashboardController_3.childView)
+        controllers_DashboardController_childView7_invoker.call(DashboardController_3.childView)
       }
   
     // @LINE:20
-    case controllers_DashboardController_addParent7_route(params@_) =>
+    case controllers_DashboardController_addParent8_route(params@_) =>
       call { 
-        controllers_DashboardController_addParent7_invoker.call(DashboardController_3.addParent)
+        controllers_DashboardController_addParent8_invoker.call(DashboardController_3.addParent)
       }
   
     // @LINE:22
-    case controllers_DashboardController_parentView8_route(params@_) =>
+    case controllers_DashboardController_parentView9_route(params@_) =>
       call { 
-        controllers_DashboardController_parentView8_invoker.call(DashboardController_3.parentView)
+        controllers_DashboardController_parentView9_invoker.call(DashboardController_3.parentView)
       }
   
     // @LINE:24
-    case controllers_DashboardController_parentRequest9_route(params@_) =>
+    case controllers_DashboardController_parentRequest10_route(params@_) =>
       call { 
-        controllers_DashboardController_parentRequest9_invoker.call(DashboardController_3.parentRequest)
+        controllers_DashboardController_parentRequest10_invoker.call(DashboardController_3.parentRequest)
       }
   
     // @LINE:25
-    case controllers_DashboardController_parentAuth10_route(params@_) =>
+    case controllers_DashboardController_parentAuth11_route(params@_) =>
       call { 
-        controllers_DashboardController_parentAuth10_invoker.call(DashboardController_3.parentAuth)
+        controllers_DashboardController_parentAuth11_invoker.call(DashboardController_3.parentAuth)
       }
   
     // @LINE:27
-    case controllers_DashboardController_addChore11_route(params@_) =>
+    case controllers_DashboardController_addChore12_route(params@_) =>
       call { 
-        controllers_DashboardController_addChore11_invoker.call(DashboardController_3.addChore)
+        controllers_DashboardController_addChore12_invoker.call(DashboardController_3.addChore)
       }
   
     // @LINE:29
-    case controllers_DashboardController_addReward12_route(params@_) =>
+    case controllers_DashboardController_addReward13_route(params@_) =>
       call { 
-        controllers_DashboardController_addReward12_invoker.call(DashboardController_3.addReward)
+        controllers_DashboardController_addReward13_invoker.call(DashboardController_3.addReward)
       }
   
     // @LINE:31
-    case controllers_Assets_versioned13_route(params@_) =>
+    case controllers_Assets_versioned14_route(params@_) =>
       call(Param[String]("path", Right("/public")), params.fromPath[Asset]("file", None)) { (path, file) =>
-        controllers_Assets_versioned13_invoker.call(Assets_1.versioned(path, file))
+        controllers_Assets_versioned14_invoker.call(Assets_1.versioned(path, file))
       }
   }
 }
