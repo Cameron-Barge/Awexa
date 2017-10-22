@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/routes
-// @DATE:Sat Oct 21 15:49:12 EDT 2017
+// @DATE:Sun Oct 22 00:08:38 EDT 2017
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -130,16 +130,6 @@ package controllers.javascript {
     }
 
   
-    // @LINE:9
-    def getLogin: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.LoginController.getLogin",
-      """
-        function() {
-          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "login"})
-        }
-      """
-    )
-  
     // @LINE:11
     def getRegistration: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LoginController.getRegistration",
@@ -156,6 +146,26 @@ package controllers.javascript {
       """
         function() {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "logout"})
+        }
+      """
+    )
+  
+    // @LINE:12
+    def register: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.LoginController.register",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "register"})
+        }
+      """
+    )
+  
+    // @LINE:9
+    def getLogin: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.LoginController.getLogin",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "login"})
         }
       """
     )
