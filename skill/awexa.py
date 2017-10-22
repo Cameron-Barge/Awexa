@@ -4,8 +4,15 @@ import requests
 from flask import Flask
 from flask_ask import Ask, statement
 
-ENDPOINT = 'https://awexa-4bad0.firebaseio.com/families/'
-device_id = 'family1.json'  # TODO: get actual device ID
+
+ENDPOINT = 'https://awexa-4bad0.firebaseio.com/'
+DEVICE_ENDPOINT = ENDPOINT + 'deviceToFamily/'
+FAMILY_ENDPOINT = ENDPOINT + 'families/'
+CHILD_ENDPOINT = ENDPOINT + 'children/'
+CHORES_ENDPOINT = ENDPOINT + 'chores/'
+REWARDS_ENDPOINT = ENDPOINT + 'rewards/'
+
+device_id = 'deviceid1'  # TODO: get actual device ID
 logger = logging.getLogger()
 
 app = Flask(__name__)
@@ -19,16 +26,46 @@ def launch():
 
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
-    r = requests.get(ENDPOINT + device_id)
+    # get family_id from device_id
+    r = requests.get(DEVICE_ENDPOINT + device_id + ".json")
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    if r.content == "null":
+        return statement(handleUnregisteredDevice(device_id))
+    family_id = r.content.replace('"', '')
+
+    # get family_json from family_id
+    r = requests.get(FAMILY_ENDPOINT + family_id + ".json")
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
     family_json = r.json()
 
-    if r.status_code == 200 and family_json is not None:
-        child_chores = getChildsChores(family_json, child_name)
-        chores = [family_json['chores'][str(c)]['name'] for c in child_chores]
-        return statement("{} has {} chores: {}"
+    # get child_id from family_json[child_name]
+    child_id = ''
+    try:
+        child_id = family_json['child_names'][child_name.title()]
+    except KeyError:
+        return statement(handleNoChildError(child_name, family_json))
+
+    # get list(chore_ids) from children table
+    r = requests.get(CHILD_ENDPOINT + child_id + ".json")
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    child_json = r.json()
+    chore_id_list = [chore for chore,flag in child_json['chores'].iteritems() if flag]
+
+    # get list(chore_info) from list(chore_ids)
+    chores = []
+    for chore_id in chore_id_list:
+        r = requests.get(CHORES_ENDPOINT + chore_id + ".json")
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        chore_json = r.json()
+        chores.append("{} for {} points".format(chore_json['name'], chore_json['points']))
+
+    # return speechlet
+    return statement("{} has {} chores: {}"
                         .format(child_name, len(chores), listToAndString(chores)))
-    else:
-        return statement(handleError(r))
 
 
 @ask.intent("GetRewardsIntent")
@@ -82,10 +119,17 @@ def listToAndString(itemList):
         return ""
 
 
-def handleError(response):
+def handleConnectionError(response):
     speech = "There was a problem accessing the database."
     logger.info('speech = {}'.format(speech))
     logger.info('response = {}'.format(response.content))
+    return speech
+
+
+def handleNoChildError(child_name, family_json):
+    speech = "There was no child found for this family named {}. ".format(child_name)
+    children = [key for key, value in family_json['child_names']]
+    speech += " Please add a child using the app or choose from these children: {}".format(children)
     return speech
 
 
