@@ -39,45 +39,15 @@ public class Family {
         }
         System.out.println("Parents");
         for(Parent p : parents) {
-            System.out.println(p);
-        }
+        System.out.println(p);
+    }
         System.out.println("Rewards");
         for(Reward r : rewards) {
-            System.out.println(r);
-        }
+        System.out.println(r);
     }
-
-    public static Family authenticate(String user, String pass) {
-        Family fam = new Family();
-        boolean waiting = true;
-
-        /*final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String path = "families/" + fam;
-        System.out.println(path);
-        DatabaseReference ref = database.getReference(path);
-
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot);
-                Family fam = dataSnapshot.getValue(Family.class);
-                fam.print();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-        while(waiting) {
-*/
-
-        return fam;
+}
 
 
-    }
 
 
 }
