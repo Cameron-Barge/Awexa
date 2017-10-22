@@ -1,0 +1,15 @@
+@(familyName: String)
+@dashboard{
+
+
+  <p> Post Login - @familyName </p>
+
+  <a class ="btn btn-default" href ="@routes.LoginController.logout()">Logout</a><br>
+
+  <a class ="btn btn-default" href ="@routes.DashboardController.addParent()">No parents</a><br>
+
+  <a class ="btn btn-default" href ="@routes.DashboardController.parentRequest()">Parent View</a><br>
+
+  <a class ="btn btn-default" href ="@routes.DashboardController.childView()">Child View</a>
+
+}
