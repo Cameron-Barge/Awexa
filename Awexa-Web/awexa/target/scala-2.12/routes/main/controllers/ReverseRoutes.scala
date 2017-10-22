@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/routes
-// @DATE:Sun Oct 22 00:08:38 EDT 2017
+// @SOURCE:J:/GitHub/Awexa/Awexa-Web/awexa/conf/routes
+// @DATE:Sun Oct 22 18:59:09 EDT 2017
 
 import play.api.mvc.Call
 

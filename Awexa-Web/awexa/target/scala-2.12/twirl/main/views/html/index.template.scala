@@ -33,12 +33,60 @@ object index extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.Html
 Seq[Any](format.raw/*1.18*/("""
 
 """),_display_(/*3.2*/main("Awexa")/*3.15*/ {_display_(Seq[Any](format.raw/*3.17*/("""
-    """),format.raw/*4.5*/("""<p> """),_display_(/*4.10*/message),format.raw/*4.17*/(""" """),format.raw/*4.18*/("""</p>
+    """),format.raw/*4.5*/("""<!-- Home Section -->
+    <section id="home" class="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="main_home_slider text-center">
 
-    <a class ="btn btn-default" href =""""),_display_(/*6.41*/routes/*6.47*/.LoginController.getLogin()),format.raw/*6.74*/("""">Login</a>
-    <a class ="btn btn-default" href =""""),_display_(/*7.41*/routes/*7.47*/.LoginController.getRegistration()),format.raw/*7.81*/("""">Register</a>
+                        <div class="single_home_slider">
+                            <div class="home-overlay"></div>
+                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
 
-""")))}),format.raw/*9.2*/("""
+                                <h2>"""),_display_(/*15.38*/message),format.raw/*15.45*/("""</h2>
+                                <div class="separator"></div>
+                                <p class="subtitle">Awexa for Kids <br />
+                                    Georgia Tech Convergence Innovation Competition 2017</p>
+                                <div class="home_btn">
+                                    <a href=""""),_display_(/*20.47*/routes/*20.53*/.LoginController.getLogin()),format.raw/*20.80*/("""" class="btn">Login</a>
+                                </div>
+                            </div>
+                        </div><!-- End of single_home_slider -->
+
+                        <div class="single_home_slider">
+                            <div class="home-overlay"></div>
+                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
+                                <h2>we are clemo.</h2>
+                                <div class="separator"></div>
+                                <p class="subtitle">professionals <br />
+                                    in the creative industries</p>
+                                <div class="home_btn">
+                                    <a href="#" class="btn">Learn More</a>
+                                </div>
+                            </div>
+                        </div><!-- End of single_home_slider -->
+
+                        <div class="single_home_slider">
+                            <div class="home-overlay"></div>
+                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
+                                <h2>we are clemo.</h2>
+                                <div class="separator"></div>
+                                <p class="subtitle">professionals <br />
+                                    in the creative industries</p>
+                                <div class="home_btn">
+                                    <a href=""""),_display_(/*46.47*/routes/*46.53*/.LoginController.getLogin()),format.raw/*46.80*/("""" class="btn">Login</a>
+                                </div>
+                            </div>
+                        </div><!-- End of single_home_slider -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End of Home Section -->
+
+
+""")))}),format.raw/*57.2*/("""
 """))
       }
     }
@@ -55,11 +103,11 @@ Seq[Any](format.raw/*1.18*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Sat Oct 21 15:19:28 EDT 2017
-                  SOURCE: /Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/app/views/index.scala.html
-                  HASH: ee8f64c3a3802936aec7f9d4073a6c6f00c1e593
-                  MATRIX: 948->1|1059->17|1087->20|1108->33|1147->35|1178->40|1209->45|1236->52|1264->53|1336->99|1350->105|1397->132|1475->184|1489->190|1543->224|1589->241
-                  LINES: 28->1|33->1|35->3|35->3|35->3|36->4|36->4|36->4|36->4|38->6|38->6|38->6|39->7|39->7|39->7|41->9
+                  DATE: Sun Oct 22 18:59:09 EDT 2017
+                  SOURCE: J:/GitHub/Awexa/Awexa-Web/awexa/app/views/index.scala.html
+                  HASH: 740f40424a29bba8cf08c54997023ac1e0ba2dea
+                  MATRIX: 948->1|1059->17|1089->22|1110->35|1149->37|1181->43|1692->527|1720->534|2088->875|2103->881|2151->908|3671->2401|3686->2407|3734->2434|4068->2738
+                  LINES: 28->1|33->1|35->3|35->3|35->3|36->4|47->15|47->15|52->20|52->20|52->20|78->46|78->46|78->46|89->57
                   -- GENERATED --
               */
           

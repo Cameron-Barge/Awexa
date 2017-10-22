@@ -4,6 +4,7 @@
 tmp
 dump
 logs
+*.class
 
 # Eclipse
 .settings
@@ -15,10 +16,11 @@ bin
 
 # SBT
 dist
+project/
 project/boot
 project/target
 project/plugins/target
-target
+target/
 .target
 
 # Play

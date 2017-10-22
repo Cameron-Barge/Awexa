@@ -33,28 +33,66 @@ object register extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.H
 Seq[Any](format.raw/*1.32*/("""
 
 """),_display_(/*3.2*/main("Awexa Login")/*3.21*/ {_display_(Seq[Any](format.raw/*3.23*/("""
-  """),format.raw/*4.3*/("""<p> """),_display_(/*4.8*/message),format.raw/*4.15*/(""" """),format.raw/*4.16*/("""</p>
-  <form class ="form-horizontal" role ="form" action =""""),_display_(/*5.57*/routes/*5.63*/.LoginController.register()),format.raw/*5.90*/("""" method = "post">
-    <div class ="form-group">
-      <input type ="text"  name ="user" placeholder ="Family Name">
-    </div>
-    <div class ="form-group">
-      <input type ="password"  name ="pass" placeholder ="Password">
-    </div>
-    <div class ="form-group">
-      <input type ="password"  name ="pass2" placeholder ="Confirm Password">
-    </div>
-    <p> """),_display_(/*15.10*/error),format.raw/*15.15*/(""" """),format.raw/*15.16*/("""</p>
-    <div class ="form-group">
-      <button type ="submit" class ="btn btn-primary">Register</button>
-      <button type="reset" class ="btn btn-danger">Cancel</button>
-      <a class ="btn btn-default" href =""""),_display_(/*19.43*/routes/*19.49*/.LoginController.getLogin()),format.raw/*19.76*/("""">Have an account? Login!</a>
+"""),format.raw/*4.1*/("""<section id="contact" class="contactus margin-top-120">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="main_contact sections">
+          <div class="head_title text-center">
+            <h1>"""),_display_(/*10.18*/message),format.raw/*10.25*/("""</h1>
+          </div>
 
+          <div class="row">
+            <div class="contact_contant">
+              <div class="col-sm-6 col-xs-12">
+                <div class="single_message_right_info">
+                  <ul>
+                    <li><i class="fa fa-map-marker"></i> <span>23 Mulholland Drive, Suite 721. Los Angeles 10010
+                                                        100 S. Main Street. Los Angeles 90012</span></li>
 
+                    <li><i class="fa fa-mobile-phone"></i> <span>+1-670-567-5590</span></li>
 
-    </div>
-  </form>
-""")))}),format.raw/*25.2*/("""
+                  </ul>
+
+                  <div class="work_socail transition">
+                    <a href=""><i class="fa fa-facebook img-circle"></i></a>
+                    <a href=""><i class="fa fa-twitter img-circle"></i></a>
+                    <a href=""><i class="fa fa-google-plus img-circle"></i></a>
+                    <a href=""><i class="fa fa-pinterest img-circle"></i></a>
+                    <a href=""><i class="fa fa-instagram img-circle"></i></a>
+                  </div>
+                </div>
+              </div><!-- End of col-sm-6 -->
+
+              <div class="col-sm-6 col-xs-12">
+                <div class="single_contant_left margin-top-60">
+                  <form role="form" action=""""),_display_(/*37.46*/routes/*37.52*/.LoginController.register()),format.raw/*37.79*/("""" method="post">
+                    <div class ="form-group">
+                      <input type="text" class="form-control" name="user" placeholder="Family Name">
+                    </div>
+                    <div class ="form-group">
+                      <input type="password" class="form-control" name="pass" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <input type="password"  class="form-control" name="pass2" placeholder="Confirm Password">
+                    </div>
+                    <p> """),_display_(/*47.26*/error),format.raw/*47.31*/(""" """),format.raw/*47.32*/("""</p>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Register</button>
+                      <button type="reset" class="btn btn-danger">Cancel</button>
+                      <a class ="btn btn-default" href=""""),_display_(/*51.58*/routes/*51.64*/.LoginController.getLogin()),format.raw/*51.91*/("""">Login!</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> <!-- End of messsage contant-->
+          </div>
+        </div>
+      </div>
+    </div><!-- End of row -->
+  </div><!-- End of container -->
+</section><!-- End of contact Section -->
+""")))}),format.raw/*63.2*/("""
 """))
       }
     }
@@ -71,11 +109,11 @@ Seq[Any](format.raw/*1.32*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Sun Oct 22 00:24:08 EDT 2017
-                  SOURCE: /Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/app/views/register.scala.html
-                  HASH: a60db25419f3613f8382ed6ac9d8e4a1dfc03efa
-                  MATRIX: 958->1|1083->31|1111->34|1138->53|1177->55|1206->58|1236->63|1263->70|1291->71|1378->132|1392->138|1439->165|1832->531|1858->536|1887->537|2130->753|2145->759|2193->786|2278->841
-                  LINES: 28->1|33->1|35->3|35->3|35->3|36->4|36->4|36->4|36->4|37->5|37->5|37->5|47->15|47->15|47->15|51->19|51->19|51->19|57->25
+                  DATE: Sun Oct 22 18:59:09 EDT 2017
+                  SOURCE: J:/GitHub/Awexa/Awexa-Web/awexa/app/views/register.scala.html
+                  HASH: d232b6fece35ab078db5bf4359cf02107a4e3ba5
+                  MATRIX: 958->1|1083->31|1113->36|1140->55|1179->57|1207->59|1482->307|1510->314|2817->1594|2832->1600|2880->1627|3492->2212|3518->2217|3547->2218|3853->2497|3868->2503|3916->2530|4271->2855
+                  LINES: 28->1|33->1|35->3|35->3|35->3|36->4|42->10|42->10|69->37|69->37|69->37|79->47|79->47|79->47|83->51|83->51|83->51|95->63
                   -- GENERATED --
               */
           

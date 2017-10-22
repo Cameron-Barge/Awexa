@@ -57,10 +57,10 @@ Seq[Any](_display_(/*1.2*/dashboard/*1.11*/{_display_(Seq[Any](format.raw/*1.12*
 
               /*
                   -- GENERATED --
-                  DATE: Sat Oct 21 15:49:12 EDT 2017
-                  SOURCE: /Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/app/views/addchore.scala.html
-                  HASH: 32660f2309398fd5056ef077d1d2abe030e5255d
-                  MATRIX: 1033->1|1050->10|1088->11|1119->16|1204->75|1218->81|1271->114|1354->171|1368->177|1413->202|1465->224
+                  DATE: Sun Oct 22 18:59:09 EDT 2017
+                  SOURCE: J:/GitHub/Awexa/Awexa-Web/awexa/app/views/addchore.scala.html
+                  HASH: 86e492bdb106ef030f93f416dfb6d304830d216b
+                  MATRIX: 1033->1|1050->10|1088->11|1122->19|1210->81|1224->87|1277->120|1361->178|1375->184|1420->209|1475->234
                   LINES: 33->1|33->1|33->1|36->4|39->7|39->7|39->7|40->8|40->8|40->8|43->11
                   -- GENERATED --
               */
