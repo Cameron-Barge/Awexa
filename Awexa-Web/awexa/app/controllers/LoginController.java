@@ -105,5 +105,8 @@ public class LoginController {
         return redirect(routes.HomeController.index());
     }
 
+    public Result register() {
+        return ok(views.html.newparent.render());
+    }
 
 }

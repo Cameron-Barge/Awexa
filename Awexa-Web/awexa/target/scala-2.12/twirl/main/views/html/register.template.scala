@@ -34,9 +34,9 @@ Seq[Any](format.raw/*1.18*/("""
 
 """),_display_(/*3.2*/main("Awexa Login")/*3.21*/ {_display_(Seq[Any](format.raw/*3.23*/("""
   """),format.raw/*4.3*/("""<p> """),_display_(/*4.8*/message),format.raw/*4.15*/(""" """),format.raw/*4.16*/("""</p>
-  <form class ="form-horizontal" role ="form" action =""""),_display_(/*5.57*/routes/*5.63*/.LoginController.login()),format.raw/*5.87*/("""" method = "post">
+  <form class ="form-horizontal" role ="form" action =""""),_display_(/*5.57*/routes/*5.63*/.LoginController.register()),format.raw/*5.90*/("""" method = "post">
     <div class ="form-group">
-      <input type ="text"  name ="user" placeholder ="Username">
+      <input type ="text"  name ="user" placeholder ="Family Name">
     </div>
     <div class ="form-group">
       <input type ="password"  name ="pass" placeholder ="Password">
@@ -45,7 +45,7 @@ Seq[Any](format.raw/*1.18*/("""
       <input type ="password"  name ="pass2" placeholder ="Confirm Password">
     </div>
     <div class ="form-group">
-      <button type ="submit" class ="btn btn-primary">Login</button>
+      <button type ="submit" class ="btn btn-primary">Register</button>
       <button type="reset" class ="btn btn-danger">Cancel</button>
       <a class ="btn btn-default" href =""""),_display_(/*18.43*/routes/*18.49*/.LoginController.getLogin()),format.raw/*18.76*/("""">Have an account? Login!</a>
 
@@ -70,10 +70,10 @@ Seq[Any](format.raw/*1.18*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Sat Oct 21 15:19:28 EDT 2017
+                  DATE: Sun Oct 22 00:10:05 EDT 2017
                   SOURCE: /Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/app/views/register.scala.html
-                  HASH: 0af9c2abf9233fc60c0b8334a4686d1b9da0989a
-                  MATRIX: 951->1|1062->17|1090->20|1117->39|1156->41|1185->44|1215->49|1242->56|1270->57|1357->118|1371->124|1415->148|2004->710|2019->716|2067->743|2152->798
+                  HASH: cef0a4977d87613e0543a363578345b1163ad9a9
+                  MATRIX: 951->1|1062->17|1090->20|1117->39|1156->41|1185->44|1215->49|1242->56|1270->57|1357->118|1371->124|1418->151|2013->719|2028->725|2076->752|2161->807
                   LINES: 28->1|33->1|35->3|35->3|35->3|36->4|36->4|36->4|36->4|37->5|37->5|37->5|50->18|50->18|50->18|56->24
                   -- GENERATED --
               */

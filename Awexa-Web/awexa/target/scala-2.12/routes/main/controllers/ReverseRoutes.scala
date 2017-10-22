@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/routes
-// @DATE:Sat Oct 21 15:49:12 EDT 2017
+// @DATE:Sun Oct 22 00:08:38 EDT 2017
 
 import play.api.mvc.Call
 
@@ -91,12 +91,6 @@ package controllers {
     }
 
   
-    // @LINE:9
-    def getLogin(): Call = {
-      
-      Call("GET", _prefix + { _defaultPrefix } + "login")
-    }
-  
     // @LINE:11
     def getRegistration(): Call = {
       
@@ -107,6 +101,18 @@ package controllers {
     def logout(): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "logout")
+    }
+  
+    // @LINE:12
+    def register(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "register")
+    }
+  
+    // @LINE:9
+    def getLogin(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "login")
     }
   
     // @LINE:8
