@@ -22,7 +22,7 @@ public class DashboardController {
 
 
     public Result postLogin() {
-        return ok(views.html.postlogin.render());
+        return ok(views.html.postlogin.render(Global.familyName));
     }
 
     public Result addParent() {
