@@ -13,8 +13,9 @@
 
 ## Setting up Alexa Skill in the Developer Console
 1. Interaction Model:
-    + current intent schema is in speechAssets\intent\_schema.txt
-    + current sample utterances are in speechAssets\sample\_utterances.txt
+    + current intent schema is in speechAssets/intent\_schema.txt
+    + current sample utterances are in speechAssets/sample\_utterances.txt
+    + custom slot CHORES is in speechAssets/CHORES\_custom\_slots.txt
 2. Configuration
     + Service Endpoint Type: https
     + region: NA

@@ -1,10 +1,13 @@
+import difflib
 import logging
 import requests
 from flask import Flask
 from flask_ask import Ask, statement
 
-ENDPOINT = 'https://awexa-4bad0.firebaseio.com/families/'
-device_id = 'family1.json'  # TODO: get actual device ID
+
+ENDPOINT = 'https://awexa-4bad0.firebaseio.com/'
+device_id = 'deviceid1'  # TODO: get actual device ID
+logger = logging.getLogger()
 
 app = Flask(__name__)
 ask = Ask(app, '/')
@@ -17,31 +20,130 @@ def launch():
 
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
-    r = requests.get(ENDPOINT + device_id)
-    family_json = r.json()
+    return_val = getChild(device_id, child_name)
+    if isinstance(return_val, statement):  # if is error msg
+        return return_val  # throw error
 
-    if r.status_code == 200 and family_json is not None:
-        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
-        chores = [family_json['chores'][str(c)]['name'] for c in child_chores]
-        return statement("{} has {} chores: {}".format(child_name, len(chores), listToAndString(chores)))
-    else:
-        speech = "There was a problem accessing the database."
-        logger.info('speech = {}'.format(speech))
-        return statement(speech)
+    child_json = return_val[0]
+
+    # get list(chore_id) from child_json
+    chore_id_list = [c for c, flag in child_json['chores'].iteritems() if flag]
+
+    # get list(chore_info) from list(chore_ids)
+    chores = []
+    for chore_id in chore_id_list:
+        r = requests.get(chores_endpoint(chore_id))
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        chore_json = r.json()
+        chores.append("{} for {} points"
+                      .format(chore_json['name'], chore_json['points']))
+
+    # return speechlet
+    chore_num = str(len(chores)) \
+        + (" chores" if len(chores) != 1 else " chore")
+    return statement("{} has {} : {}"
+                     .format(child_name, chore_num, listToAndString(chores)))
 
 
 @ask.intent("GetRewardsIntent")
 def getRewards(child_name):
-    r = requests.get(ENDPOINT + device_id)
+    return_val = getChild(device_id, child_name)
+    if isinstance(return_val, statement):  # if is error msg
+        return return_val  # throw error
+
+    child_json = return_val[0]
+    points = child_json['points']
+
+    # get list(reward_id) from child_json
+    reward_id_list = [reward for reward in child_json['rewards']]
+
+    # get list(reward_info) from list(reward_ids)
+    rewards = []
+    for reward_id in reward_id_list:
+        r = requests.get(rewards_endpoint(reward_id))
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        reward_json = r.json()
+        rewards.append("{} for {} points"
+                       .format(reward_json['name'], reward_json['points']))
+
+    # return speechlet
+    point_num_phrase = str(points) + (" points" if points != 1 else " point")
+    reward_num_phrase = str(len(rewards)) \
+        + (" rewards" if len(rewards) != 1 else " reward")
+    return statement("{} has {}, applicable to {}: {}"
+                     .format(child_name, point_num_phrase, reward_num_phrase,
+                             listToAndString(rewards)))
+
+
+@ask.intent("FinishChoreIntent")
+def finishChore(child_name, chore):
+    return_val = getChild(device_id, child_name)
+    if isinstance(return_val, statement):  # if is error msg
+        return return_val  # throw error
+
+    child_json, child_id = return_val
+
+    # get list(chore_id) from child_json
+    chore_id_list = [c for c, flag in child_json['chores'].iteritems() if flag]
+
+    # get list(chore_name) from list(chore_ids)
+    chores = {}
+    for chore_id in chore_id_list:
+        r = requests.get(chores_endpoint(chore_id, "/name"))
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        chores[r.content.replace('"', '').lower()] = chore_id
+
+    # find closest chore from list, with similarity of >= 0.6
+    guess = difflib.get_close_matches(chore, chores.keys())
+
+    try:
+        guess = guess[0]
+        r = requests.put(child_endpoint(child_id, "/chores/" + chores[guess]),
+                         data='false')
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        else:
+            return statement("I marked {} as finishing the chore: {}"
+                             .format(child_json['name'], guess))
+    except IndexError:
+        if chores.keys() == []:
+            return statement("This child has no chores.")
+        return statement(
+            "Sorry I couldn't find that chore. Pick a chore from this list: {}"
+            .format(listToAndString(chores.keys())))
+
+
+#### HELPERS ####
+def getChild(device_id, child_name):
+    # get family_id from device_id
+    r = requests.get(device_endpoint(device_id))
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    if r.content == "null":
+        return statement(handleUnregisteredDevice(device_id))
+    family_id = r.content.replace('"', '')
+
+    # get family_json from family_id
+    r = requests.get(family_endpoint(family_id, '/child_names'))
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
     family_json = r.json()
 
-    if r.status_code == 200 and family_json is not None:
-        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
-        rewards = [family_json['chores'][str(c)]['rewardId'] for c in child_chores]
-        reward_list = [family_json['rewards'][r]['name'] for r in rewards]
-        return statement("{} has {} rewards: {}".format(child_name, len(reward_list), listToAndString(reward_list)))
-    else:
-        return statement(handleError(r))
+    # get child_id from family_json[child_name]
+    child_id = ''
+    try:
+        child_id = family_json[child_name.title()]
+    except KeyError:
+        return statement(handleNoChildError(child_name, family_json))
+
+    # get child from children table
+    r = requests.get(child_endpoint(child_id))
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    return (r.json(), child_id)
 
 
 def listToAndString(itemList):
@@ -53,8 +155,59 @@ def listToAndString(itemList):
         return ""
 
 
-def handleError(response):
+#### ERROR HANDLING ####
+def handleConnectionError(response):
     speech = "There was a problem accessing the database."
     logger.info('speech = {}'.format(speech))
     logger.info('response = {}'.format(response.content))
+    print speech
     return speech
+
+
+def handleNoChildError(child_name, family_json):
+    speech = "There was no child found for this family named " + child_name
+    children = [key for key, value in family_json.iteritems()]
+    speech += " Add a child using the app or choose from these children: "
+    speech += listToAndString(children)
+    print speech
+    return speech
+
+
+def handleUnregisteredDevice(device_id):
+    speech = "This device is not registered, please use our app to do so."
+    print speech
+    return speech
+
+
+#### ENDPOINT URL BUILDERS ####
+def device_endpoint(device_id):
+    return ENDPOINT + 'deviceToFamily/' + device_id + '.json'
+
+
+def family_endpoint(family_id, path=''):
+    return ENDPOINT + 'families/' + family_id + path + '.json'
+
+
+def child_endpoint(child_id, path=''):
+    return ENDPOINT + 'children/' + child_id + path + '.json'
+
+
+def chores_endpoint(chore_id, path=''):
+    return ENDPOINT + 'chores/' + chore_id + path + '.json'
+
+
+def rewards_endpoint(reward_id, path=''):
+    return ENDPOINT + 'rewards/' + reward_id + path + '.json'
+
+
+#### MAIN ####
+def main():  # test cases pre-zappa deployment
+    print getChores('Bobby')  # should return chores
+    print getChores('FakeChild')  # should return error
+    print getRewards('Bobby')
+    print finishChore('Bobby', 'taking out the trash')  # similar enough
+    print finishChore('Bobby', 'mow the lawn')  # not similar enough
+
+
+if __name__ == '__main__':
+    main()
