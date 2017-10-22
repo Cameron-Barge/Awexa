@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/application.conf,/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/target/scala-2.12/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/logback.xml,/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/target/scala-2.12/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/routes,/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/target/scala-2.12/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/conf/service-account.json,/Users/joshuabarge/Documents/Awexa/Awexa-Web/awexa/target/scala-2.12/classes/service-account.json)[0m
