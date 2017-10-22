@@ -30,52 +30,9 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
-        //getFamily("family4");
 
-        //System.out.println("Session Test");
-        //session().put("connected","test");
-        //session("connected","test");
-        //System.out.println("Assigned : " + session("connected"));
-        //System.out.println("Assigned : " + session().get("connected"));
 
         return ok(views.html.index.render("Welcome to Awexa"));
-    }
-
-    public void getFamily(String fam) {
-
-
-        /*Global.waiting = true;
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String path = "families/" + fam;
-        System.out.println(path);
-        DatabaseReference ref = database.getReference(path);
-
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DataSnapshot children = dataSnapshot.child("children");
-
-                System.out.println(dataSnapshot);
-                System.out.println("Children:");
-                System.out.println(children);
-                System.out.println("Pass:");
-                System.out.println(dataSnapshot.child("familyPass").getValue());
-                Global.waiting = false;
-                //Family fam = dataSnapshot.getValue(Family.class);
-
-                //fam.print();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-        while(Global.waiting){}
-        System.out.println("TEST");*/
     }
 
 
