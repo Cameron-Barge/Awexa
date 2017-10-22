@@ -3,6 +3,7 @@
 *.log
 tmp
 dump
+logs
 
 # Eclipse
 .settings
@@ -29,3 +30,6 @@ RUNNING_PID
 target
 .idea
 .idea_modules
+.idea/**/gradle.xml
+.idea/**/libraries
+idea/workspace.xml
