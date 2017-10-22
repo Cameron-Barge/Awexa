@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="CompilerConfiguration">
-    <option name="BUILD_PROCESS_ADDITIONAL_VM_OPTIONS" value="--add-modules java.se.ee --add-modules java.xml.bind" />
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-encoding utf8 -g" />
-  </component>
-</project>
