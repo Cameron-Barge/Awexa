@@ -3,8 +3,8 @@ package controllers;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
+import model.Global;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +32,35 @@ public class FirebaseServices {
             FirebaseApp.initializeApp(fbOptions);
         }
         return true;
+    }
+
+    public static void updateSnapshot() {
+
+        String path = "families/" + Global.familyName;
+        DatabaseReference ref = database.getReference(path);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Global.curRef = dataSnapshot;
+
+                Global.waiting = false;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        int count = 0;
+        while(Global.waiting){
+            count++;
+            if(count > 200){
+                System.out.print(".");
+                count = 0;
+            }
+
+        }
     }
 
 
