@@ -32,47 +32,24 @@ public class LoginController {
 
         Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
+        Global.familyName = data.get("user");
         Global.loginUser = data.get("user");
         Global.loginPass = data.get("pass");
 
-        String path = "families/" + data.get("user");
-        DatabaseReference ref = database.getReference(path);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot);
-                if(dataSnapshot.getValue() != null) {
-                    System.out.println(Global.loginPass + " " + dataSnapshot.child("familyPass").getValue());
-                    if(Global.loginPass.equals(dataSnapshot.child("familyPass").getValue())){
+        FirebaseServices.updateSnapshot();
 
-                        //System.out.println("Authenticated");
-                        Global.auth = true;
-                    } else {
-                        Global.auth = false;
-                    }
-                } else {
-                    System.out.println("Incorrect Login");
-                    Global.waiting = false;
-                }
-
-                Global.waiting = false;
+        if(Global.curRef.getValue() != null) {
+            //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());
+            if(Global.loginPass.equals(Global.curRef.child("familyPass").getValue())){
+                Global.auth = true;
+            } else {
+                Global.auth = false;
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-        int count = 0;
-        while(Global.waiting){
-            count++;
-            if(count > 200){
-                //System.out.print(".");
-                count = 0;
-            }
-
+        } else {
+            Global.auth = false;
         }
+
+
         System.out.println("Authenticated: " + Global.auth);
 
         // Login Authenticated
@@ -97,7 +74,7 @@ public class LoginController {
     }
 
     public Result getRegistration() {
-        return ok(views.html.register.render("Register"));
+        return ok(views.html.register.render("Register",""));
     }
 
     public Result logout() {
@@ -106,7 +83,27 @@ public class LoginController {
     }
 
     public Result register() {
-        return ok(views.html.newparent.render());
+
+        Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
+        Map<String, String> data = loginForm.rawData();
+
+        System.out.println(data.get("user"));
+        System.out.println(data.get("pass"));
+        System.out.println(data.get("pass2"));
+
+        if(!data.get("pass").equals(data.get("pass2")))
+            return ok(views.html.register.render("Register","Passwords do not match"));
+
+        Global.familyName = data.get("user");
+        FirebaseServices.updateSnapshot();
+
+        if(Global.curRef.getValue() != null) {
+            Global.familyName = "";
+            return ok(views.html.register.render("Register","Family Name already exists"));
+        }
+
+
+        return ok(views.html.newparent.render("Let's get your account set up!"));
     }
 
 }
