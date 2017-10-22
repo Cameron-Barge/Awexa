@@ -18,12 +18,15 @@ import java.util.Locale;
 public class Child {
     String name;
     HashMap<String, Boolean> chores; // These are chore IDs
-    HashMap<String, Boolean> earnedRewards; // These are chore IDs
+    HashMap<String, Integer> rewards; // These are chore IDs
+    int points; // These are chore IDs
+    String familyId;
+
     String childId;
 
     public Child() {
         chores = new HashMap<>();
-        earnedRewards = new HashMap<>();
+        rewards = new HashMap<>();
     }
 
     public String getName() {
@@ -38,12 +41,21 @@ public class Child {
         this.childId = childId;
     }
 
+    public void setFamilyId(String familyId) {
+        this.familyId = familyId;
+    }
+
     public void setChores(HashMap<String, Boolean> chores) {
         this.chores = chores;
     }
 
-    public void setEarnedRewards(HashMap<String, Boolean> earnedRewards) {
-        this.earnedRewards = earnedRewards;
+    public void setRewards(HashMap<String, Integer> rewards) {
+        this.rewards = rewards;
+    }
+
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     @Override

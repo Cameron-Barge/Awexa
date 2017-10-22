@@ -24,9 +24,6 @@ public class AddChildActivity extends AppCompatActivity {
     public void addChild(View view) {
         EditText text = (EditText)findViewById(R.id.childName);
         String childName = text.getText().toString();
-        //TODO: implementation for adding child to db/list/whatever
-        Toast.makeText(getApplicationContext(), childName + " was added...",
-                Toast.LENGTH_SHORT).show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference childDb = database.getReference("children");
         Map<String, Object> childUpdates = new HashMap<>();
@@ -36,6 +33,13 @@ public class AddChildActivity extends AppCompatActivity {
         childUpdates.put("children/" + c.childId, c);
         childUpdates.put("families/family1/children/" + c.childId, true);
         database.getReference().updateChildren(childUpdates);
+        Toast.makeText(getApplicationContext(), childName + " was added...",
+            Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
         finish();
     }
 }

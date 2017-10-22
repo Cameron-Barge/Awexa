@@ -35,6 +35,11 @@
             android:label="@string/title_activity_add_chore"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".EditChoreActivity"
+            android:parentActivityName=".ChildProgressActivity"
+            android:label="@string/title_activity_edit_chore"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".AddChildActivity"
             android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_add_child"
@@ -43,6 +48,11 @@
             android:name=".AddRewardActivity"
             android:parentActivityName=".ChildProgressActivity"
             android:label="@string/title_activity_add_reward"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".EditRewardActivity"
+            android:parentActivityName=".ChildProgressActivity"
+            android:label="@string/title_activity_edit_reward"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ChildProgressActivity"

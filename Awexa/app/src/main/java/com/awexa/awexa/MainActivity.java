@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 children = new ArrayList<>();
                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                     final String childId = messageSnapshot.getKey();
-                    Log.d("child id", childId);
                     database.getReference("children").child(childId)
                         .addValueEventListener(new ValueEventListener() {
                             @Override
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, AddChildActivity.class), 0);
+                startActivity(new Intent(MainActivity.this, AddChildActivity.class));
             }
         });
     }

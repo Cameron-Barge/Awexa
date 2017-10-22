@@ -15,8 +15,10 @@
     </string>
     <string name="title_activity_main">Children</string>
     <string name="title_activity_add_chore">New Chore</string>
+    <string name="title_activity_edit_chore">Edit Chore</string>
     <string name="title_activity_add_child">Add Child</string>
     <string name="title_activity_add_reward">New Reward</string>
+    <string name="title_activity_edit_reward">Edit Reward</string>
     <string name="title_activity_child_progress">Child\'s Progress</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
