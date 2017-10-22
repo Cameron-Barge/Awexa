@@ -28,10 +28,12 @@ public class LoginController {
 
     public Result login() {
 
-        /*Global.waiting = true;
+        Global.waiting = true;
 
         Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
+        Global.loginUser = data.get("user");
+        Global.loginPass = data.get("pass");
 
         String path = "families/" + data.get("user");
         DatabaseReference ref = database.getReference(path);
@@ -40,10 +42,13 @@ public class LoginController {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println(dataSnapshot);
                 if(dataSnapshot.getValue() != null) {
-                    System.out.println(data.get("pass") + " " + dataSnapshot.child("familyPass").getValue());
-                    if(data.get("pass").equals(dataSnapshot.child("familyPass").getValue())){
-                        //session("connected",data.get("user"));
-                        updateName(data.get("user"));
+                    System.out.println(Global.loginPass + " " + dataSnapshot.child("familyPass").getValue());
+                    if(Global.loginPass.equals(dataSnapshot.child("familyPass").getValue())){
+
+                        //System.out.println("Authenticated");
+                        Global.auth = true;
+                    } else {
+                        Global.auth = false;
                     }
                 } else {
                     System.out.println("Incorrect Login");
@@ -59,17 +64,27 @@ public class LoginController {
             }
         });
 
+        int count = 0;
         while(Global.waiting){
-            System.out.print(".");
-            int count = 0;
             count++;
-            if(count%10 == 0)
-                System.out.print("-");
+            if(count > 200){
+                //System.out.print(".");
+                count = 0;
+            }
+
         }
-        System.out.println("Out");*/
+        System.out.println("Authenticated: " + Global.auth);
 
         // Login Authenticated
-        return redirect(routes.DashboardController.postLogin());
+        Global.familyName = Global.loginUser;
+        Global.loginUser = "";
+        Global.loginPass = "";
+        if(Global.auth) {
+            Global.auth = false;
+            return redirect(routes.DashboardController.postLogin());
+        }
+        else
+            return ok(views.html.login.render("Login","Incorrect Login"));
     }
 
     public void updateName(String name){
@@ -78,7 +93,7 @@ public class LoginController {
     }
 
     public Result getLogin() {
-        return ok(views.html.login.render("Login"));
+        return ok(views.html.login.render("Login",""));
     }
 
     public Result getRegistration() {
@@ -86,6 +101,7 @@ public class LoginController {
     }
 
     public Result logout() {
+        Global.reset();
         return redirect(routes.HomeController.index());
     }
 
