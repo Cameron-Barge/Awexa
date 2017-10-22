@@ -26,6 +26,67 @@ def launch():
 
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
+    child_json = getChild(device_id, child_name)
+    if isinstance(child_json, statement):  # if is error msg
+        return child_json  # throw error
+
+    # get list(chore_id) from child_json
+    chore_id_list = [chore for chore, flag in child_json['chores'].iteritems() if flag]
+
+    # get list(chore_info) from list(chore_ids)
+    chores = []
+    for chore_id in chore_id_list:
+        r = requests.get(CHORES_ENDPOINT + chore_id + ".json")
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        chore_json = r.json()
+        chores.append("{} for {} points".format(chore_json['name'], chore_json['points']))
+
+    # return speechlet
+    return statement("{} has {} chores: {}"
+                     .format(child_name, len(chores), listToAndString(chores)))
+
+
+@ask.intent("GetRewardsIntent")
+def getRewards(child_name):
+
+    r = requests.get(ENDPOINT + device_id)
+    family_json = r.json()
+
+    if r.status_code == 200 and family_json is not None:
+        child_chores = getChildsChores(family_json, child_name)
+        rewards = [family_json['chores'][str(c)]['rewardId'] for c in child_chores]
+        reward_list = [family_json['rewards'][r]['name'] for r in rewards]
+        return statement("{} has {} rewards: {}"
+                         .format(child_name, len(reward_list), listToAndString(reward_list)))
+    else:
+        return statement(handleError(r))
+
+
+@ask.intent("FinishChoreIntent")
+def finishChore(child_name, chore):
+    r = requests.get(ENDPOINT + device_id)
+    family_json = r.json()
+
+    if r.status_code == 200 and family_json is not None:
+        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
+        chores = [family_json['chores'][str(c)]['name'] for c in child_chores]
+
+        # find closest chore from list, with similarity of >= 0.6
+        guess = difflib.get_close_matches(chore, chores)
+
+        logger.info(guess)
+
+        if guess == []:
+            return statement("Sorry, I didn't understand. Please state a chore from this list: {}"
+                             .format(listToAndString(chores)))
+
+        return statement("Bobby finished the chore: {}".format(guess[0]))
+    else:
+        return statement(handleError(r))
+
+
+def getChild(device_id, child_name):
     # get family_id from device_id
     r = requests.get(DEVICE_ENDPOINT + device_id + ".json")
     if r.status_code != 200:
@@ -47,67 +108,11 @@ def getChores(child_name):
     except KeyError:
         return statement(handleNoChildError(child_name, family_json))
 
-    # get list(chore_ids) from children table
+    # get child from children table
     r = requests.get(CHILD_ENDPOINT + child_id + ".json")
     if r.status_code != 200:
         return statement(handleConnectionError(r))
-    child_json = r.json()
-    chore_id_list = [chore for chore,flag in child_json['chores'].iteritems() if flag]
-
-    # get list(chore_info) from list(chore_ids)
-    chores = []
-    for chore_id in chore_id_list:
-        r = requests.get(CHORES_ENDPOINT + chore_id + ".json")
-        if r.status_code != 200:
-            return statement(handleConnectionError(r))
-        chore_json = r.json()
-        chores.append("{} for {} points".format(chore_json['name'], chore_json['points']))
-
-    # return speechlet
-    return statement("{} has {} chores: {}"
-                        .format(child_name, len(chores), listToAndString(chores)))
-
-
-@ask.intent("GetRewardsIntent")
-def getRewards(child_name):
-    r = requests.get(ENDPOINT + device_id)
-    family_json = r.json()
-
-    if r.status_code == 200 and family_json is not None:
-        child_chores = getChildsChores(family_json, child_name)
-        rewards = [family_json['chores'][str(c)]['rewardId'] for c in child_chores]
-        reward_list = [family_json['rewards'][r]['name'] for r in rewards]
-        return statement("{} has {} rewards: {}"
-                        .format(child_name, len(reward_list), listToAndString(reward_list)))
-    else:
-        return statement(handleError(r))
-
-
-@ask.intent("FinishChoreIntent")
-def finishChore(child_name, chore):
-    r = requests.get(ENDPOINT + device_id)
-    family_json = r.json()
-
-    if r.status_code == 200 and family_json is not None:
-        child_chores = family_json['children'][child_name.title()]['chores'].split(',')
-        chores = [family_json['chores'][str(c)]['name'] for c in child_chores]
-
-        # find closest chore from list, with similarity of >= 0.6
-        guess = difflib.get_close_matches(chore, chores)
-
-        logger.info(guess)
-
-        if guess == []:
-            return statement("Sorry, I didn't understand. Please state a chore from this list: {}"
-                            .format(listToAndString(chores)))
-
-        return statement("Bobby finished the chore: {}".format(guess[0]))
-    else:
-        return statement(handleError(r))
-
-
-def getChildsChores(family_json, child_name):
-    return family_json['children'][child_name.title()]['chores'].split(',')
+    return r.json()
 
 
 def listToAndString(itemList):
@@ -123,18 +128,28 @@ def handleConnectionError(response):
     speech = "There was a problem accessing the database."
     logger.info('speech = {}'.format(speech))
     logger.info('response = {}'.format(response.content))
+    print speech
     return speech
 
 
 def handleNoChildError(child_name, family_json):
     speech = "There was no child found for this family named {}. ".format(child_name)
-    children = [key for key, value in family_json['child_names']]
-    speech += " Please add a child using the app or choose from these children: {}".format(children)
+    children = [key for key, value in family_json['child_names'].iteritems()]
+    speech += " Add a child using the app or choose from these children: {}".format(listToAndString(children))
+    print speech
+    return speech
+
+
+def handleUnregisteredDevice(device_id):
+    speech = "This device is not registered, please use our app to do so."
+    print speech
     return speech
 
 
 def main():  # test cases pre-zappa deployment
-    print getChores('Bobby')
+    print getChores('Bobby')  # should return chores
+    print getChores('FakeChild')  # should return error
+
     print getRewards('Bobby')
     print finishChore('Bobby', 'taking out the trash')  # similar enough
     print finishChore('Bobby', 'mow the lawn')  # not similar enough
