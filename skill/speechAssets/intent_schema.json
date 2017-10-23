@@ -1,6 +1,5 @@
 {
     "intents": [
-        {"intent": "AMAZON.YesIntent"},
         {"intent": "AMAZON.NoIntent"},
         {"intent": "AMAZON.RepeatIntent"},
         {"intent": "AMAZON.HelpIntent"},
@@ -23,6 +22,12 @@
             "slots": [
                 {"name": "child_name", "type": "AMAZON.US_FIRST_NAME"},
                 {"name": "chore", "type": "CHORES"}
+            ]
+        },
+        {
+            "intent": "GetNameIntent",
+            "slots": [
+                {"name": "child_name", "type": "AMAZON.US_FIRST_NAME"}
             ]
         }
     ]

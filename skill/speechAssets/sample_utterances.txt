@@ -3,10 +3,24 @@ GetChoresIntent Tell me the chores for {child_name}
 GetChoresIntent Tell me what chores {child_name} has
 GetChoresIntent the chores for {child_name}
 
+GetChoresIntent What chores do I have 
+GetChoresIntent What are my chores
+GetChoresIntent tell me my chores
+GetChoresIntent tell me the chores I have
+GetChoresIntent tell me what chores I have
+GetChoresIntent the chores I have 
+
 GetRewardsIntent What rewards does {child_name} have
 GetRewardsIntent Tell me the rewards for {child_name} 
 GetRewardsIntent Tell me what rewards {child_name} has
 GetRewardsIntent the rewards for {child_name}
+
+GetRewardsIntent What rewards do I have 
+GetRewardsIntent What are my rewards
+GetRewardsIntent tell me my rewards
+GetRewardsIntent tell me the rewards I have
+GetRewardsIntent tell me what rewards I have
+GetRewardsIntent the rewards I have 
 
 FinishChoreIntent {child_name} finished {chore}
 FinishChoreIntent {child_name} completed {chore}
@@ -14,3 +28,13 @@ FinishChoreIntent {child_name} did {chore}
 FinishChoreIntent {chore} was finished by {child_name}
 FinishChoreIntent {chore} was completed by {child_name}
 FinishChoreIntent {chore} was done by {child_name}
+
+FinishChoreIntent I finished {chore}
+FinishChoreIntent I completed {chore}
+FinishChoreIntent I did {chore}
+FinishChoreIntent I {chore}
+
+GetNameIntent {child_name}
+GetNameIntent my name is {child_name}
+GetNameIntent I am {child_name}
+GetNameIntent I'm {child_name}

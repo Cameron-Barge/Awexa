@@ -2,11 +2,19 @@ import difflib
 import logging
 import requests
 from flask import Flask
-from flask_ask import Ask, statement
+from flask_ask import Ask, question, session, statement
 
 
 ENDPOINT = 'https://awexa-4bad0.firebaseio.com/'
 device_id = 'deviceid1'  # TODO: get actual device ID
+
+SOURCE_STATE = 'source_state'
+# list of states (enum)
+NONE = 'none'
+CHORES = 'get_chores'
+REWARDS = 'get_rewards'
+FINISH = 'finish_chores'
+
 logger = logging.getLogger()
 
 app = Flask(__name__)
@@ -15,14 +23,19 @@ ask = Ask(app, '/')
 
 @ask.launch
 def launch():
-    return statement("Hello, how can I help you today?")
+    set_state(NONE)
+    return question("Hello, how can I help you today?") \
+        .reprompt("I missed that. How can I help you today?")
 
 
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
     return_val = getChild(device_id, child_name)
-    if isinstance(return_val, statement):  # if is error msg
-        return return_val  # throw error
+    if isinstance(return_val, statement):
+        return return_val
+    if isinstance(return_val, question):
+        set_state(CHORES)
+        return return_val
 
     child_json = return_val[0]
 
@@ -49,8 +62,11 @@ def getChores(child_name):
 @ask.intent("GetRewardsIntent")
 def getRewards(child_name):
     return_val = getChild(device_id, child_name)
-    if isinstance(return_val, statement):  # if is error msg
-        return return_val  # throw error
+    if isinstance(return_val, statement):
+        return return_val
+    if isinstance(return_val, question):
+        set_state(REWARDS)
+        return return_val
 
     child_json = return_val[0]
     points = child_json['points']
@@ -80,8 +96,12 @@ def getRewards(child_name):
 @ask.intent("FinishChoreIntent")
 def finishChore(child_name, chore):
     return_val = getChild(device_id, child_name)
-    if isinstance(return_val, statement):  # if is error msg
-        return return_val  # throw error
+    if isinstance(return_val, statement):
+        return return_val
+    if isinstance(return_val, question):
+        set_state(FINISH)
+        session.attributes['chore'] = chore
+        return return_val
 
     child_json, child_id = return_val
 
@@ -116,7 +136,56 @@ def finishChore(child_name, chore):
             .format(listToAndString(chores.keys())))
 
 
+@ask.intent("GetNameIntent")
+def getName(child_name):
+    response = None
+    if get_state() == CHORES:
+        response = getChores(child_name)
+    elif get_state() == REWARDS:
+        response = getRewards(child_name)
+    elif get_state() == FINISH:
+        response = finishChore(child_name, session.attributes['chore'])
+    else:
+        response = launch()
+
+    set_state(NONE)
+    return response
+
+
+@ask.intent("AMAZON.RepeatIntent")
+def repeat():
+    if get_state() == NONE:
+        return launch()
+    else:
+        return question("What's your name?")
+
+
+@ask.intent("AMAZON.HelpIntent")
+def help():
+    if get_state() == NONE:
+        return statement("Ask me about your chores and rewards."
+                         "You can also tell me if you finished a chore.")
+    else:
+        return question("What's your name?")
+
+
+@ask.intent("AMAZON.StopIntent")
+@ask.intent("AMAZON.CancelIntent")
+@ask.intent("AMAZON.NoIntent")
+def stop():
+    set_state(NONE)
+    return statement("Bye now!")
+
+
 #### HELPERS ####
+def get_state():
+    return session.attributes.get(SOURCE_STATE)
+
+
+def set_state(state):
+    session.attributes[SOURCE_STATE] = state
+
+
 def getChild(device_id, child_name):
     # get family_id from device_id
     r = requests.get(device_endpoint(device_id))
@@ -136,6 +205,11 @@ def getChild(device_id, child_name):
     child_id = ''
     try:
         child_id = family_json[child_name.title()]
+    except AttributeError:  # child_name is None
+        if len(family_json) == 1:
+            child_id = family_json.values()[0]
+        else:
+            return question("What's your name?")
     except KeyError:
         return statement(handleNoChildError(child_name, family_json))
 
