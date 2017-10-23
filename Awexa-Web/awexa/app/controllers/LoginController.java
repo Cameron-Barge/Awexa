@@ -27,6 +27,7 @@ public class LoginController {
 
 
     public Result login() {
+        System.out.println("?");
 
         Global.waiting = true;
 
@@ -36,7 +37,9 @@ public class LoginController {
         Global.loginUser = data.get("user");
         Global.loginPass = data.get("pass");
 
+        System.out.println("1");
         FirebaseServices.updateSnapshot();
+        System.out.println("2");
 
         if(Global.curRef.getValue() != null) {
             //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());

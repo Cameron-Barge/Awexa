@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class HomeController extends Controller {
     FirebaseServices db = new FirebaseServices();
+
     @Inject FormFactory formFactory;
     // Get a reference to our posts
 
