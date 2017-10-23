@@ -1,7 +1,9 @@
 package com.awexa.awexa;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public String familyPass = "";
     ArrayAdapter adapter = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
-
-
+        
         DatabaseReference parentIDRef = db.child("families/" + currentFamily + "/parents");
         parentIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window, null);
+
+
         final EditText password = popupView.findViewById(R.id.password);
         Button submit = popupView.findViewById(R.id.popup_submit);
         Button cancel = popupView.findViewById(R.id.popup_cancel);
@@ -141,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
         int height = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.setElevation(10);
+        }
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         // show the popup window
         popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
