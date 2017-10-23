@@ -55,8 +55,8 @@ def getChores(child_name):
     # return speechlet
     chore_num = str(len(chores)) \
         + (" chores" if len(chores) != 1 else " chore")
-    return statement("{} has {} : {}"
-                     .format(child_name, chore_num, listToAndString(chores)))
+    return statement("You have {} : {}"
+                     .format(chore_num, listToAndString(chores)))
 
 
 @ask.intent("GetRewardsIntent")
@@ -88,8 +88,8 @@ def getRewards(child_name):
     point_num_phrase = str(points) + (" points" if points != 1 else " point")
     reward_num_phrase = str(len(rewards)) \
         + (" rewards" if len(rewards) != 1 else " reward")
-    return statement("{} has {}, applicable to {}: {}"
-                     .format(child_name, point_num_phrase, reward_num_phrase,
+    return statement("You have {}, applicable to {}: {}"
+                     .format(point_num_phrase, reward_num_phrase,
                              listToAndString(rewards)))
 
 
@@ -130,7 +130,7 @@ def finishChore(child_name, chore):
                              .format(child_json['name'], guess))
     except IndexError:
         if chores.keys() == []:
-            return statement("This child has no chores.")
+            return statement("{} has no chores.".format(child_name))
         return statement(
             "Sorry I couldn't find that chore. Pick a chore from this list: {}"
             .format(listToAndString(chores.keys())))
