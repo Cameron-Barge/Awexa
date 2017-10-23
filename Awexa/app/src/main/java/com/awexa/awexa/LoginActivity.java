@@ -33,6 +33,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -47,16 +56,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private FirebaseAuth mAuth = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -68,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mAuth = FirebaseAuth.getInstance();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -308,24 +312,50 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
+            mAuth.signInWithEmailAndPassword(mEmail, mPassword)
+                .addOnCompleteListener(
+                    new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task)
+                        {
+                            if (!task.isSuccessful()) {
+                                try {
+                                    throw task.getException();
+                                }
+                                // if user enters non-existing email.
+                                catch (FirebaseAuthInvalidUserException invalidEmail) {
+                                    Toast.makeText(getApplicationContext(), "invalid email!!!.",
+                                            Toast.LENGTH_SHORT).show();
+                                    mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
+                                        .addOnCompleteListener(
+                                            new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (!task.isSuccessful()) {
+                                                        try {
+                                                            throw task.getException();
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(getApplicationContext(), "Registration failed.",
+                                                                    Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        );
+                                }
+                                // if user enters wrong password.
+                                catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
+                                    Toast.makeText(getApplicationContext(), "Invalid password.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Sign in failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                );
             return true;
         }
 
