@@ -1,5 +1,6 @@
 package com.awexa.awexa;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -42,6 +45,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, family);
+
+        DatabaseReference familyPassRef = ref.child("/familyPass");
+        familyPassRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyPass = dataSnapshot.getValue().toString();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+
 
         DatabaseReference parentIDRef = db.child("families/" + currentFamily + "/parents");
         parentIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -91,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = ((TextView) view).getText().toString();
                 if (parents.contains(name)) {
-                    Toast.makeText(getApplicationContext(), name + " is a parent...",
-                            Toast.LENGTH_SHORT).show();
+                    showPopupWindow(view);
                 } else {
                     Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
                     intent.putExtra("name", name);
@@ -117,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window, null);
+        final EditText password = popupView.findViewById(R.id.password);
+        Button submit = popupView.findViewById(R.id.popup_submit);
+        Button cancel = popupView.findViewById(R.id.popup_cancel);
 
         // create the popup window
         int width = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
@@ -127,13 +145,27 @@ public class MainActivity extends AppCompatActivity {
         // show the popup window
         popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
 
-        // dismiss the popup window when touched
-        /*popupView.setOnTouchListener(new View.OnTouchListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
+            public void onClick(View view) {
+                if (familyPass.equals(password.getText().toString())) {
+                    toastMessage("Passwords match!");
+                    //TODO: redirect to relevant parent activity
+                } else {
+                    toastMessage("Incorrect password.");
+                }
             }
-        });*/
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
