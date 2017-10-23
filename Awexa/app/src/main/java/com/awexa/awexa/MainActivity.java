@@ -33,12 +33,15 @@ public class MainActivity extends AppCompatActivity {
     public List<String> family = new ArrayList<>();
     public List<String> parents = new ArrayList<>();
     public String familyPass = "";
+    ArrayAdapter adapter = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        adapter = new ArrayAdapter<String>(this,
+                R.layout.activity_listview, family);
 
         DatabaseReference parentIDRef = db.child("families/" + currentFamily + "/parents");
         parentIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -51,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot parentSnapshot) {
                             family.add((String) parentSnapshot.getValue());
                             parents.add((String) parentSnapshot.getValue());
-                            Toast.makeText(getApplicationContext(), (String) parentSnapshot.getValue(),
-                                    Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -72,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                    Toast.makeText(getApplicationContext(), (String) singleSnapshot.getKey(),
-                            Toast.LENGTH_SHORT).show();
                     family.add(singleSnapshot.getKey());
+                    adapter.notifyDataSetChanged();
                 }
             }
             @Override
@@ -82,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_listview, family);
 
         final ListView listView = (ListView) findViewById(R.id.children_list);
         listView.setAdapter(adapter);
