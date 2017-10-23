@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "ERROR";
+    private static final String TAG = "MainActivity";
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     String currentFamily = "family1";
     DatabaseReference ref = db.child("families/" + currentFamily);
