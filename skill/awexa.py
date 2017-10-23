@@ -171,12 +171,16 @@ def help():
 
 
 @ask.intent("AMAZON.StopIntent")
-@ask.intent("AMAZON.CancelIntent")
-@ask.intent("AMAZON.NoIntent")
 def stop():
+    cancel()
+    return statement("Bye now!")
+
+
+@ask.intent("AMAZON.CancelIntent")
+def cancel():
     set_state(NONE)
     set_saved_chore(None)
-    return statement("Bye now!")
+    return statement("I canceled your action!")
 
 
 #### HELPERS ####
