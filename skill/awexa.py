@@ -100,7 +100,7 @@ def finishChore(child_name, chore):
         return return_val
     if isinstance(return_val, question):
         set_state(FINISH)
-        session.attributes['chore'] = chore
+        set_saved_chore(chore)
         return return_val
 
     child_json, child_id = return_val
@@ -144,7 +144,8 @@ def getName(child_name):
     elif get_state() == REWARDS:
         response = getRewards(child_name)
     elif get_state() == FINISH:
-        response = finishChore(child_name, session.attributes['chore'])
+        response = finishChore(child_name, get_saved_chore())
+        set_saved_chore(None)
     else:
         response = launch()
 
@@ -174,6 +175,7 @@ def help():
 @ask.intent("AMAZON.NoIntent")
 def stop():
     set_state(NONE)
+    set_saved_chore(None)
     return statement("Bye now!")
 
 
@@ -184,6 +186,14 @@ def get_state():
 
 def set_state(state):
     session.attributes[SOURCE_STATE] = state
+
+
+def get_saved_chore():
+    return session.attributes.get('chore')
+
+
+def set_saved_chore(chore):
+    session.attributes['chore'] = chore
 
 
 def getChild(device_id, child_name):
