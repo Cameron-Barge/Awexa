@@ -76,7 +76,5 @@ public class Family {
         return child_names;
     }
 
-    public void setChildNames(List<String> child_names) {
-        this.child_names = child_names;
-    }
+    public void setChildNames(List<String> child_names) { this.child_names = child_names; }
 }
