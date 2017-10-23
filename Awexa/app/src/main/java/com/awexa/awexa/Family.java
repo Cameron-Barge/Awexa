@@ -10,55 +10,41 @@ import java.util.List;
 public class Family {
     private List<Child> children;
     private List<Parent> parents;
-    private List<Chore> chores;
-    private List<Reward> rewards;
     private String familyPass;
+    private List<String> child_names;
 
     public Family() {
         children = new ArrayList<>();
         parents = new ArrayList<>();
-        chores = new ArrayList<>();
-        rewards = new ArrayList<>();
+        child_names = new ArrayList<>();
         familyPass = "";
     }
 
     public Family(List<Parent> parents) {
         this.parents = parents;
         children = new ArrayList<>();
-        chores = new ArrayList<>();
-        rewards = new ArrayList<>();
+        child_names = new ArrayList<>();
         familyPass = "";
     }
 
-    public Family(List<Parent> parents, List<Child> children) {
+    public Family(List<Parent> parents, String familyPass) {
+        this.parents = parents;
+        children = new ArrayList<>();
+        child_names = new ArrayList<>();
+        this.familyPass = familyPass;
+    }
+
+    public Family(List<Parent> parents, List<Child> children, List<String> child_names) {
         this.parents = parents;
         this.children = children;
-        chores = new ArrayList<>();
-        rewards = new ArrayList<>();
+        this.child_names = child_names;
         familyPass = "";
     }
 
-    public Family(List<Parent> parents, List<Child> children, List<Chore> chores) {
+    public Family(List<Parent> parents, List<Child> children, List<String> child_names, String familyPass) {
         this.parents = parents;
         this.children = children;
-        this.chores = chores;
-        rewards = new ArrayList<>();
-        familyPass = "";
-    }
-
-    public Family(List<Parent> parents, List<Child> children, List<Chore> chores, List<Reward> rewards) {
-        this.parents = parents;
-        this.children = children;
-        this.chores = chores;
-        this.rewards = rewards;
-        familyPass = "";
-    }
-
-    public Family(List<Parent> parents, List<Child> children, List<Chore> chores, List<Reward> rewards, String familyPass) {
-        this.parents = parents;
-        this.children = children;
-        this.chores = chores;
-        this.rewards = rewards;
+        this.child_names = child_names;
         this.familyPass = familyPass;
     }
 
@@ -78,27 +64,19 @@ public class Family {
         this.parents = parents;
     }
 
-    public List<Chore> getChores() {
-        return chores;
-    }
-
-    public void setChores(List<Chore> chores) {
-        this.chores = chores;
-    }
-
-    public List<Reward> getRewards() {
-        return rewards;
-    }
-
-    public void setRewards(List<Reward> rewards) {
-        this.rewards = rewards;
-    }
-
     public String getFamilyPass() {
         return familyPass;
     }
 
     public void setFamilyPass(String familyPass) {
         this.familyPass = familyPass;
+    }
+
+    public List<String> getChildNames() {
+        return child_names;
+    }
+
+    public void setChildNames(List<String> child_names) {
+        this.child_names = child_names;
     }
 }
