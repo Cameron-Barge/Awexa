@@ -66,6 +66,13 @@ public class FirebaseServices {
             }
         }
 		}
+
+		public static void createNode(String path, String key, Object obj) {
+			if (path != "" && obj != null) {
+				DatabaseReference nodeRef = database.getReference(path);
+				nodeRef.child(key).setValue(obj);
+			}
+		}
 		
 		/**
 		 * adds object into database
@@ -89,10 +96,10 @@ public class FirebaseServices {
 		 * @param family Family data
 		 */
 		public static void update(Family family) {
-			DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
+			DatabaseReference familyRef = database.getReference("/families/" + family.getUsername() + "/");
 			Map<String, Object> familyUpdate = new HashMap<>();
 			Map<String, Object> familyMap = family.toMap();
-			familyUpdate.put("/families/" + family.getID(), familyMap);
+			familyUpdate.put("/families/" + family.getUsername(), familyMap);
 			familyRef.updateChildren(familyMap);
 		}
 
