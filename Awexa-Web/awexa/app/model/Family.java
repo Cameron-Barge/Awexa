@@ -19,9 +19,9 @@ public class Family {
 
     }
 
-    public Family(String famName, ArrayList<Child> children, ArrayList<Chore> chores, String fpass, ArrayList<Parent> parent, ArrayList<Reward> rewards) {
+    public Family(String famName, ArrayList<Child> children, ArrayList<Chore> chores, String fpass, ArrayList<Parent> parents, ArrayList<Reward> rewards) {
         this.children = children;
-				this.chores = chores1;
+				this.chores = chores;
         this.parents = parents;
         this.rewards = rewards;
         familyPass = fpass;
@@ -49,19 +49,19 @@ public class Family {
 }
 
 public void addChild(Child child) {
-		children.append(child);
+		children.add(child);
 }
 
 public void addChore(Chore chore) {
-	chores.append(chore);
+	chores.add(chore);
 }
 
 public void addReward(Reward reward) {
-	rewards.append(reward);
+	rewards.add(reward);
 }
 
 public void addParent(Parent parent) {
-	parents.append(parent);
+	parents.add(parent);
 }
 
 

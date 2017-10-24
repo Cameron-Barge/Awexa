@@ -95,7 +95,8 @@ public class LoginController {
         if(!data.get("pass").equals(data.get("pass2")))
             return ok(views.html.register.render("Register","Passwords do not match"));
 
-        Global.familyName = data.get("user");
+				Global.familyName = data.get("user");
+				// TODO: check user registration with firebase userbase
         FirebaseServices.updateSnapshot();
 
         if(Global.curRef.getValue() != null) {
