@@ -5,7 +5,8 @@ public class Chore {
     private String id;
     public String desc;
     public String name;
-    public String rewardId;
+		public String rewardId;
+		public int points;
 
     public Chore(String i, String d, String n, String r) {
         id = i;

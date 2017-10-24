@@ -2,7 +2,7 @@ package model;
 
 public class Reward {
 
-    public String id;
+    private String id;
     public String description;
 		public String name;
 		public int points;
@@ -15,6 +15,14 @@ public class Reward {
 
     public String toString(){
         return name;
-    }
+		}
+		
+		public String getID() {
+			return id;
+		}
+
+		public void setID(String id) {
+			this.id = id;
+		}
 }
 

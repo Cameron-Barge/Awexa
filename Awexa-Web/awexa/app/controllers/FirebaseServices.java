@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 import model.Global;
+import model.Family;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,10 +65,31 @@ public class FirebaseServices {
         }
 		}
 		
-		public static void addNode(String path, Object key) {
-			DatabaseReference nodeRef = database.getReference(path);
-			DatabaseReference newNode = nodeRef.push();
-			newNode.setValue(key);
+		/**
+		 * adds object into database
+		 * @param path database reference path
+		 * @param obj obj data to be added
+		 * @return String uniquely generated key
+		 */
+		public static String pushNode(String path, Object obj) {
+			if (path != "" && obj != null) {
+				DatabaseReference nodeRef = database.getReference(path);
+				DatabaseReference newNode = nodeRef.push();
+				newNode.setValue(obj);
+				return newNode.getKey();
+			} else {
+				return "null";
+			}
+		}
+
+		public static void update(Family family) {
+			DatabaseReference familyRef = database.getReference("/families/" + Global.family.getID() + "/");
+
+		}
+
+		public static void setExists(String path, boolean exists) {
+			DatabaseReference reference = database.getReference(path);
+			reference.setValue(exists);
 		}
 
 

@@ -24,4 +24,5 @@ public class Global {
         Global.auth = false;
         Global.curRef = null;
 		}
+		
 }

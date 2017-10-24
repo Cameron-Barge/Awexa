@@ -134,8 +134,10 @@ public class LoginController {
 			if(!data.get("pass").equals(data.get("pass2"))) {
 				return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
 			} else {
-				Global.family = new Family(data.get("user"), data.get("pass"));
-				FirebaseServices.addNode("/families", Global.family);
+				Family family = new Family(data.get("user"), data.get("pass"));
+				String familyKey = FirebaseServices.pushNode("/families", family);
+				family.setID(familyKey);
+				Global.family = family;
 				return ok(views.html.newparent.render("Let's get your account set up!"));
 			}
 		}
