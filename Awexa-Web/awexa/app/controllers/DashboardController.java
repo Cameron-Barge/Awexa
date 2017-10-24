@@ -89,8 +89,8 @@ public class DashboardController {
 		public Result saveNewData() {
 			Form<Child> newDataForm = formFactory.form(Child.class).bindFromRequest();
 			Map<String, String> data = newDataForm.rawData();
-			Child child = new Child(data.get("childName"), Global.family.getID());
-			Parent parent = new Parent(data.get("parentName"), Global.family.familyPass, Global.family.getID());
+			Child child = new Child(data.get("childName"), Global.family.getUsername());
+			Parent parent = new Parent(data.get("parentFirstName"), data.get("parentLastName"), Global.family.getUsername());
 			String childKey = FirebaseServices.pushNode("children/", child);
 			child.setID(childKey);
 			String parentKey = FirebaseServices.pushNode("parents/", parent);
@@ -98,6 +98,6 @@ public class DashboardController {
 			Global.family.addChild(child);
 			Global.family.addParent(parent);
 			FirebaseServices.update(Global.family);
-			return ok(views.html.postlogin.render(data.get("parentName")));
+			return ok(views.html.postlogin.render(parent.getName()));
 		}
 }

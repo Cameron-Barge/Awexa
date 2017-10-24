@@ -41,7 +41,7 @@ public class HomeController extends Controller {
 		public Result getHome() {
 			System.out.println(Global.auth);
 			if (session("connected") != null) {
-				return ok(views.html.postlogin.render(Global.familyName));
+				return ok(views.html.postlogin.render(Global.username));
 			} else {
 				return ok(views.html.index.render("Welcome to Awexa", false));
 			}
