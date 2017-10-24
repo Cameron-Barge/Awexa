@@ -87,11 +87,11 @@ public class DashboardController {
 		}
 		
 		public Result saveNewData() {
-			Form<Registration> newDataForm = formFactory.form(Registration.class).bindFromRequest();
+			Form<Child> newDataForm = formFactory.form(Child.class).bindFromRequest();
 			Map<String, String> data = newDataForm.rawData();
-			
-			Global.familyName = data.get("user");
-			FirebaseServices.updateSnapshot("families/" + Global.familyName);
-			return ok(views.html.postlogin.render(Global.familyName));
+			Child child = new Child(data.get("childName"));
+			Global.family.addChild(child);
+			FirebaseServices.updateSnapshot("families/Global.familyName/child_names/" + data.get("childName"));
+			return ok(views.html.postlogin.render(data.get("childName")));
 		}
 }

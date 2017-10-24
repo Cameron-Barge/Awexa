@@ -48,13 +48,6 @@
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav navbar-right">
                                             <li><a href="#">about us</a></li>
-                                            <li class="dropdown"><a href="@routes.DashboardController.parentView()" class="dropdown-toggle" data-toggle="dropdown"
-                                                    role="button" aria-haspopup="true">dashboard</a>
-                                                <ul class="dropdown-menu">
-                                                <li><a href="#">Chores</a></li>
-                                                <li><a href="#">Rewards</a></li>
-                                                </ul>
-                                            </li>
                                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                                     role="button" aria-haspopup="true">Awexa</a>
                                                 <ul class="dropdown-menu">
@@ -69,7 +62,8 @@
                                                     <li><a href="#">GitHub</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="@routes.LoginController.logout()">logout</a></li>
+																						<li><a href="@routes.DashboardController.postLogin()">dashboard</a></li>
+																						<li><a href="@routes.LoginController.logout()">logout</a></li>
                                         </ul>
                                     </div>
 
