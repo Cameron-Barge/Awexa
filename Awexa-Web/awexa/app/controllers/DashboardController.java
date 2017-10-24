@@ -19,7 +19,7 @@ import static play.mvc.Results.ok;
 
 
 public class DashboardController {
-
+	@Inject FormFactory formFactory;
 
     public Result postLogin() {
         return ok(views.html.postlogin.render(Global.familyName));
@@ -51,5 +51,24 @@ public class DashboardController {
 
     public Result addReward() {
         return ok(views.html.addreward.render());
-    }
+		}
+		
+		public Result saveNewData() {
+			Form<Registration> newDataForm = formFactory.form(Registration.class).bindFromRequest();
+			Map<String, String> data = newDataForm.rawData();
+			
+			if(!data.get("pass").equals(data.get("pass2")))
+				return ok(views.html.register.render("Register","Passwords do not match"));
+			
+				Global.familyName = data.get("user");
+				FirebaseServices.updateSnapshot();
+			
+				if(Global.curRef.getValue() != null) {
+					Global.familyName = "";
+					return ok(views.html.register.render("Register","Family Name already exists"));
+				}
+			
+			Global.auth = true;
+			return ok(views.html.newparent.render("Let's get your account set up!"));
+		}
 }

@@ -4,7 +4,7 @@
 
 # An example controller showing a sample home page
 GET     /                            controllers.HomeController.index
-GET			/postLogin											 controllers.HomeController.getHome
+GET			/postLogin									 controllers.HomeController.getHome
 
 POST    /login                       controllers.LoginController.login
 GET     /login                       controllers.LoginController.getLogin
@@ -21,6 +21,7 @@ GET     /child                       controllers.DashboardController.childView
 GET     /newparent                   controllers.DashboardController.addParent
 
 GET     /parent                      controllers.DashboardController.parentView
+POST		/parent											 controllers.DashboardController.saveNewData
 
 GET     /parentauth                  controllers.DashboardController.parentRequest
 POST    /parentauth                  controllers.DashboardController.parentAuth
