@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FirebaseServices {
-
     public static FirebaseOptions fbOptions;
     public static boolean firebaseLoaded = initFirebase();
 
@@ -20,12 +19,15 @@ public class FirebaseServices {
 
 
     private static boolean initFirebase(){
+			
+
         System.out.println("Apps: " +  FirebaseApp.getApps().size());
 
         if(FirebaseApp.getApps().isEmpty()){
             System.out.println("Initialize Firebase");
             try{
-                fbOptions= new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(new FileInputStream("conf/service-account.json"))).setDatabaseUrl("https://awexa-4bad0.firebaseio.com").build();
+							FileInputStream serviceAccount = new FileInputStream("conf/service-account.json");
+								fbOptions = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setDatabaseUrl("https://awexa-4bad0.firebaseio.com").build();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -59,9 +61,14 @@ public class FirebaseServices {
                 System.out.print(".");
                 count = 0;
             }
-
         }
-    }
+		}
+		
+		public static void addNode(String path, Object key) {
+			DatabaseReference nodeRef = database.getReference(path);
+			DatabaseReference newNode = nodeRef.push();
+			newNode.setValue(key);
+		}
 
 
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();

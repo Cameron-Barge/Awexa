@@ -11,4 +11,4 @@ scalaVersion := "2.12.2"
 
 libraryDependencies += guice
 libraryDependencies += "com.google.firebase" % "firebase-admin" % "5.4.0"
-
+libraryDependencies += "com.google.gms" % "google-services" % "3.1.0"

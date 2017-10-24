@@ -12,21 +12,31 @@ public class Family {
 		public ArrayList<Chore> chores;
 		public ArrayList<Parent> parents;
 		public ArrayList<Reward> rewards;
-    private String familyPass;
-    public String familyName;
+    public String familyPass;
+		public String familyName;
+		private String id;
 
     public Family(){
-
+			
     }
 
-    public Family(String famName, ArrayList<Child> children, ArrayList<Chore> chores, String fpass, ArrayList<Parent> parents, ArrayList<Reward> rewards) {
+    public Family(String familyName, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass, ArrayList<Parent> parents, ArrayList<Reward> rewards) {
         this.children = children;
 				this.chores = chores;
         this.parents = parents;
         this.rewards = rewards;
-        familyPass = fpass;
-        familyName = famName;
-    }
+				this.familyPass = familyPass;
+        this.familyName = familyName;
+		}
+		
+		public Family(String familyName, String familyPass) {
+			this.familyName = familyName;
+			this.familyPass = familyPass;
+			children = new ArrayList<Child>();
+			chores = new ArrayList<Chore>();
+			parents = new ArrayList<Parent>();
+			rewards = new ArrayList<Reward>();
+		}
 
     public void print(){
         System.out.println("Family: " + familyName);

@@ -3,13 +3,14 @@ package model;
 public class Reward {
 
     public String id;
-    public String desc;
-    public String name;
+    public String description;
+		public String name;
+		public int points;
 
-    public Reward(String i, String d, String n){
-        id = i;
-        desc = d;
-        name = n;
+    public Reward(String description, String name, int points){
+        this.points = points;
+        this.description = description;
+        this.name = name;
     }
 
     public String toString(){

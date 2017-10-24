@@ -98,7 +98,7 @@ public class LoginController {
         return redirect(routes.HomeController.index());
     }
 
-    public Result register() {
+    public Result register2() {
 
         Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
@@ -112,7 +112,9 @@ public class LoginController {
             return ok(views.html.register.render("Register","Passwords do not match", session("connected")!=null));
 
 
-        Global.familyName = data.get("user");
+				Global.familyName = data.get("user");
+				DatabaseReference familyRef = database.getReference("families");
+				familyRef.setValue(Global.familyName);
         FirebaseServices.updateSnapshot("families/" + Global.familyName);
 
 
@@ -123,6 +125,19 @@ public class LoginController {
 
 				Global.auth = true;
         return ok(views.html.newparent.render("Let's get your account set up!"));
-    }
+		}
+		
+		public Result register() {
+			Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
+			Map<String, String> data = loginForm.rawData();
+
+			if(!data.get("pass").equals(data.get("pass2"))) {
+				return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
+			} else {
+				Global.family = new Family(data.get("user"), data.get("pass"));
+				FirebaseServices.addNode("/families", Global.family);
+				return ok(views.html.newparent.render("Let's get your account set up!"));
+			}
+		}
 
 }

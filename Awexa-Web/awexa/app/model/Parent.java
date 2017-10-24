@@ -5,9 +5,9 @@ public class Parent {
 		public String firstName;
     private String pass;
 
-    public Parent(String i, String p){
-        id = i;
-        pass = p;
+    public Parent(String firstName, String pass){
+        this.pass = pass;
+        this.firstName = firstName;
     }
 
     public String toString(){
