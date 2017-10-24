@@ -136,7 +136,7 @@ public class LoginController {
 				return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
 			} else {
 				Family family = new Family(data.get("user"), data.get("pass"));
-				String familyKey = FirebaseServices.pushNode("/families", family);
+				String familyKey = FirebaseServices.pushNode("/families/" + data.get("user"), family);
 				family.setID(familyKey);
 				Global.family = family;
 				return ok(views.html.newparent.render("Let's get your account set up!"));

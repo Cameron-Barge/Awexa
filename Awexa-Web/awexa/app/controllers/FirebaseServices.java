@@ -76,9 +76,10 @@ public class FirebaseServices {
 		public static String pushNode(String path, Object obj) {
 			if (path != "" && obj != null) {
 				DatabaseReference nodeRef = database.getReference(path);
-				DatabaseReference newNode = nodeRef.push();
-				newNode.setValue(obj);
-				return newNode.getKey();
+				nodeRef.setValue(obj);
+				//DatabaseReference newNode = nodeRef.push();
+				//newNode.setValue(obj);
+				return nodeRef.getKey();
 			} else {
 				return "null";
 			}

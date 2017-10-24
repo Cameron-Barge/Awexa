@@ -90,7 +90,7 @@ public class Family {
 	}
 
 	public String toString() {
-		return name;
+		return familyName;
 	}
 
 	public Map<String, Object> toMap() {
