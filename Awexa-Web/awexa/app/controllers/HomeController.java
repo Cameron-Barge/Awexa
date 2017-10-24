@@ -30,15 +30,22 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
+			return ok(views.html.index.render("Welcome to Awexa")); 
+		}
+		
+		/**
+		 * Returns either pre log-in index page or post log-in dashboard depending on user state
+		 * @return Result resulting action
+		 */
+		public Result getHome() {
+			System.out.println(Global.auth);
+			if (Global.auth) {
+				return ok(views.html.postlogin.render(Global.familyName));
+			} else {
+				return ok(views.html.index.render("Welcome to Awexa"));
+			}
+		}
 
-
-        return ok(views.html.index.render("Welcome to Awexa"));
-    }
-
-
-
-
-
-
+		
 
 }

@@ -75,7 +75,7 @@ public class LoginController {
 
     public Result getRegistration() {
         return ok(views.html.register.render("Register",""));
-    }
+		}
 
     public Result logout() {
         Global.reset();
@@ -86,10 +86,11 @@ public class LoginController {
 
         Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
-
+				/*
         System.out.println(data.get("user"));
         System.out.println(data.get("pass"));
-        System.out.println(data.get("pass2"));
+				System.out.println(data.get("pass2"));
+				*/
 
         if(!data.get("pass").equals(data.get("pass2")))
             return ok(views.html.register.render("Register","Passwords do not match"));
@@ -102,7 +103,7 @@ public class LoginController {
             return ok(views.html.register.render("Register","Family Name already exists"));
         }
 
-
+				Global.auth = true;
         return ok(views.html.newparent.render("Let's get your account set up!"));
     }
 
