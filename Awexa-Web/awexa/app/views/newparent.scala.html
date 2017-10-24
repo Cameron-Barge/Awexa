@@ -1,12 +1,51 @@
 @(message : String)
+@import helper._
 @dashboard{
+ <!-- Service Section -->
+ <section id="service" class="service sections margin-top-120">
+	<div class="container">
+			<div class="row">
+					<div class="col-sm-12">
+							<div class="head_title text-center">
+									<h1>Account Setup</h1>
+							</div><!-- End of head title -->
 
-  <p> @message </p>
-  <p> New Parent </p>
-
-
-  <a class ="btn btn-default" href ="@routes.DashboardController.postLogin()"> Return </a><br>
-  <a class ="btn btn-default" href ="@routes.LoginController.logout()"> Logout </a><br>
-
-
+							<div class="main_service_area"> 
+									<div class="single_service_area">
+											<div class="row">
+													<div class="col-sm-6">
+															<div class="signle_service_left">
+																	<img src="assets/images/service4.jpg" alt="" />
+															</div>
+													</div>
+													<div class="col-sm-5 col-sm-push-1">
+															<div class="single_service">
+																	<h3>New User Settings</h3>
+																	<div class="separator2"></div>
+																	<p>@message</p>
+																	<!-- TODO: Plan form to take necessary user data before account is available for use -->
+																	<form class ="form-horizontal" role ="form" action ="@CSRF(routes.DashboardController.saveNewData())" method = "post">
+																		<div class ="form-group">
+																			<input type="text"  class="form-control" name="user" placeholder="Child's Name">
+																		</div>
+																		<div class="form-group">
+																			<input type="password"  class="form-control" name="pass" placeholder="Password">
+																		</div>
+																		<div class="form-group">
+																			<button type="submit" class="btn btn-primary">Save Data</button>
+																			<!--<button type="reset" class="btn btn-danger">Cancel</button>-->
+																			<a class ="btn btn-default" href="@routes.DashboardController.postLogin()">Skip</a>
+																		</div>
+																	</form>
+																	<a class ="btn btn-default" href ="@routes.LoginController.getRegistration()">Back</a>
+																	<a class ="btn btn-default" href ="@routes.LoginController.logout()">Logout </a>
+															</div>
+													</div>
+											</div>
+									</div><!-- End of single service area -->
+							</div>
+					</div><!-- End of col-sm-12 -->
+			</div><!-- End of row -->
+	</div><!-- End of Container -->
+</section><!-- End of Service Section -->
 }

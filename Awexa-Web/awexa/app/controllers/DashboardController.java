@@ -16,40 +16,82 @@ import java.util.Map;
 
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
+import static play.mvc.Results.redirect;
 
 
 public class DashboardController {
-
+	@Inject FormFactory formFactory;
 
     public Result postLogin() {
-        return ok(views.html.postlogin.render(Global.familyName));
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
+        return ok(views.html.postlogin.render(session("connected")));
     }
 
     public Result addParent() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.newparent.render(""));
     }
 
     public Result parentRequest() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.parentauth.render());
     }
 
     public Result parentView() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.parentview.render());
     }
 
     public Result childView() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.childview.render());
     }
 
     public Result parentAuth(){
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.parentview.render());
     }
 
     public Result addChore() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.addchore.render());
     }
 
     public Result addReward() {
+        if(session("connected") == null)
+            return redirect(routes.HomeController.index());
+
+
         return ok(views.html.addreward.render());
-    }
+		}
+		
+		public Result saveNewData() {
+			Form<Registration> newDataForm = formFactory.form(Registration.class).bindFromRequest();
+			Map<String, String> data = newDataForm.rawData();
+			
+			Global.familyName = data.get("user");
+			FirebaseServices.updateSnapshot("families/" + Global.familyName);
+			return ok(views.html.postlogin.render(Global.familyName));
+		}
 }

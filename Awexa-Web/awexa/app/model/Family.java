@@ -3,14 +3,15 @@ package model;
 import com.google.firebase.database.*;
 import controllers.FirebaseServices;
 import play.data.FormFactory;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 public class Family {
-    public Child[] children;
-    public Chore[] chores;
-    public Parent[] parents;
-    public Reward[] rewards;
+		public ArrayList<Child> children;
+		public ArrayList<Chore> chores;
+		public ArrayList<Parent> parents;
+		public ArrayList<Reward> rewards;
     private String familyPass;
     public String familyName;
 
@@ -18,11 +19,11 @@ public class Family {
 
     }
 
-    public Family(String famName, Child[] children1, Chore[] chores1, String fpass, Parent[] parents1, Reward[] rewards1) {
-        children = children1;
-        chores = chores1;
-        parents = parents1;
-        rewards = rewards1;
+    public Family(String famName, ArrayList<Child> children, ArrayList<Chore> chores, String fpass, ArrayList<Parent> parents, ArrayList<Reward> rewards) {
+        this.children = children;
+				this.chores = chores;
+        this.parents = parents;
+        this.rewards = rewards;
         familyPass = fpass;
         familyName = famName;
     }
@@ -47,7 +48,21 @@ public class Family {
     }
 }
 
+public void addChild(Child child) {
+		children.add(child);
+}
 
+public void addChore(Chore chore) {
+	chores.add(chore);
+}
+
+public void addReward(Reward reward) {
+	rewards.add(reward);
+}
+
+public void addParent(Parent parent) {
+	parents.add(parent);
+}
 
 
 }
