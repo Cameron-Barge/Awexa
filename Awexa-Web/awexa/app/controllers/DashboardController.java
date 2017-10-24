@@ -92,14 +92,12 @@ public class DashboardController {
 			Child child = new Child(data.get("childName"), Global.family.getID());
 			Parent parent = new Parent(data.get("parentName"), Global.family.familyPass, Global.family.getID());
 			String childKey = FirebaseServices.pushNode("children/", child);
+			child.setID(childKey);
 			String parentKey = FirebaseServices.pushNode("parents/", parent);
-			/*
-			String childKey = FirebaseServices.addNode("families/" + Global.family.getID() + "/children/", child);
-			String parentKey = FirebaseServices.addNode("families/" + Global.family.getID() + "/parents/", parent);
-			*/
+			parent.setID(parentKey);
 			Global.family.addChild(child);
 			Global.family.addParent(parent);
 			FirebaseServices.update(Global.family);
-			return ok(views.html.postlogin.render(data.get("childName")));
+			return ok(views.html.postlogin.render(data.get("parentName")));
 		}
 }

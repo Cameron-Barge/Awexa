@@ -1,4 +1,6 @@
 package model;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.google.firebase.database.*;
 import controllers.FirebaseServices;
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 
 public class Family {
 		public ArrayList<Child> children;
+		private ArrayList<String> childrenIDs;
 		public ArrayList<Chore> chores;
 		public ArrayList<Parent> parents;
 		public ArrayList<Reward> rewards;
@@ -36,6 +39,7 @@ public class Family {
 			chores = new ArrayList<Chore>();
 			parents = new ArrayList<Parent>();
 			rewards = new ArrayList<Reward>();
+			childrenIDs = new ArrayList<String>();
 		}
 
     public void print(){
@@ -56,31 +60,47 @@ public class Family {
         for(Reward r : rewards) {
         System.out.println(r);
     }
-}
+	}
 
-public void addChild(Child child) {
-		children.add(child);
-}
+	public void addChild(Child child) {
+			children.add(child);
+			if (child.getID() != null) {
+				childrenIDs.add(child.getID());
+			}
+	}
 
-public void addChore(Chore chore) {
-	chores.add(chore);
-}
+	public void addChore(Chore chore) {
+		chores.add(chore);
+	}
 
-public void addReward(Reward reward) {
-	rewards.add(reward);
-}
+	public void addReward(Reward reward) {
+		rewards.add(reward);
+	}
 
-public void addParent(Parent parent) {
-	parents.add(parent);
-}
+	public void addParent(Parent parent) {
+		parents.add(parent);
+	}
 
-public String getID() {
-	return id;
-}
+	public String getID() {
+		return id;
+	}
 
-public void setID(String id) {
-	this.id = id;
-}
+	public void setID(String id) {
+		this.id = id;
+	}
 
+	public String toString() {
+		return name;
+	}
+
+	public Map<String, Object> toMap() {
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("familyName", familyName);
+		resultMap.put("children", childrenIDs);
+		resultMap.put("parents", parents);
+		resultMap.put("child_names", children);
+		resultMap.put("familyPass", familyPass);
+		return resultMap;
+	}
 
 }

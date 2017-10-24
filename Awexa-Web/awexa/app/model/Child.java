@@ -1,5 +1,7 @@
 package model;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Child {
     public String name;
@@ -31,6 +33,19 @@ public class Child {
 		
 		public String getID() {
 			return id;
+		}
+
+		public void setID(String id) {
+			this.id = id;
+		}
+
+		public Map<String, Object> toMap() {
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("name", name);
+			resultMap.put("points", points);
+			resultMap.put("familyId", familyId);
+			resultMap.put("rewards", rewards);
+			return resultMap;
 		}
 
 }

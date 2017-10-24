@@ -13,6 +13,7 @@ import play.mvc.*;
 import javax.inject.*;
 import java.io.FileInputStream;
 import java.util.Map;
+import java.util.HashMap;
 
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
@@ -89,7 +90,7 @@ public class LoginController {
         if(session("connected") != null)
             return redirect(routes.DashboardController.postLogin());
 
-        return ok(views.html.register.render("Register","", session("connected")!=null));
+        return ok(views.html.register.render("Register","", session("connected") != null));
     }
 
     public Result logout() {
@@ -109,7 +110,7 @@ public class LoginController {
 				*/
 
         if(!data.get("pass").equals(data.get("pass2")))
-            return ok(views.html.register.render("Register","Passwords do not match", session("connected")!=null));
+            return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
 
 
 				Global.familyName = data.get("user");

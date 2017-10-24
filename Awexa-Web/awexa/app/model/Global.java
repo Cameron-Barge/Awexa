@@ -17,6 +17,7 @@ public class Global {
 
 
     public static void reset(){
+				Global.family = null;
         Global.waiting = true;
         Global.familyName = "";
         Global.loginPass = "";

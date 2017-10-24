@@ -6,6 +6,8 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 import model.Global;
 import model.Family;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -82,9 +84,16 @@ public class FirebaseServices {
 			}
 		}
 
+		/**
+		 * updates family node to firebase
+		 * @param family Family data
+		 */
 		public static void update(Family family) {
-			DatabaseReference familyRef = database.getReference("/families/" + Global.family.getID() + "/");
-
+			DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
+			Map<String, Object> familyUpdate = new HashMap<>();
+			Map<String, Object> familyMap = family.toMap();
+			familyUpdate.put("/families/" + family.getID(), familyMap);
+			familyRef.updateChildren(familyMap);
 		}
 
 		public static void setExists(String path, boolean exists) {
