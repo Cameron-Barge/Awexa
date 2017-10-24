@@ -34,9 +34,9 @@ public class FirebaseServices {
         return true;
     }
 
-    public static void updateSnapshot() {
+    public static void updateSnapshot(String path) {
 
-        String path = "families/" + Global.familyName;
+        //String path = "families/" + Global.familyName;
         DatabaseReference ref = database.getReference(path);
         ref.addValueEventListener(new ValueEventListener() {
             @Override

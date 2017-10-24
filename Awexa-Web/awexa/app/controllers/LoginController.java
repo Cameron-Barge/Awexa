@@ -38,7 +38,7 @@ public class LoginController {
         Global.loginPass = data.get("pass");
 
         System.out.println("1");
-        FirebaseServices.updateSnapshot();
+        FirebaseServices.updateSnapshot("families/" + Global.familyName);
         System.out.println("2");
 
         if(Global.curRef.getValue() != null) {
@@ -98,7 +98,7 @@ public class LoginController {
             return ok(views.html.register.render("Register","Passwords do not match"));
 
         Global.familyName = data.get("user");
-        FirebaseServices.updateSnapshot();
+        FirebaseServices.updateSnapshot("families/" + Global.familyName);
 
         if(Global.curRef.getValue() != null) {
             Global.familyName = "";
