@@ -48,7 +48,6 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), familyMemberType + " " + familyMemberName + " was added...",
                     Toast.LENGTH_SHORT).show();
         } else if (radioFamilyMemberButton.getText().toString().equals("Parent")) {
-            //TODO: implementation for adding parent to db
             Parent parent = new Parent(familyMemberName);
             DatabaseReference parentRef = db.child("parents");
             String parentID = parentRef.push().getKey();
