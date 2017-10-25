@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A login screen that offers login via email/password.
@@ -33,6 +35,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button btnSignIn, btnSignOut;
 
+    private Family family;
+    private FirebaseUser user;
+    private Boolean newUser = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +54,15 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    if (newUser) {
+                        family = new Family();
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                        db.child("families").child(user.getUid()).setValue(family);
+                        newUser = false;
+                    }
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     toastMessage("Successfully signed in with: " + user.getEmail());
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -75,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
+                                    newUser = false;
                                     Log.d(TAG, "signInWithEmail:success");
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -84,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                                     } catch (FirebaseAuthInvalidUserException e) {
                                         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString());
                                         toastMessage("User created successfully...");
+                                        newUser = true;
+
                                     } catch (Exception e) {
                                         Log.e(TAG, e.getMessage());
                                     }
