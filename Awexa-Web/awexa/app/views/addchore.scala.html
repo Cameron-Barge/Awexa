@@ -26,28 +26,31 @@
 																					<input type="text"  name="name" placeholder="Chore Name" required>
 																				</div>
 																				<div class="form-group">
-																						<h6>Points:</h6><input type="number" name="points" min="1" max="100" placeholder="0" required>
+																						<h6>Points:<input type="number" name="points" min="1" max="100" placeholder="0" required></h6>
 																				</div>
 																				<div class="form-group">
 																						<input type="text" name="description" placeholder="Please type a brief description.">
 																				</div>
 																				<div class="form-group">
-																						<input type="time" name="starttime" value="Start Time">
-																						<input type="time" name="endtime" value="End Time">
-																						<input type="checkbox" name="weekly" value="SUN">
-																						<input type="checkbox" name="weekly" value="MON">
-																						<input type="checkbox" name="weekly" value="TUE">
-																						<input type="checkbox" name="weekly" value="WED">
-																						<input type="checkbox" name="weekly" value="THU">
-																						<input type="checkbox" name="weekly" value="FRI">
-																						<input type="checkbox" name="weekly" value="SAT">
+																						<h6>Start Time: <input type="time" name="starttime" value="Start Time"></h6>
+																						<h6>End Time: <input type="time" name="endtime" value="End Time"></h6>
+																						<h6>Weekly Repeat: </h6>
+																						<h6>
+																							<input type="checkbox" name="weekly" value="SUN">SUN
+																							<input type="checkbox" name="weekly" value="MON">MON
+																							<input type="checkbox" name="weekly" value="TUE">TUE
+																							<input type="checkbox" name="weekly" value="WED">WED
+																							<input type="checkbox" name="weekly" value="THU">THU
+																							<input type="checkbox" name="weekly" value="FRI">FRI
+																							<input type="checkbox" name="weekly" value="SAT">SAT
+																						</h6>
 																				</div>
 																				<div class="form-group">
 																					<button type="submit" class="btn btn-primary">Submit</button>
 																					<input type="reset" class="btn btn-default">
 																		</div>
 																			</form>
-																		<a class ="btn btn-default" href ="@routes.DashboardController.parentView()"> Return </a><br>
+																		<a class ="btn btn-default" href ="@routes.DashboardController.parentView()"> Return </a>
 																		<a class ="btn btn-default" href ="@routes.LoginController.logout()"> Logout </a><br>
 																</div>
 														</div>
