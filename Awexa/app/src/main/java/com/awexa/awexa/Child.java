@@ -1,72 +1,22 @@
 package com.awexa.awexa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kath on 10/16/2017.
  */
 
-public class Child extends Family {
+public class Child {
     private String name;
-    private List<String> chores; // These are chore IDs
-    private List<String> rewards; // These are reward IDs
+    private Map<String, Boolean> chores; // These are chore IDs
+    private Map<String, Integer> rewards; // These are reward IDs
     private int points;
     private String familyId;
 
-    public Child() {
-        name = "";
-        chores = new ArrayList<>();
-        rewards = new ArrayList<>();
-        points = 0;
-        familyId = "";
-    }
+    public Child() { }
 
-    public Child(String name) {
+    public Child(String name, String familyId) {
         this.name = name;
-        chores = new ArrayList<>();
-        rewards = new ArrayList<>();
-        points = 0;
-        familyId = "";
-    }
-
-    public Child(String name, List<String> chores) {
-        this.name = name;
-        this.chores = chores;
-        rewards = new ArrayList<>();
-        points = 0;
-        familyId = "";
-    }
-
-    public Child(String name, List<String> chores, List<String> rewards) {
-        this.name = name;
-        this.chores = chores;
-        this.rewards = rewards;
-        points = 0;
-        familyId = "";
-    }
-
-    public Child(String name, List<String> chores, List<String> rewards, int points) {
-        this.name = name;
-        this.chores = chores;
-        this.rewards = rewards;
-        this.points = points;
-        familyId = "";
-    }
-
-    public Child(String name, List<String> chores, List<String> rewards, String familyId) {
-        this.name = name;
-        this.chores = chores;
-        this.rewards = rewards;
-        points = 0;
-        this.familyId = familyId;
-    }
-
-    public Child(String name, List<String> chores, List<String> rewards, int points, String familyId) {
-        this.name = name;
-        this.chores = chores;
-        this.rewards = rewards;
-        this.points = points;
         this.familyId = familyId;
     }
 
@@ -78,16 +28,20 @@ public class Child extends Family {
         this.name = name;
     }
 
-    public List<String> getRewardIds() { return rewards; }
-
-    public void setRewardIds(List<String> rewards) {
-        this.rewards = rewards;
+    public Map<String, Boolean> getChores() {
+        return chores;
     }
 
-    public List<String> getChoreIds() { return chores; }
-
-    public void setChoreIds(List<String> chores) {
+    public void setChores(Map<String, Boolean> chores) {
         this.chores = chores;
+    }
+
+    public Map<String, Integer> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(Map<String, Integer> rewards) {
+        this.rewards = rewards;
     }
 
     public int getPoints() {
