@@ -1,66 +1,42 @@
 package com.awexa.awexa;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Map;
 
 /**
  * Created by Kath on 10/16/2017.
  */
 
 public class Family {
-    private List<Child> children;
-    private List<Parent> parents;
+    private Map<String, Boolean> children;
+    private Map<String, Boolean> parents;
     private String familyPass;
-    private List<String> child_names;
+    private Map<String, String> child_names;
 
     public Family() {
-        children = new ArrayList<>();
-        parents = new ArrayList<>();
-        child_names = new ArrayList<>();
-        familyPass = "";
+        this.familyPass = "";
     }
 
-    public Family(List<Parent> parents) {
-        this.parents = parents;
-        children = new ArrayList<>();
-        child_names = new ArrayList<>();
-        familyPass = "";
-    }
-
-    public Family(List<Parent> parents, String familyPass) {
-        this.parents = parents;
-        children = new ArrayList<>();
-        child_names = new ArrayList<>();
-        this.familyPass = familyPass;
-    }
-
-    public Family(List<Parent> parents, List<Child> children, List<String> child_names) {
-        this.parents = parents;
+    public Family(Map<String, Boolean> children, Map<String, Boolean> parents, String familyPass, Map<String, String> child_names) {
         this.children = children;
-        this.child_names = child_names;
-        familyPass = "";
-    }
-
-    public Family(List<Parent> parents, List<Child> children, List<String> child_names, String familyPass) {
         this.parents = parents;
-        this.children = children;
-        this.child_names = child_names;
         this.familyPass = familyPass;
+        this.child_names = child_names;
     }
 
-    public List<Child> getChildren() {
+    public Map<String, Boolean> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Child> children) {
+    public void setChildren(Map<String, Boolean> children) {
         this.children = children;
     }
 
-    public List<Parent> getParents() {
+    public Map<String, Boolean> getParents() {
         return parents;
     }
 
-    public void setParents(List<Parent> parents) {
+    public void setParents(Map<String, Boolean> parents) {
         this.parents = parents;
     }
 
@@ -72,9 +48,11 @@ public class Family {
         this.familyPass = familyPass;
     }
 
-    public List<String> getChildNames() {
+    public Map<String, String> getChild_names() {
         return child_names;
     }
 
-    public void setChildNames(List<String> child_names) { this.child_names = child_names; }
+    public void setChild_names(Map<String, String> child_names) {
+        this.child_names = child_names;
+    }
 }
