@@ -34,8 +34,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    String currentFamily = "family1";
-    DatabaseReference ref = db.child("families/" + currentFamily);
+    String currentFamily = "";
+    DatabaseReference ref;
     public List<String> family = new ArrayList<>();
     public List<String> parents = new ArrayList<>();
     public String familyPass = "";
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentFamily = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref = db.child("families/" + currentFamily);
         adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, family);
 
