@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AddChildActivity.class));
+                startActivity(new Intent(MainActivity.this, AddFamilyMemberActivity.class));
             }
         });
     }
