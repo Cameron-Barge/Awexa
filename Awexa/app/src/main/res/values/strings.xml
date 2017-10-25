@@ -16,7 +16,7 @@
     </string>
     <string name="title_activity_main">Family</string>
     <string name="title_activity_add_chore">New Chore</string>
-    <string name="title_activity_add_child">Add Child</string>
+    <string name="title_activity_add_child">Add Family Member</string>
     <string name="title_activity_add_reward">New Reward</string>
     <string name="title_activity_child_progress">Child\'s Progress</string>
     <string name="large_text">
