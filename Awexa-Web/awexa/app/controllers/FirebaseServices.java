@@ -42,6 +42,7 @@ public class FirebaseServices {
     public static void updateSnapshot(String path) {
 
         //String path = "families/" + Global.familyName;
+		Global.waiting = true;
         DatabaseReference ref = database.getReference(path);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,9 +84,8 @@ public class FirebaseServices {
 		public static String pushNode(String path, Object obj) {
 			if (path != "" && obj != null) {
 				DatabaseReference nodeRef = database.getReference(path);
-				nodeRef.setValue(obj);
-				//DatabaseReference newNode = nodeRef.push();
-				//newNode.setValue(obj);
+				DatabaseReference newNode = nodeRef.push();
+				newNode.setValue(obj);
 				return nodeRef.getKey();
 			} else {
 				return "null";

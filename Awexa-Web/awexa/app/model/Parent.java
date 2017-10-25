@@ -5,9 +5,9 @@ import java.util.HashMap;
 public class Parent {
 		public String familyId;
 		private String id;
-		public String firstName;
-		public String lastName;
-		private String pass;
+		private String firstName;
+		private String lastName;
+		public String pass;
 		
 		public Parent() {
 

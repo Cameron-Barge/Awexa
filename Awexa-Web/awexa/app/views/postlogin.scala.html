@@ -1,4 +1,4 @@
-@(familyName: String)(parents : List[String])
+@(familyName: String)(parents : List[String])(kids : List[String])
 @dashboard{
  <!-- Service Section -->
  <section id="service" class="service sections margin-top-120">
@@ -23,15 +23,21 @@
 
 																	@if(parents != null) {
 																		@for(parent <- parents) {
-																			<p> @parent </p>
+																			<a class ="btn btn-default" href ="@routes.DashboardController.parentRequest()">@parent</a>
+																		}
+																	}
+																	@if(kids != null) {
+																		@for(kid <- kids) {
+																			<a class ="btn btn-default" href ="@routes.DashboardController.childView()">@kid</a><br />
 																		}
 																	}
 
+
 																	<!-- TODO: Populate dashboard with necessary options and layout design. -->
-																	<a class ="btn btn-default" href ="@routes.DashboardController.parentRequest()">Parent View</a>
-																	<a class ="btn btn-default" href ="@routes.DashboardController.childView()">Child View</a><br />
+
+
 																	<a class ="btn btn-default" href ="@routes.LoginController.logout()">Logout</a>
-																	<a class ="btn btn-default" href ="@routes.DashboardController.addParent()">No parents</a><br />
+																	<a class ="btn btn-default" href ="@routes.DashboardController.addParent()">New parent</a><br />
 															</div>
 													</div>
 											</div>
