@@ -4,7 +4,11 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import model.*;
+import model.Query;
+import play.api.libs.json.Json;
+import play.api.libs.json.Writes;
 import play.data.Form;
 import play.data.FormFactory;
 
@@ -12,11 +16,12 @@ import play.data.FormFactory;
 import play.mvc.*;
 import javax.inject.*;
 import java.io.FileInputStream;
-import java.util.Map;
+import java.util.*;
 
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
 import static play.mvc.Results.redirect;
+
 
 
 public class DashboardController {
@@ -26,8 +31,8 @@ public class DashboardController {
         if(session("connected") == null)
             return redirect(routes.HomeController.index());
 
-
-        return ok(views.html.postlogin.render(session("connected")));
+        System.out.println("test");
+        return ok(views.html.postlogin.render(session("connected"), getParents()));
     }
 
     public Result addParent() {
@@ -66,7 +71,7 @@ public class DashboardController {
         if(session("connected") == null)
             return redirect(routes.HomeController.index());
 
-
+        getParents();
         return ok(views.html.parentview.render());
     }
 
@@ -84,7 +89,7 @@ public class DashboardController {
 
 
         return ok(views.html.addreward.render());
-		}
+    }
 		
 		public Result saveNewData() {
 			Form<Child> newDataForm = formFactory.form(Child.class).bindFromRequest();
@@ -98,6 +103,26 @@ public class DashboardController {
 			Global.family.addChild(child);
 			Global.family.addParent(parent);
 			FirebaseServices.update(Global.family);
-			return ok(views.html.postlogin.render(parent.getName()));
+			return ok(views.html.postlogin.render(parent.getName(),null));
 		}
+
+    public List<String> getParents() {
+        FirebaseServices.updateSnapshot("families/" + session("connected"));
+        List<String> parentNames = new ArrayList<String>();
+        HashMap<String, Boolean> fam = (HashMap<String, Boolean>) Global.curRef.child("parents").getValue();
+        Set<String> parents = fam.keySet();
+        System.out.println(Global.curRef);
+        System.out.println(parents);
+        FirebaseServices.updateSnapshot("parents/");
+
+        for(String p : parents) {
+            System.out.println(p);
+            System.out.println(Global.curRef);
+            parentNames.add((String) Global.curRef.child(p).child("name").getValue());
+        }
+
+        System.out.println(parentNames);
+
+        return parentNames;
+    }
 }

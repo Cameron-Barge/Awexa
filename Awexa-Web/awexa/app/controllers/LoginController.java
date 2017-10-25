@@ -138,6 +138,7 @@ public class LoginController {
 				Family family = new Family(data.get("user"), data.get("pass"));
 				FirebaseServices.createNode("/families", data.get("user"), family);
 				Global.family = family;
+				session("connected", data.get("user"));
 				return ok(views.html.newparent.render("Let's get your account set up!"));
 			}
 		}
