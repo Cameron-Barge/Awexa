@@ -39,9 +39,8 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
         if (radioFamilyMemberButton.getText().toString().equals("Child")) {
             Child child = new Child(familyMemberName, currentFamily);
             DatabaseReference childRef = db.child("children");
-            childRef.push().setValue(child);
-            DatabaseReference keyRef = childRef.push();
-            String childID = keyRef.getKey();
+            String childID = childRef.push().getKey();
+            childRef.child(childID).setValue(child);
             DatabaseReference childNamesRef = db.child("families/" + currentFamily + "/child_names/" + familyMemberName);
             childNamesRef.setValue(childID);
             DatabaseReference childrenRef = db.child("families/" + currentFamily + "/children/" + childID);
@@ -50,6 +49,12 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         } else if (radioFamilyMemberButton.getText().toString().equals("Parent")) {
             //TODO: implementation for adding parent to db
+            Parent parent = new Parent(familyMemberName);
+            DatabaseReference parentRef = db.child("parents");
+            String parentID = parentRef.push().getKey();
+            parentRef.child(parentID).setValue(parent);
+            DatabaseReference parentsRef = db.child("families/" + currentFamily + "/parents/" + parentID);
+            parentsRef.setValue(true);
             Toast.makeText(getApplicationContext(), familyMemberType + " " + familyMemberName + " was added...",
                     Toast.LENGTH_SHORT).show();
         } else {
