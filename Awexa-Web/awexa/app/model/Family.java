@@ -16,7 +16,7 @@ public class Family {
 		public ArrayList<String> parents;
 		public ArrayList<Reward> rewards;
     public String familyPass;
-		public String username;
+		private String username;
 
     public Family(){
 			

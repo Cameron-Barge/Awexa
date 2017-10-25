@@ -45,6 +45,7 @@ public class LoginController {
         if(Global.curRef.getValue() != null) {
             //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());
             if(Global.loginPass.equals(Global.curRef.child("familyPass").getValue())){
+								Global.family = new Family(Global.username, Global.loginPass);
                 Global.auth = true;
             } else {
                 Global.auth = false;
@@ -134,12 +135,13 @@ public class LoginController {
 
 			if(!data.get("pass").equals(data.get("pass2"))) {
 				return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
-			} else {
-				Family family = new Family(data.get("user"), data.get("pass"));
-				FirebaseServices.createNode("/families", data.get("user"), family);
-				Global.family = family;
-				return ok(views.html.newparent.render("Let's get your account set up!"));
 			}
+
+			Family family = new Family(data.get("user"), data.get("pass"));
+			FirebaseServices.createNode("/families", data.get("user"), family);
+			Global.family = family;
+			Global.auth = true;
+			return ok(views.html.newparent.render("Let's get your account set up!"));
 		}
 
 }

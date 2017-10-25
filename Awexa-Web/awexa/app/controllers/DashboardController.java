@@ -86,6 +86,10 @@ public class DashboardController {
         return ok(views.html.addreward.render());
 		}
 		
+		/**
+		 * saves newly registered account data to database
+		 * @return Result location to return to
+		 */
 		public Result saveNewData() {
 			Form<Child> newDataForm = formFactory.form(Child.class).bindFromRequest();
 			Map<String, String> data = newDataForm.rawData();
@@ -99,5 +103,27 @@ public class DashboardController {
 			Global.family.addParent(parent);
 			FirebaseServices.update(Global.family);
 			return ok(views.html.postlogin.render(parent.getName()));
+		}
+
+		public Result submitReward() {
+			Form<Reward> newRewardForm = formFactory.form(Reward.class).bindFromRequest();
+			Map<String, String> data = newRewardForm.rawData();
+			Reward reward = new Reward(data.get("description"), data.get("name"), Integer.parseInt(data.get("points")));
+			String rewardKey = FirebaseServices.pushNode("rewards/", reward);
+			reward.setID(rewardKey);
+			Global.family.addReward(reward);
+			FirebaseServices.update(Global.family);
+			return ok(views.html.postlogin.render(Global.username));
+		}
+
+		public Result submitChore() {
+			Form<Chore> newChoreForm = formFactory.form(Chore.class).bindFromRequest();
+			Map<String, String> data = newChoreForm.rawData();
+			Reward reward = new Reward(data.get("description"), data.get("name"), Integer.parseInt(data.get("points")));
+			String rewardKey = FirebaseServices.pushNode("rewards/", reward);
+			reward.setID(rewardKey);
+			Global.family.addReward(reward);
+			FirebaseServices.update(Global.family);
+			return ok(views.html.postlogin.render(Global.username));
 		}
 }
