@@ -1,1 +1,6 @@
+*.iml
+/androidTest
+/test
+.DS_Store
 /build
+.json
