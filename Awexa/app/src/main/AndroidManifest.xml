@@ -23,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,28 +34,31 @@
         </activity>
         <activity
             android:name=".AddChoreActivity"
-            android:parentActivityName=".ChildProgressActivity"
             android:label="@string/title_activity_add_chore"
+            android:parentActivityName=".ChildProgressActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".AddChildActivity"
-            android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_add_child"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".AddRewardActivity"
-            android:parentActivityName=".ChildProgressActivity"
             android:label="@string/title_activity_add_reward"
+            android:parentActivityName=".ChildProgressActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ChildProgressActivity"
-            android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_child_progress"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
