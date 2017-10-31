@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public List<String> family = new ArrayList<>();
     public List<String> parents = new ArrayList<>();
     public String familyPass = "";
+    public boolean validParent = false;
     ArrayAdapter adapter = null;
 
     @Override
@@ -153,9 +154,16 @@ public class MainActivity extends AppCompatActivity {
                 if (parents.contains(name)) {
                     showPopupWindow(view);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
-                    intent.putExtra("name", name);
-                    startActivity(intent);
+                    if (validParent) {
+                        Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
+                        intent.putExtra("name", name);
+                        intent.putExtra("validParent", validParent);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -200,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (familyPass.equals(password.getText().toString())) {
                     toastMessage("Passwords match!");
-                    //TODO: redirect to relevant parent activity
+                    validParent = true;
                 } else {
                     toastMessage("Incorrect password.");
                 }

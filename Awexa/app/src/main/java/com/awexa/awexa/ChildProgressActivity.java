@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -15,6 +16,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 public class ChildProgressActivity extends AppCompatActivity {
+    boolean validParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,17 @@ public class ChildProgressActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getIntent().getExtras() != null) {
-            String child = getIntent().getExtras().getString("name","defaultKey");
+            String child = getIntent().getStringExtra("name");
+            validParent = getIntent().getBooleanExtra("validParent", false);
+            View btnAddNewReward = findViewById(R.id.addNewReward);
+            View btnAddNewChore = findViewById(R.id.addNewChore);
+            if (!validParent) {
+                btnAddNewReward.setVisibility(View.INVISIBLE);
+                btnAddNewChore.setVisibility(View.INVISIBLE);
+            } else {
+                btnAddNewReward.setVisibility(View.VISIBLE);
+                btnAddNewChore.setVisibility(View.VISIBLE);
+            }
             String title = getString(R.string.child_progress_title, child);
             getSupportActionBar().setTitle(title);
         }
@@ -68,5 +80,9 @@ public class ChildProgressActivity extends AppCompatActivity {
     /** Called when the user taps the Add New Chore button */
     public void openNewChoreActivity(View view) {
         startActivity(new Intent(this, AddChoreActivity.class));
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
