@@ -1,6 +1,5 @@
 {
     "intents": [
-        {"intent": "AMAZON.NoIntent"},
         {"intent": "AMAZON.RepeatIntent"},
         {"intent": "AMAZON.HelpIntent"},
         {"intent": "AMAZON.StopIntent"},
