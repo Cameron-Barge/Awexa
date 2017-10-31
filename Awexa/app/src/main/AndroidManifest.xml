@@ -38,9 +38,9 @@
             android:parentActivityName=".ChildProgressActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AddChildActivity"
-            android:label="@string/title_activity_add_child"
+            android:name=".AddFamilyMemberActivity"
             android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_add_family_member"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".AddRewardActivity"

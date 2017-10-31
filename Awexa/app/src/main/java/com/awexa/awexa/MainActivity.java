@@ -31,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -42,8 +41,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    String currentFamily = "family1";
-    DatabaseReference ref = db.child("families/" + currentFamily);
+    String currentFamily = "";
+    DatabaseReference ref;
     public List<String> family = new ArrayList<>();
     public List<String> parents = new ArrayList<>();
     public String familyPass = "";
@@ -56,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.title_activity_main);
+        currentFamily = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref = db.child("families/" + currentFamily);
         adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, family);
 
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AddChildActivity.class));
+                startActivity(new Intent(MainActivity.this, AddFamilyMemberActivity.class));
             }
         });
     }
