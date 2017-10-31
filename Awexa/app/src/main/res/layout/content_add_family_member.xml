@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.awexa.awexa.AddChildActivity"
-    tools:showIn="@layout/activity_add_child">
+    tools:context="com.awexa.awexa.AddFamilyMemberActivity"
+    tools:showIn="@layout/activity_add_family_member">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,28 +25,50 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_marginRight="8dp"
+        android:weightSum="1">
 
         <TextView
-            android:id="@+id/childNameLabel"
+            android:id="@+id/familyMemberNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name" />
 
         <EditText
-            android:id="@+id/childName"
+            android:id="@+id/familyMemberName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.00"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Child Name" />
+            android:text="Family Member Name" />
 
         <TextView
-            android:id="@+id/childNameWarning"
+            android:id="@+id/familyMemberNameWarning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This name is the name Alexa will use to identify your child. If your child goes by a nickname, please use that here." />
+            android:text="This name is the name Alexa will use to identify this person. If this person goes by a nickname, please use that here." />
+
+        <RadioGroup
+            android:id="@+id/radioFamilyMember"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Child" />
+
+            <RadioButton
+                android:id="@+id/radioParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Parent" />
+        </RadioGroup>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

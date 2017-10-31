@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.awexa.awexa.AddChoreActivity">
+    tools:context="com.awexa.awexa.AddFamilyMemberActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,11 +14,26 @@
         android:background="@color/colorPrimary" />
 
     <include
-        layout="@layout/content_add_chore"
+        android:id="@+id/include"
+        layout="@layout/content_add_family_member"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/popup_submit"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/popup_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="top|center_horizontal"
+        android:onClick="addFamilyMember"
+        android:text="@string/action_submit"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="bottom|center_horizontal" />
 
 </RelativeLayout>
