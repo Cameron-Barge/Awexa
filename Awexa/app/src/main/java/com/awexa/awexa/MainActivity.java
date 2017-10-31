@@ -5,9 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +53,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.title_activity_main);
         adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, family);
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withTranslucentStatusBar(false)
+                .withActionBarDrawerToggle(true)
+                .withSelectedItem(-1)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(FontAwesome.Icon.faw_cog),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_logout).withIcon(FontAwesome.Icon.faw_sign_out)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (position == 0) {
+                            startActivity(new Intent(MainActivity.this, MainActivity.class));
+                            finish();
+                        } else if (position == 1) {
+                            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                        } else {
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
+                        }
+                        return true;
+                    }
+                })
+                .build();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
         DatabaseReference familyPassRef = ref.child("/familyPass");
         familyPassRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showPopupWindow(View view) {
         // get a reference to the already created main layout
-        CoordinatorLayout mainLayout = (CoordinatorLayout) findViewById(R.id.activity_main_layout);
+        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.activity_main_layout);
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -140,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
         Button cancel = popupView.findViewById(R.id.popup_cancel);
 
         // create the popup window
-        int width = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
-        int height = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
+        int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
