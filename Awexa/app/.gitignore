@@ -1,6 +1,7 @@
 *.iml
-/androidTest
-/test
+src/androidTest
+src/test
 .DS_Store
 /build
 *.json
+proguard-rules.pro
