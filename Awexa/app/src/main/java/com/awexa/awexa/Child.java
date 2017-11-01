@@ -1,15 +1,6 @@
 package com.awexa.awexa;
 
-import android.util.Log;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Kath on 10/16/2017.
@@ -25,6 +16,13 @@ public class Child {
     String childId;
 
     public Child() {
+        chores = new HashMap<>();
+        rewards = new HashMap<>();
+    }
+
+    public Child(String name, String familyId) {
+        this.name = name;
+        this.familyId = familyId;
         chores = new HashMap<>();
         rewards = new HashMap<>();
     }
