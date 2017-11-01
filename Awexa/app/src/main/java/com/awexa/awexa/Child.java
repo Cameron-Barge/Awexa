@@ -1,29 +1,23 @@
 package com.awexa.awexa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kath on 10/16/2017.
  */
 
-public class Child extends Family {
+public class Child {
     private String name;
-    private List<String> chores; // These are chore IDs
+    private Map<String, Boolean> chores; // These are chore IDs
+    private Map<String, Integer> rewards; // These are reward IDs
+    private int points;
+    private String familyId;
 
-    public Child() {
-        name = "";
-        chores = new ArrayList<>();
-    }
+    public Child() { }
 
-    public Child(String name) {
+    public Child(String name, String familyId) {
         this.name = name;
-        this.chores = new ArrayList<>();
-    }
-
-    public Child(String name, List<String> chores) {
-        this.name = name;
-        this.chores = chores;
+        this.familyId = familyId;
     }
 
     public String getName() {
@@ -34,9 +28,35 @@ public class Child extends Family {
         this.name = name;
     }
 
-    public List<String> getChoreIds() { return chores; }
+    public Map<String, Boolean> getChores() {
+        return chores;
+    }
 
-    public void setChoreIds(List<String> chores) {
+    public void setChores(Map<String, Boolean> chores) {
         this.chores = chores;
+    }
+
+    public Map<String, Integer> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(Map<String, Integer> rewards) {
+        this.rewards = rewards;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(String familyId) {
+        this.familyId = familyId;
     }
 }
