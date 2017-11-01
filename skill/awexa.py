@@ -14,6 +14,7 @@ NONE = 'none'
 CHORES = 'get_chores'
 REWARDS = 'get_rewards'
 FINISH = 'finish_chores'
+BUY = 'buy_reward'
 
 logger = logging.getLogger()
 
@@ -136,6 +137,51 @@ def finishChore(child_name, chore):
             .format(listToAndString(chores.keys())))
 
 
+@ask.intent("BuyRewardIntent")
+def buyReward(child_name, reward):
+    return_val = getChild(device_id, child_name)
+    if isinstance(return_val, statement):
+        return return_val
+    if isinstance(return_val, question):
+        set_state(BUY)
+        set_saved_reward(reward)
+        return return_val
+
+    child_json, child_id = return_val
+    points = child_json['points']
+
+    # get list(reward_id) from child_json
+    reward_id_list = [rew for rew in child_json['rewards']]
+
+    # get list(reward_info) from list(reward_ids)
+    rewards = {}
+    for reward_id in reward_id_list:
+        r = requests.get(rewards_endpoint(reward_id, "/name"))
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        rewards[r.content.replace('"', '').lower()] = reward_id
+
+    # find closest reward from list, with similarity of >= 0.6
+    guess = difflib.get_close_matches(reward, rewards.keys())
+
+    try:
+        guess = guess[0]
+        reward_id = rewards[guess]
+        r = requests.put(child_endpoint(child_id, "/rewards/" + reward_id),
+                         data=str(child_json['rewards'][reward_id] + 1))
+        if r.status_code != 200:
+            return statement(handleConnectionError(r))
+        else:
+            return statement("I bought {} the reward: {}"
+                             .format(child_json['name'], guess))
+    except IndexError:
+        if rewards.keys() == []:
+            return statement("{} has no available rewards.".format(child_name))
+        return statement(
+            "Sorry I couldn't find that reward. Pick one from this list: {}"
+            .format(listToAndString(rewards.keys())))
+
+
 @ask.intent("GetNameIntent")
 def getName(child_name):
     response = None
@@ -146,6 +192,9 @@ def getName(child_name):
     elif get_state() == FINISH:
         response = finishChore(child_name, get_saved_chore())
         set_saved_chore(None)
+    elif get_state() == BUY:
+        response = buyReward(child_name, get_saved_reward())
+        set_saved_reward(None)
     else:
         response = launch()
 
@@ -198,6 +247,14 @@ def get_saved_chore():
 
 def set_saved_chore(chore):
     session.attributes['chore'] = chore
+
+
+def get_saved_reward():
+    return session.attributes.get('reward')
+
+
+def set_saved_reward(reward):
+    session.attributes['reward'] = reward
 
 
 def getChild(device_id, child_name):
@@ -295,6 +352,7 @@ def main():  # test cases pre-zappa deployment
     print getRewards('Bobby')
     print finishChore('Bobby', 'taking out the trash')  # similar enough
     print finishChore('Bobby', 'mow the lawn')  # not similar enough
+    print buyReward('Bobby', 'cake')
 
 
 if __name__ == '__main__':
