@@ -34,6 +34,16 @@ FinishChoreIntent I completed {chore}
 FinishChoreIntent I did {chore}
 FinishChoreIntent I {chore}
 
+BuyRewardIntent {child_name} wants to buy {reward}
+BuyRewardIntent {child_name} wants to purchase {reward}
+BuyRewardIntent buy {reward} for {child_name}
+BuyRewardIntent purchase {reward} for {child_name}
+
+BuyRewardIntent I want to buy {reward}
+BuyRewardIntent Buy {reward}
+BuyRewardIntent I want to purchase {reward}
+BuyRewardIntent Purchase {reward}
+
 GetNameIntent {child_name}
 GetNameIntent my name is {child_name}
 GetNameIntent I am {child_name}

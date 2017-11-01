@@ -16,6 +16,7 @@
     + current intent schema is in speechAssets/intent\_schema.txt
     + current sample utterances are in speechAssets/sample\_utterances.txt
     + custom slot CHORES is in speechAssets/CHORES\_custom\_slots.txt
+    + custom slot REWARDS is in speechAssets/REWARDS\_custom\_slots.txt
 2. Configuration
     + Service Endpoint Type: https
     + region: NA
