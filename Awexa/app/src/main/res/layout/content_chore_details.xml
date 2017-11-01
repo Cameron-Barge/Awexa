@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.awexa.awexa.AddChoreActivity"
-    tools:showIn="@layout/activity_add_chore">
+    tools:showIn="@layout/activity_edit_chore">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -35,12 +34,11 @@
             android:text="Chore Name" />
 
         <EditText
-            android:id="@+id/newChoreName"
+            android:id="@+id/choreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="New Chore Name" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/rewardTitle"
@@ -56,17 +54,37 @@
             android:inputType="number"
             android:text="0" />
 
-        <CheckBox
-            android:id="@+id/repeatCheck"
+        <TextView
+            android:id="@+id/repeatText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Repeat Weekly" />
+            android:text="Recurrence" />
+
+        <RadioGroup android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+            <RadioButton  android:id="@+id/repeatCheckDaily"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Daily"/>
+
+            <RadioButton android:id="@+id/repeatCheckWeekly"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Weekly"/>
+
+            <RadioButton android:id="@+id/repeatCheckMontly"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Monthly"/>
+        </RadioGroup>
 
         <LinearLayout
             android:id="@+id/weekLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <CheckBox
                 android:id="@+id/sunCheck"
@@ -118,11 +136,32 @@
 
         </LinearLayout>
 
-        <MultiAutoCompleteTextView
-            android:id="@+id/autoCompleteChore"
+        <TextView
+            android:id="@+id/startTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Search Chore" />
+            android:text="Start Time" />
+
+        <EditText
+            android:id="@+id/startTimeET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"/>
+
+        <TextView
+            android:id="@+id/endTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Time" />
+
+        <EditText
+            android:id="@+id/endTimeET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            />
 
         <TextView
             android:id="@+id/descriptionText"
@@ -145,8 +184,8 @@
             android:id="@+id/create_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="addChore"
-            android:text="Create New Chore" />
+            android:onClick="updateChore"
+            android:text="Save Changes" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

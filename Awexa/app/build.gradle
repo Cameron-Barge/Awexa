@@ -9,20 +9,26 @@ dependencies {
         transitive = true
     }
     ext {
-        supportLibVersion = '23.1.1'
+        supportLibVersion = '25.3.1'
     }
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.android.support:support-annotations:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:design:26.+'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:support-v4:${supportLibVersion}"
+    compile "com.android.support:support-vector-drawable:${supportLibVersion}"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.firebase:firebase-database:11.4.2'
     compile 'com.google.firebase:firebase-auth:11.4.2'
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
-    compile 'com.android.support:support-v4:26.+'
-    compile 'com.android.support:support-vector-drawable:26.+'
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
+    compile 'com.google.firebase:firebase-messaging:11.4.2'
     testCompile 'junit:junit:4.12'
 }
 
@@ -48,7 +54,6 @@ android {
         pickFirst 'META-INF/license.txt'
     }
 }
-
 
 
 apply plugin: 'com.google.gms.google-services'

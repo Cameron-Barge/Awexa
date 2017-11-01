@@ -2,6 +2,9 @@ package com.awexa.awexa;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +22,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -49,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = (EditText) findViewById(R.id.password);
         btnSignIn = (Button) findViewById(R.id.email_sign_in_button);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.action_sign_in);
 
@@ -84,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                if(!email.equals("") && !pass.equals("")){
+                if (!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -109,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                }else{
+                } else {
                     toastMessage("You didn't fill in all of the fields.");
                 }
             }
@@ -132,5 +143,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void registerDevice() {
+        String familyId = "family1";
+        DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
+            + familyId + "/device_ids");
+        SharedPreferences sp = getSharedPreferences("AWEXA_APP", 0);
+        String registrationId = sp.getString("registrationId", "default");
+        familyDb.child(registrationId).setValue(true);
     }
 }

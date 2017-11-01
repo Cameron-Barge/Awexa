@@ -8,11 +8,12 @@ public class Parent {
     private String name;
     private String password;
 
-    public Parent() { }
+    public Parent() {
+        this("", "");
+    }
 
     public Parent(String name) {
-        this.name = name;
-        password = "";
+        this(name, "");
     }
 
     public Parent(String name, String password) {

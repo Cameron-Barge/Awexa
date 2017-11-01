@@ -43,9 +43,24 @@
             android:label="@string/title_activity_add_family_member"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".EditChoreActivity"
+            android:parentActivityName=".ChildProgressActivity"
+            android:label="@string/title_activity_edit_chore"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AddChildActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_add_family_member"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".AddRewardActivity"
             android:label="@string/title_activity_add_reward"
             android:parentActivityName=".ChildProgressActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".EditRewardActivity"
+            android:parentActivityName=".ChildProgressActivity"
+            android:label="@string/title_activity_edit_reward"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ChildProgressActivity"
@@ -59,6 +74,28 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".AwexaMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+        <!-- [START firebase_iid_service] -->
+        <service
+            android:name=".AwexaInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <!-- [END firebase_iid_service] -->
+        <service android:name=".AwexaJobService"
+                 android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

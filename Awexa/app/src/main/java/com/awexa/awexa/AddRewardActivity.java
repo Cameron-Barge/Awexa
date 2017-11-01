@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,15 +17,17 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddRewardActivity extends AppCompatActivity {
+    String childId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reward);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.title_activity_add_reward);
 
@@ -57,13 +61,42 @@ public class AddRewardActivity extends AppCompatActivity {
                 .build();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        if (getIntent().getExtras() != null) {
+            childId = getIntent().getExtras().getString("childId", "defaultKey");
+        }
     }
 
     public void addReward(View view) {
-        EditText text = (EditText)findViewById(R.id.newRewardName);
-        String reward = text.getText().toString();
-        //TODO: implementation for adding reward to db/list/whatever
+        EditText descriptionEt = (EditText)findViewById(R.id.description);
+        EditText nameEt = (EditText)findViewById(R.id.newRewardName);
+        EditText pointsEt = (EditText)findViewById(R.id.cost);
+        DatabaseReference rewardsDb = FirebaseDatabase.getInstance().getReference("rewards");
+        Reward reward = new Reward();
+        String rewardId = rewardsDb.push().getKey();
+        reward.setName(nameEt.getText().toString());
+        reward.setDescription(descriptionEt.getText().toString());
+        reward.setPoints(Integer.parseInt(pointsEt.getText().toString()));
+        rewardsDb.child(rewardId).setValue(reward);
+        final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
+            + childId + "/rewards" + rewardId);
+        childDb.setValue(0);
         Toast.makeText(getApplicationContext(), reward + " was added...",
                 Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

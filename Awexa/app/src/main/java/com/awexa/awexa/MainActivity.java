@@ -1,5 +1,6 @@
 package com.awexa.awexa;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +39,13 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -49,11 +58,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean validParent = false;
     ArrayAdapter adapter = null;
 
+    // Array of random fake kids
+    public List<Child> children = new ArrayList<>();
+    private ListView listView;
+    private ArrayAdapter<Child> childAdapter;
+    private Activity thisAct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.title_activity_main);
         currentFamily = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -145,8 +160,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final ListView listView = (ListView) findViewById(R.id.children_list);
+        listView = (ListView) findViewById(R.id.children_list);
+        childAdapter = new ArrayAdapter<>(this,
+            R.layout.activity_listview, children);
         listView.setAdapter(adapter);
+        thisAct = this;
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("families");
+
+        //TODO: update based on family login
+        DatabaseReference dbChildren = myRef.child("family1").child("children");
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                children = new ArrayList<>();
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    final String childId = messageSnapshot.getKey();
+                    database.getReference("children").child(childId)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                Child c = snapshot.getValue(Child.class);
+                                c.setChildId(childId);
+                                if (children.contains(c)) {
+                                    int index = children.indexOf(c);
+                                    children.remove(index);
+                                    children.add(index, c);
+                                } else {
+                                    children.add(c);
+                                }
+                                adapter = new ArrayAdapter<>(thisAct,
+                                    R.layout.activity_listview, children);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("mainactivity", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        dbChildren.addValueEventListener(postListener);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -161,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
-                        intent.putExtra("name", name);
+                        intent.putExtra("childId", children.get(position).getChildId());
                         startActivity(intent);
                     }
                 }

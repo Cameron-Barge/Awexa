@@ -1,7 +1,10 @@
 package com.awexa.awexa;
 
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kath on 10/16/2017.
@@ -14,7 +17,7 @@ public class Family {
     private Map<String, String> child_names;
 
     public Family() {
-        this.familyPass = "";
+        this(new HashMap<String, Boolean>(), new HashMap<String, Boolean>(), "", new HashMap<String, String>());
     }
 
     public Family(Map<String, Boolean> children, Map<String, Boolean> parents, String familyPass, Map<String, String> child_names) {
