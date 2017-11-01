@@ -41,7 +41,9 @@
             android:layout_weight="0.00"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Family Member Name" />
+            android:hint="Family Member Name"
+            android:maxLines="1"
+            android:imeOptions="actionDone"/>
 
         <TextView
             android:id="@+id/familyMemberNameWarning"

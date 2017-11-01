@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +37,7 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
 
         currentFamily = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.title_activity_add_family_member);
 
@@ -74,11 +75,11 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
 
     /** Called when the user taps the Submit button */
     public void addFamilyMember(View view) {
-        name = findViewById(R.id.familyMemberName);
+        name = (EditText) findViewById(R.id.familyMemberName);
         String familyMemberName = name.getText().toString();
-        radioFamilyMemberGroup = findViewById(R.id.radioFamilyMember);
+        radioFamilyMemberGroup = (RadioGroup) findViewById(R.id.radioFamilyMember);
         int selectedId = radioFamilyMemberGroup.getCheckedRadioButtonId();
-        radioFamilyMemberButton = findViewById(selectedId);
+        radioFamilyMemberButton = (RadioButton) findViewById(selectedId);
         familyMemberType = radioFamilyMemberButton.getText().toString();
         if (radioFamilyMemberButton.getText().toString().equals("Child")) {
             Child child = new Child(familyMemberName, currentFamily);
