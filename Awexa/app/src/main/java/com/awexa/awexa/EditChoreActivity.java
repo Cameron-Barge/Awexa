@@ -168,8 +168,19 @@ public class EditChoreActivity extends AppCompatActivity {
         nameEt.setText(c.name);
         descriptionEt.setText(c.description);
         SimpleDateFormat df = new SimpleDateFormat("hh:mm");
-        startTimeEt.setText(df.format(c.start), EditText.BufferType.EDITABLE);
-        endTimeEt.setText(df.format(c.due), EditText.BufferType.EDITABLE);
+        if (c.start != null) {
+            startTimeEt.setText(df.format(c.start), EditText.BufferType.EDITABLE);
+            endTimeEt.setText(df.format(c.due), EditText.BufferType.EDITABLE);
+            startTimeEt.setVisibility(View.VISIBLE);
+            endTimeEt.setVisibility(View.VISIBLE);
+            startTv.setVisibility(View.VISIBLE);
+            endTv.setVisibility(View.VISIBLE);
+        } else {
+            startTimeEt.setVisibility(View.GONE);
+            endTimeEt.setVisibility(View.GONE);
+            startTv.setVisibility(View.GONE);
+            endTv.setVisibility(View.GONE);
+        }
         rewardEt.setText(String.valueOf(c.points));
         switch ((String)c.recurrence.get("repeat")) {
             case "once":
@@ -278,25 +289,25 @@ public class EditChoreActivity extends AppCompatActivity {
             recurrence.put("repeat", "weekly");
             HashMap<String, Boolean> days = new HashMap<>();
             if (sunRepeat) {
-                days.put("0", true);
+                days.put("Su", true);
             }
             if (monRepeat) {
-                days.put("1", true);
+                days.put("M", true);
             }
             if (tuesRepeat) {
-                days.put("2", true);
+                days.put("Tu", true);
             }
             if (wedRepeat) {
-                days.put("3", true);
+                days.put("W", true);
             }
             if (thursRepeat) {
-                days.put("4", true);
+                days.put("Th", true);
             }
             if (friRepeat) {
-                days.put("5", true);
+                days.put("F", true);
             }
             if (satRepeat) {
-                days.put("6", true);
+                days.put("Sa", true);
             }
             recurrence.put("days", days);
         }

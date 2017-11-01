@@ -147,12 +147,14 @@ public class Chore {
     }
 
     private Date convertDateString(String dueDate) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
-        dueDate = dueDate.replaceAll("\\+0([0-9]){1}\\:00", "+0$100");
-        try {
-            return df.parse(dueDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (dueDate != null) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
+            dueDate = dueDate.replaceAll("\\+0([0-9]){1}\\:00", "+0$100");
+            try {
+                return df.parse(dueDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

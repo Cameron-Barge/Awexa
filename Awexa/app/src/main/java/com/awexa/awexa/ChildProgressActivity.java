@@ -114,18 +114,20 @@ public class ChildProgressActivity extends AppCompatActivity {
         final Date tomorrow = calendar.getTime();
 
         for (final String choreId: c.chores.keySet()) {
+            Log.d("chore", choreId);
             choresDb.child(choreId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
+                        Log.d(snapshot.toString(), "test");
                         Chore chore = snapshot.getValue(Chore.class);
 
-                        if (chore.due.before(inAWeek) && c.chores.get(choreId)) {
+                        if ((chore.due == null || chore.due.before(inAWeek)) && c.chores.get(choreId)) {
                             numChoresForWeek[0]++;
                             weeklyBar.setMax(c.chores.keySet().size());
                             weeklyBar.setProgress(numChoresForWeek[0]);
                         }
-                        if (chore.due.before(tomorrow)) {
+                        if ((chore.due == null || chore.due.before(tomorrow)) && c.chores.get(choreId)) {
                             numChoresForDay[0]++;
                             dailyBar.setMax(c.chores.keySet().size());
                             dailyBar.setProgress(numChoresForDay[0]);
