@@ -54,10 +54,8 @@ def getChores(child_name):
                       .format(chore_json['name'], chore_json['points']))
 
     # return speechlet
-    chore_num = str(len(chores)) \
-        + (" chores" if len(chores) != 1 else " chore")
-    return statement("You have {} : {}"
-                     .format(chore_num, listToAndString(chores)))
+    num = str(len(chores)) + (" chores" if len(chores) != 1 else " chore")
+    return statement("You have {} : {}".format(num, listToAndString(chores)))
 
 
 @ask.intent("GetRewardsIntent")
@@ -81,9 +79,9 @@ def getRewards(child_name):
         r = requests.get(rewards_endpoint(reward_id))
         if r.status_code != 200:
             return statement(handleConnectionError(r))
-        reward_json = r.json()
-        rewards.append("{} for {} points"
-                       .format(reward_json['name'], reward_json['points']))
+        r_json = r.json()
+        rewards.append("{} for {} points".format(r_json['name'],
+                                                 r_json['points']))
 
     # return speechlet
     point_num_phrase = str(points) + (" points" if points != 1 else " point")
@@ -177,13 +175,14 @@ def buyReward(child_name, reward):
             return statement("You only have {}, not enough to buy {}, which "
                              "costs {}".format(pts_phrase, guess, cost_phrase))
 
+        # update a child's count of the reward
         reward_id = rewards[guess][0]
         r = requests.put(child_endpoint(child_id, "/rewards/" + reward_id),
                          data=str(child_json['rewards'][reward_id] + 1))
         if r.status_code != 200:
             return statement(handleConnectionError(r))
         else:
-            return statement("I bought {} the reward: {}"
+            return statement("{} bought the reward: {}"
                              .format(child_json['name'], guess))
     except IndexError:
         if rewards.keys() == []:
@@ -218,16 +217,19 @@ def repeat():
     if get_state() == NONE:
         return launch()
     else:
-        return question("What's your name?")
+        return question("What's your name?") \
+            .reprompt("I need to know your name to finish this action.")
 
 
 @ask.intent("AMAZON.HelpIntent")
 def help():
     if get_state() == NONE:
-        return statement("Ask me about your chores and rewards."
-                         "You can also tell me if you finished a chore.")
+        return statement("Ask me about your chores and rewards. "
+                         "You can also tell me if you finished a chore. "
+                         "Or I can help you buy a reward!")
     else:
-        return question("What's your name?")
+        return question("What's your name?") \
+            .reprompt("I need to know your name to finish this action.")
 
 
 @ask.intent("AMAZON.StopIntent")
