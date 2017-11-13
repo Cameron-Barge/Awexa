@@ -3,15 +3,20 @@ package com.awexa.awexa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -19,21 +24,25 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-public class AddRewardActivity extends AppCompatActivity {
-    private static final String TAG = "AddRewardActivity";
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+public class EditRewardActivity extends AppCompatActivity {
+    private static final String TAG = "EditRewardActivity";
     String childId;
+    String rewardId;
+    EditText nameEt;
+    EditText pointsEt;
+    EditText descriptionEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_reward);
-        if (getIntent().getExtras() != null) {
-            childId = getIntent().getExtras().getString("childId", "defaultKey");
-        }
+        setContentView(R.layout.activity_edit_reward);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.title_activity_add_reward);
+        getSupportActionBar().setTitle(R.string.title_activity_edit_chore);
 
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
@@ -50,13 +59,13 @@ public class AddRewardActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (position == 0) {
-                            startActivity(new Intent(AddRewardActivity.this, MainActivity.class));
+                            startActivity(new Intent(EditRewardActivity.this, MainActivity.class));
                             finish();
                         } else if (position == 1) {
-                            startActivity(new Intent(AddRewardActivity.this, SettingsActivity.class));
+                            startActivity(new Intent(EditRewardActivity.this, SettingsActivity.class));
                         } else {
                             FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(AddRewardActivity.this, LoginActivity.class));
+                            startActivity(new Intent(EditRewardActivity.this, LoginActivity.class));
                             finish();
                         }
                         return true;
@@ -65,6 +74,35 @@ public class AddRewardActivity extends AppCompatActivity {
                 .build();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
+        if (getIntent().getExtras() != null) {
+            childId = getIntent().getExtras().getString("childId", "defaultKey");
+            rewardId = getIntent().getExtras().getString("rewardId", "defaultKey");
+        }
+        nameEt = (EditText) findViewById(R.id.newRewardName);
+        pointsEt = (EditText) findViewById(R.id.cost);
+        descriptionEt = (EditText) findViewById(R.id.description);
+
+        FirebaseDatabase.getInstance().getReference("rewards").child(rewardId)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    Reward reward = snapshot.getValue(Reward.class);
+
+                    initializeView(reward);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+    }
+
+
+    public void initializeView(Reward r) {
+        nameEt.setText(r.name);
+        descriptionEt.setText(r.description);
+        pointsEt.setText(String.valueOf(r.points));
     }
 
     public void addReward(View view) {
@@ -73,16 +111,15 @@ public class AddRewardActivity extends AppCompatActivity {
         EditText pointsEt = (EditText)findViewById(R.id.cost);
         DatabaseReference rewardsDb = FirebaseDatabase.getInstance().getReference("rewards");
         Reward reward = new Reward();
-        String rewardId = rewardsDb.push().getKey();
         reward.name = nameEt.getText().toString();
         reward.description = descriptionEt.getText().toString();
         reward.points = Integer.parseInt(pointsEt.getText().toString());
         rewardsDb.child(rewardId).setValue(reward);
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
-            + childId + "/rewards/" + rewardId);
+            + childId + "/rewards" + rewardId);
         childDb.setValue(0);
-        Toast.makeText(getApplicationContext(), reward + " was added...",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), reward + " was updated...",
+            Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -93,11 +130,7 @@ public class AddRewardActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        finish();
+        return true;
     }
 }

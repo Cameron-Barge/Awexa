@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.awexa.awexa.AddRewardActivity"
-    tools:showIn="@layout/activity_add_reward">
+    tools:showIn="@layout/activity_edit_reward">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -36,7 +35,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="New Reward Name" />
+            android:hint="New Reward Name" />
 
         <TextView
             android:id="@+id/costText"
@@ -50,14 +49,20 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:text="0" />
+            android:hint="Reward Amount" />
 
-        <MultiAutoCompleteTextView
-            android:id="@+id/rewardSearch"
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description" />
+
+        <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Search Reward" />
+            android:hint="Reward Description" />
 
         <Space
             android:layout_width="match_parent"
@@ -68,6 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="addReward"
-            android:text="Create New Reward" />
+            android:text="Save Changes" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

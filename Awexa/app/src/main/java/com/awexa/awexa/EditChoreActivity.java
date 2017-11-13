@@ -2,8 +2,7 @@ package com.awexa.awexa;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -19,16 +18,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -36,7 +31,13 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-public class AddChoreActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+
+public class EditChoreActivity extends AppCompatActivity {
+    private static final String TAG = "EditChoreActivity";
+    String choreId;
     String childId;
     EditText nameEt;
     EditText rewardEt;
@@ -57,7 +58,7 @@ public class AddChoreActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.title_activity_add_chore);
+        getSupportActionBar().setTitle(R.string.title_activity_edit_chore);
 
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
@@ -74,13 +75,13 @@ public class AddChoreActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (position == 0) {
-                            startActivity(new Intent(AddChoreActivity.this, MainActivity.class));
+                            startActivity(new Intent(EditChoreActivity.this, MainActivity.class));
                             finish();
                         } else if (position == 1) {
-                            startActivity(new Intent(AddChoreActivity.this, SettingsActivity.class));
+                            startActivity(new Intent(EditChoreActivity.this, SettingsActivity.class));
                         } else {
                             FirebaseAuth.getInstance().signOut();
-                            startActivity(new Intent(AddChoreActivity.this, LoginActivity.class));
+                            startActivity(new Intent(EditChoreActivity.this, LoginActivity.class));
                             finish();
                         }
                         return true;
@@ -101,12 +102,13 @@ public class AddChoreActivity extends AppCompatActivity {
         endTv = (TextView)findViewById(R.id.endTime);
 
         if (getIntent().getExtras() != null) {
+            choreId = getIntent().getExtras().getString("choreId", "defaultKey");
             childId = getIntent().getExtras().getString("childId", "defaultKey");
         }
 
-        dailyRepeatRadioBtn = (RadioButton)findViewById(R.id.repeatCheckDaily);
-        weeklyRepeatRadioBtn = (RadioButton)findViewById(R.id.repeatCheckWeekly);
-        monthlyRepeatRadioBtn = (RadioButton)findViewById(R.id.repeatCheckMontly);
+        dailyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckDaily);
+        weeklyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckWeekly);
+        monthlyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckMontly);
 
         weeklyRepeatRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -190,9 +192,88 @@ public class AddChoreActivity extends AppCompatActivity {
         };
 
         endTimeEt.setFilters(new InputFilter[]{timeFilter});
-        dailyRepeatRadioBtn.setChecked(false);
-        weeklyRepeatRadioBtn.setChecked(false);
-        monthlyRepeatRadioBtn.setChecked(false);
+
+        FirebaseDatabase.getInstance().getReference("chores").child(choreId)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    Chore chore = snapshot.getValue(Chore.class);
+
+                    initializeView(chore);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+    }
+
+    public void initializeView(Chore c) {
+        nameEt.setText(c.name);
+        descriptionEt.setText(c.description);
+        SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+        if (c.start != null) {
+            startTimeEt.setText(df.format(c.start), EditText.BufferType.EDITABLE);
+            endTimeEt.setText(df.format(c.due), EditText.BufferType.EDITABLE);
+            startTimeEt.setVisibility(View.VISIBLE);
+            endTimeEt.setVisibility(View.VISIBLE);
+            startTv.setVisibility(View.VISIBLE);
+            endTv.setVisibility(View.VISIBLE);
+        } else {
+            startTimeEt.setVisibility(View.GONE);
+            endTimeEt.setVisibility(View.GONE);
+            startTv.setVisibility(View.GONE);
+            endTv.setVisibility(View.GONE);
+        }
+        rewardEt.setText(String.valueOf(c.points));
+        switch ((String)c.recurrence.get("repeat")) {
+            case "once":
+                dailyRepeatRadioBtn.setChecked(false);
+                weeklyRepeatRadioBtn.setChecked(false);
+                monthlyRepeatRadioBtn.setChecked(false);
+                break;
+            case "daily":
+                dailyRepeatRadioBtn.setChecked(true);
+                break;
+            case "weekly":
+                ((CheckBox)findViewById(R.id.sunCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.monCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.tueCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.wedCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.thuCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.friCheck)).setChecked(false);
+                ((CheckBox)findViewById(R.id.satCheck)).setChecked(false);
+                weeklyRepeatRadioBtn.setChecked(true);
+                for (String i: ((HashMap<String, Boolean>)c.recurrence.get("days")).keySet()) {
+                    switch (i) {
+                        case "Su":
+                            ((CheckBox)findViewById(R.id.sunCheck)).setChecked(true);
+                            break;
+                        case "M":
+                            ((CheckBox)findViewById(R.id.monCheck)).setChecked(true);
+                            break;
+                        case "Tu":
+                            ((CheckBox)findViewById(R.id.tueCheck)).setChecked(true);
+                            break;
+                        case "W":
+                            ((CheckBox)findViewById(R.id.wedCheck)).setChecked(true);
+                            break;
+                        case "Th":
+                            ((CheckBox)findViewById(R.id.thuCheck)).setChecked(true);
+                            break;
+                        case "F":
+                            ((CheckBox)findViewById(R.id.friCheck)).setChecked(true);
+                            break;
+                        case "Sa":
+                            ((CheckBox)findViewById(R.id.satCheck)).setChecked(true);
+                            break;
+                    }
+                }
+                break;
+            case "monthly":
+                monthlyRepeatRadioBtn.setChecked(true);
+                break;
+        }
     }
 
     public void updateChore(View view) {
@@ -240,8 +321,8 @@ public class AddChoreActivity extends AppCompatActivity {
         String description = descriptionField.getText().toString();
 
         //TODO: implementation for adding chore to db/list/whatever
-        final DatabaseReference choresDb = FirebaseDatabase.getInstance().getReference("chores");
-        String choreId = choresDb.push().getKey();
+        final DatabaseReference choresDb = FirebaseDatabase.getInstance().getReference("chores/"
+            + choreId);
         Map<Object, Object> newChore = new HashMap<>();
         newChore.put("name", choreName);
         newChore.put("childId", childId);
@@ -287,9 +368,9 @@ public class AddChoreActivity extends AppCompatActivity {
             recurrence.put("repeat", "monthly");
         }
         newChore.put("recurrence", recurrence);
-        Toast.makeText(getApplicationContext(), choreName + " was added...",
-            Toast.LENGTH_SHORT).show();
-        choresDb.child(choreId).setValue(newChore);
+        Toast.makeText(getApplicationContext(), choreName + " was updated...",
+                Toast.LENGTH_SHORT).show();
+        choresDb.setValue(newChore);
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
             + childId + "/chores/" + choreId);
         childDb.setValue(false);
