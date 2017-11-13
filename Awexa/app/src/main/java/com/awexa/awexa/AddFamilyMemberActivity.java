@@ -91,6 +91,7 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
             childrenRef.setValue(true);
             Toast.makeText(getApplicationContext(), familyMemberType + " " + familyMemberName + " was added...",
                     Toast.LENGTH_SHORT).show();
+            finish();
         } else if (radioFamilyMemberButton.getText().toString().equals("Parent")) {
             Parent parent = new Parent(familyMemberName);
             DatabaseReference parentRef = db.child("parents");
@@ -100,6 +101,7 @@ public class AddFamilyMemberActivity extends AppCompatActivity {
             parentsRef.setValue(true);
             Toast.makeText(getApplicationContext(), familyMemberType + " " + familyMemberName + " was added...",
                     Toast.LENGTH_SHORT).show();
+            finish();
         } else {
             Toast.makeText(getApplicationContext(), "Please select a radio button.",
                     Toast.LENGTH_SHORT).show();
