@@ -188,12 +188,12 @@ public class ChildProgressActivity extends AppCompatActivity {
                         Log.d(snapshot.toString(), "test");
                         Chore chore = snapshot.getValue(Chore.class);
 
-                        if ((chore.due == null || chore.due.before(inAWeek)) && (c.chores.get(choreId) == "complete")) {
+                        if ((chore.due == null || chore.due.before(inAWeek)) && c.chores.get(choreId).equals("completed")) {
                             numChoresForWeek[0]++;
                             weeklyBar.setMax(c.chores.keySet().size());
                             weeklyBar.setProgress(numChoresForWeek[0]);
                         }
-                        if ((chore.due == null || chore.due.before(tomorrow)) && (c.chores.get(choreId) == "complete")) {
+                        if ((chore.due == null || chore.due.before(tomorrow)) && c.chores.get(choreId).equals("completed")) {
                             numChoresForDay[0]++;
                             dailyBar.setMax(c.chores.keySet().size());
                             dailyBar.setProgress(numChoresForDay[0]);
