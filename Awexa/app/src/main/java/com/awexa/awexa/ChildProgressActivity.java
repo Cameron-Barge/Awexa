@@ -43,10 +43,13 @@ public class ChildProgressActivity extends AppCompatActivity {
     ListView choreList;
     ListView rewardsList;
     FirebaseDatabase database;
-    private ArrayAdapter<Chore> choreAdapter;
-    private ArrayAdapter<Reward> rewardAdapter;
+    private ChoreRewardAdapter choreAdapter;
+    private ChoreRewardAdapter rewardAdapter;
     List<Chore> chores = new ArrayList<>();
     List<Reward> rewards = new ArrayList<>();
+    List<String> statusList = new ArrayList<>();
+    List<Integer> purchaseList = new ArrayList<>();
+    Child c;
     AppCompatActivity thisAct = this;
     String childId;
 
@@ -119,8 +122,14 @@ public class ChildProgressActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         Log.i(TAG, "childId: " + childId);
-                        Child c = snapshot.getValue(Child.class);
+                        c = snapshot.getValue(Child.class);
                         c.setChildId(childId);
+                        for (String status : c.getChores().values()) {
+                            statusList.add(status);
+                        }
+                        for (int purchases : c.getRewards().values()) {
+                            purchaseList.add(purchases);
+                        }
                         updateView(c);
                     }
 
@@ -198,8 +207,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             chores.add(chore);
                         }
-                        choreAdapter = new ArrayAdapter<>(thisAct,
-                            R.layout.activity_listview, chores);
+                        choreAdapter = new ChoreRewardAdapter(thisAct,
+                            R.layout.activity_reward_chore_listview, chores, statusList);
                         choreList.setAdapter(choreAdapter);
                         Log.d("update", "1");
                         choreAdapter.notifyDataSetChanged();
@@ -227,8 +236,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             rewards.add(reward);
                         }
-                        rewardAdapter = new ArrayAdapter<>(thisAct,
-                            R.layout.activity_listview, rewards);
+                        rewardAdapter = new ChoreRewardAdapter(thisAct,
+                            R.layout.activity_reward_chore_listview, rewards, purchaseList);
                         rewardsList.setAdapter(rewardAdapter);
                         rewardAdapter.notifyDataSetChanged();
                     }

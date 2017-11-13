@@ -10,9 +10,8 @@ public class Child {
     String name;
     HashMap<String, String> chores; // These are chore IDs
     HashMap<String, Integer> rewards; // These are chore IDs
-    int points; // These are chore IDs
+    int points;
     String familyId;
-
     String childId;
 
     public Child() {
@@ -51,6 +50,17 @@ public class Child {
         this.rewards = rewards;
     }
 
+    public HashMap<String, String> getChores() {
+        return chores;
+    }
+
+    public HashMap<String, Integer> getRewards() {
+        return rewards;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 
     public void setPoints(int points) {
         this.points = points;
