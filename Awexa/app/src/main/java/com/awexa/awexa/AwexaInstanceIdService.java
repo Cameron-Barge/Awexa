@@ -62,8 +62,13 @@ public class AwexaInstanceIdService extends FirebaseInstanceIdService {
         // TODO: Implement this method to send token to your app server.
         SharedPreferences sp = getSharedPreferences("AWEXA_APP", 0);
         String familyId = sp.getString("familyId", "default");
-        DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
-            + familyId + "/device_ids");
-        familyDb.child(token).setValue(true);
+        if (!familyId.equals("default")) {
+            DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
+                + familyId + "/device_ids");
+            familyDb.child(token).setValue(true);
+        } else {
+            sp.edit().putString("IDToken", token).apply();
+            sp.edit().putBoolean("IDTokenUpdated", true).apply();
+        }
     }
 }

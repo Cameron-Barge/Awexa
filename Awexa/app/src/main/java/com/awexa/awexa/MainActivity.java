@@ -1,6 +1,7 @@
 package com.awexa.awexa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
         DatabaseReference familyPassRef = ref.child("/familyPass");
-        familyPassRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        familyPassRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 familyPass = dataSnapshot.getValue().toString();
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseReference parentIDRef = db.child("families/" + currentFamily + "/parents");
-        parentIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        parentIDRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseReference childRef = db.child("families/" + currentFamily + "/child_names");
-        childRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        childRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
@@ -182,6 +183,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AddFamilyMemberActivity.class));
             }
         });
+
+        SharedPreferences sp = getSharedPreferences("AWEXA_APP", 0);
+        if (sp.getBoolean("TokenIDUpdated", true)) {
+            String token = sp.getString("IDToken", "default");
+            DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
+                + currentFamily + "/device_ids");
+            familyDb.child(token).setValue(true);
+        }
     }
 
     public void showPopupWindow(View view) {
