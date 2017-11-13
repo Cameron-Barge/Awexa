@@ -130,7 +130,8 @@ public class ConfirmChoreActivity extends AppCompatActivity {
                 childDb.child("chores").child(choreId).setValue("assigned");
                 Intent intent = new Intent(ConfirmChoreActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);              }
+                startActivity(intent);
+            }
         });
     }
 }

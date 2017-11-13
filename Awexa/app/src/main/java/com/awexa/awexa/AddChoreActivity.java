@@ -292,7 +292,7 @@ public class AddChoreActivity extends AppCompatActivity {
         choresDb.child(choreId).setValue(newChore);
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
             + childId + "/chores/" + choreId);
-        childDb.setValue(false);
+        childDb.setValue("assigned");
         finish();
     }
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class Child {
     String name;
-    HashMap<String, Boolean> chores; // These are chore IDs
+    HashMap<String, String> chores; // These are chore IDs
     HashMap<String, Integer> rewards; // These are chore IDs
     int points; // These are chore IDs
     String familyId;
@@ -43,7 +43,7 @@ public class Child {
         this.familyId = familyId;
     }
 
-    public void setChores(HashMap<String, Boolean> chores) {
+    public void setChores(HashMap<String, String> chores) {
         this.chores = chores;
     }
 
