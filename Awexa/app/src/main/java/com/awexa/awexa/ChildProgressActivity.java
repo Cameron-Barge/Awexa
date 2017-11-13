@@ -43,10 +43,13 @@ public class ChildProgressActivity extends AppCompatActivity {
     ListView choreList;
     ListView rewardsList;
     FirebaseDatabase database;
-    private ArrayAdapter<Chore> choreAdapter;
-    private ArrayAdapter<Reward> rewardAdapter;
+    private ChoreRewardAdapter choreAdapter;
+    private ChoreRewardAdapter rewardAdapter;
     List<Chore> chores = new ArrayList<>();
     List<Reward> rewards = new ArrayList<>();
+    List<String> statusList = new ArrayList<>();
+    List<Integer> purchaseList = new ArrayList<>();
+    Child c;
     AppCompatActivity thisAct = this;
     String childId;
 
@@ -119,8 +122,14 @@ public class ChildProgressActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         Log.i(TAG, "childId: " + childId);
-                        Child c = snapshot.getValue(Child.class);
+                        c = snapshot.getValue(Child.class);
                         c.setChildId(childId);
+                        for (String status : c.getChores().values()) {
+                            statusList.add(status);
+                        }
+                        for (int purchases : c.getRewards().values()) {
+                            purchaseList.add(purchases);
+                        }
                         updateView(c);
                     }
 
@@ -179,12 +188,12 @@ public class ChildProgressActivity extends AppCompatActivity {
                         Log.d(snapshot.toString(), "test");
                         Chore chore = snapshot.getValue(Chore.class);
 
-                        if ((chore.due == null || chore.due.before(inAWeek)) && c.chores.get(choreId)) {
+                        if ((chore.due == null || chore.due.before(inAWeek)) && (c.chores.get(choreId) == "complete")) {
                             numChoresForWeek[0]++;
                             weeklyBar.setMax(c.chores.keySet().size());
                             weeklyBar.setProgress(numChoresForWeek[0]);
                         }
-                        if ((chore.due == null || chore.due.before(tomorrow)) && c.chores.get(choreId)) {
+                        if ((chore.due == null || chore.due.before(tomorrow)) && (c.chores.get(choreId) == "complete")) {
                             numChoresForDay[0]++;
                             dailyBar.setMax(c.chores.keySet().size());
                             dailyBar.setProgress(numChoresForDay[0]);
@@ -198,8 +207,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             chores.add(chore);
                         }
-                        choreAdapter = new ArrayAdapter<>(thisAct,
-                            R.layout.activity_listview, chores);
+                        choreAdapter = new ChoreRewardAdapter(thisAct,
+                            R.layout.activity_reward_chore_listview, chores, statusList);
                         choreList.setAdapter(choreAdapter);
                         Log.d("update", "1");
                         choreAdapter.notifyDataSetChanged();
@@ -227,8 +236,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             rewards.add(reward);
                         }
-                        rewardAdapter = new ArrayAdapter<>(thisAct,
-                            R.layout.activity_listview, rewards);
+                        rewardAdapter = new ChoreRewardAdapter(thisAct,
+                            R.layout.activity_reward_chore_listview, rewards, purchaseList);
                         rewardsList.setAdapter(rewardAdapter);
                         rewardAdapter.notifyDataSetChanged();
                     }
