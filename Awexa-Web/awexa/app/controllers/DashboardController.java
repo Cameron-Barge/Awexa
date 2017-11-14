@@ -116,18 +116,17 @@ public class DashboardController {
         FirebaseServices.updateSnapshot("families/" + session("connected"));
         List<String> parentNames = new ArrayList<String>();
         HashMap<String, Boolean> fam = (HashMap<String, Boolean>) Global.curRef.child("parents").getValue();
-        if(fam != null) {
-            Set<String> parents = fam.keySet();
-            //System.out.println(Global.curRef);
-            //System.out.println(parents);
-            FirebaseServices.updateSnapshot("parents/");
+        Set<String> parents = fam.keySet();
+        //System.out.println(Global.curRef);
+        //System.out.println(parents);
+        FirebaseServices.updateSnapshot("parents/");
 
-            for (String p : parents) {
-                //System.out.println(p);
-                //System.out.println(Global.curRef);
-                parentNames.add((String) Global.curRef.child(p).child("name").getValue());
-            }
+        for(String p : parents) {
+            //System.out.println(p);
+            //System.out.println(Global.curRef);
+            parentNames.add((String) Global.curRef.child(p).child("name").getValue());
         }
+
         //System.out.println(parentNames);
 
         return parentNames;
@@ -136,18 +135,17 @@ public class DashboardController {
         FirebaseServices.updateSnapshot("families/" + session("connected"));
         List<String> childNames = new ArrayList<String>();
         HashMap<String, Boolean> fam = (HashMap<String, Boolean>) Global.curRef.child("children").getValue();
-        if(fam != null) {
-            Set<String> kids = fam.keySet();
-            //System.out.println(Global.curRef);
-            //System.out.println(parents);
-            FirebaseServices.updateSnapshot("children/");
+        Set<String> kids = fam.keySet();
+        //System.out.println(Global.curRef);
+        //System.out.println(parents);
+        FirebaseServices.updateSnapshot("children/");
 
-            for (String p : kids) {
-                //System.out.println(p);
-                //System.out.println(Global.curRef);
-                childNames.add((String) Global.curRef.child(p).child("name").getValue());
-            }
+        for(String p : kids) {
+            //System.out.println(p);
+            //System.out.println(Global.curRef);
+            childNames.add((String) Global.curRef.child(p).child("name").getValue());
         }
+
         //System.out.println(parentNames);
 
         return childNames;
