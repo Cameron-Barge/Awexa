@@ -34,6 +34,9 @@ def linkAccount(code):
         return getReprompt(
             question("This device is already linked to an account"))
 
+    if code is None:  # TODO: Fix this, only problem if is in emulator
+        code = "1234"
+
     r = requests.get(link_endpoint(code))
     if r.status_code != 200:
         return statement(handleConnectionError(r))
