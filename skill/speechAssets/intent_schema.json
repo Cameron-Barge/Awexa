@@ -4,6 +4,7 @@
         {"intent": "AMAZON.HelpIntent"},
         {"intent": "AMAZON.StopIntent"},
         {"intent": "AMAZON.CancelIntent"},
+        {"intent": "LinkAccountIntent"},
         {
             "intent": "GetChoresIntent",
             "slots": [

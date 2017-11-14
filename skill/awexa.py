@@ -6,9 +6,8 @@ from flask_ask import Ask, question, session, statement
 
 
 ENDPOINT = 'https://awexa-4bad0.firebaseio.com/'
-device_id = 'deviceid1'  # TODO: get actual device ID
 
-SOURCE_STATE = 'source_state'
+STATE_ATTRIBUTE = 'STATE_ATTRIBUTE'
 # list of states (enum)
 NONE = 'none'
 CHORES = 'get_chores'
@@ -25,13 +24,22 @@ ask = Ask(app, '/')
 @ask.launch
 def launch():
     set_state(NONE)
+    logger.info("User ID: {}".format(user_id()))
     return question("Hello, how can I help you today?") \
         .reprompt("I missed that. How can I help you today?")
 
 
+@ask.intent("LinkAccountIntent")
+def linkAccount():
+    if linked():
+        return statement("This device is already linked to an account.")
+
+    return statement("Please link your family's account.").link_account_card()
+
+
 @ask.intent("GetChoresIntent")
 def getChores(child_name):
-    return_val = getChild(device_id, child_name)
+    return_val = getChild(child_name)
     if isinstance(return_val, statement):
         return return_val
     if isinstance(return_val, question):
@@ -41,7 +49,7 @@ def getChores(child_name):
     child_json = return_val[0]
 
     # get list(chore_id) from child_json
-    chore_id_list = [c for c, flag in child_json['chores'].iteritems() if flag]
+    chore_id_list = getChoreIdList(child_json)
 
     # get list(chore_info) from list(chore_ids)
     chores = []
@@ -60,7 +68,7 @@ def getChores(child_name):
 
 @ask.intent("GetRewardsIntent")
 def getRewards(child_name):
-    return_val = getChild(device_id, child_name)
+    return_val = getChild(child_name)
     if isinstance(return_val, statement):
         return return_val
     if isinstance(return_val, question):
@@ -94,7 +102,7 @@ def getRewards(child_name):
 
 @ask.intent("FinishChoreIntent")
 def finishChore(child_name, chore):
-    return_val = getChild(device_id, child_name)
+    return_val = getChild(child_name)
     if isinstance(return_val, statement):
         return return_val
     if isinstance(return_val, question):
@@ -105,7 +113,7 @@ def finishChore(child_name, chore):
     child_json, child_id = return_val
 
     # get list(chore_id) from child_json
-    chore_id_list = [c for c, flag in child_json['chores'].iteritems() if flag]
+    chore_id_list = getChoreIdList(child_json)
 
     # get list(chore_name) from list(chore_ids)
     chores = {}
@@ -121,7 +129,7 @@ def finishChore(child_name, chore):
     try:
         guess = guess[0]
         r = requests.put(child_endpoint(child_id, "/chores/" + chores[guess]),
-                         data='false')
+                         data='"completed"')
         if r.status_code != 200:
             return statement(handleConnectionError(r))
         else:
@@ -137,7 +145,7 @@ def finishChore(child_name, chore):
 
 @ask.intent("BuyRewardIntent")
 def buyReward(child_name, reward):
-    return_val = getChild(device_id, child_name)
+    return_val = getChild(child_name)
     if isinstance(return_val, statement):
         return return_val
     if isinstance(return_val, question):
@@ -247,11 +255,11 @@ def cancel():
 
 #### HELPERS ####
 def get_state():
-    return session.attributes.get(SOURCE_STATE)
+    return session.attributes.get(STATE_ATTRIBUTE)
 
 
 def set_state(state):
-    session.attributes[SOURCE_STATE] = state
+    session.attributes[STATE_ATTRIBUTE] = state
 
 
 def get_saved_chore():
@@ -270,13 +278,33 @@ def set_saved_reward(reward):
     session.attributes['reward'] = reward
 
 
-def getChild(device_id, child_name):
-    # get family_id from device_id
-    r = requests.get(device_endpoint(device_id))
+def user_id():
+    # user id contains periods (problem bc url), so get the unique last quartet
+    return session.user.userId.split('.')[-1]
+
+
+def linked():
+    r = requests.get(device_endpoint(user_id()))
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+
+    return r.content != "null"  # True = linked, False = not linked
+
+
+def getChoreIdList(child_json):
+    # get list(chore_id) from child_json
+    return [c for c, flag in child_json['chores'].iteritems()
+            if flag == "assigned"]
+
+
+def getChild(child_name):
+    # get family_id from user_id
+    r = requests.get(device_endpoint(user_id()))
     if r.status_code != 200:
         return statement(handleConnectionError(r))
     if r.content == "null":
-        return statement(handleUnregisteredDevice(device_id))
+        print handleUnregisteredDevice(user_id())
+        return statement(handleUnregisteredDevice(user_id()))
     family_id = r.content.replace('"', '')
 
     # get family_json from family_id
@@ -317,7 +345,7 @@ def listToAndString(itemList):
 def handleConnectionError(response):
     speech = "There was a problem accessing the database."
     logger.info('speech = {}'.format(speech))
-    logger.info('response = {}'.format(response.content))
+    logger.debug('response = {}'.format(response.content))
     print speech
     return speech
 
@@ -325,7 +353,7 @@ def handleConnectionError(response):
 def handleNoChildError(child_name, family_json):
     speech = "There was no child found for this family named " + child_name
     children = [key for key, value in family_json.iteritems()]
-    speech += " Add a child using the app or choose from these children: "
+    speech += " Add a child with the site or app, or select from these: "
     speech += listToAndString(children)
     print speech
     return speech
