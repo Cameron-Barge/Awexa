@@ -4,14 +4,11 @@ package com.awexa.awexa;
  * Created by Kath on 10/16/2017.
  */
 
-public class Parent extends Family {
+public class Parent {
     private String name;
     private String password;
 
-    public Parent() {
-        name = "";
-        password = "";
-    }
+    public Parent() { }
 
     public Parent(String name) {
         this.name = name;

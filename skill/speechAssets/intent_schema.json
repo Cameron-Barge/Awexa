@@ -1,11 +1,15 @@
 {
     "intents": [
-        {"intent": "AMAZON.YesIntent"},
-        {"intent": "AMAZON.NoIntent"},
         {"intent": "AMAZON.RepeatIntent"},
         {"intent": "AMAZON.HelpIntent"},
         {"intent": "AMAZON.StopIntent"},
         {"intent": "AMAZON.CancelIntent"},
+        {
+            "intent": "LinkAccountIntent",
+            "slots": [
+                {"name": "code", "type": "AMAZON.NUMBER"}
+            ]
+        },
         {
             "intent": "GetChoresIntent",
             "slots": [
@@ -23,6 +27,19 @@
             "slots": [
                 {"name": "child_name", "type": "AMAZON.US_FIRST_NAME"},
                 {"name": "chore", "type": "CHORES"}
+            ]
+        },
+        {
+            "intent": "BuyRewardIntent",
+            "slots": [
+                {"name": "child_name", "type": "AMAZON.US_FIRST_NAME"},
+                {"name": "reward", "type": "REWARDS"}
+            ]
+        },
+        {
+            "intent": "GetNameIntent",
+            "slots": [
+                {"name": "child_name", "type": "AMAZON.US_FIRST_NAME"}
             ]
         }
     ]
