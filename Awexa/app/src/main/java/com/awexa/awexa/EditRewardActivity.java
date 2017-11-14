@@ -116,7 +116,7 @@ public class EditRewardActivity extends AppCompatActivity {
         reward.points = Integer.parseInt(pointsEt.getText().toString());
         rewardsDb.child(rewardId).setValue(reward);
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
-            + childId + "/rewards" + rewardId);
+            + childId + "/rewards/" + rewardId);
         childDb.setValue(0);
         Toast.makeText(getApplicationContext(), reward + " was updated...",
             Toast.LENGTH_SHORT).show();

@@ -42,7 +42,6 @@ public class RewardListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        thisAct = this;
         setContentView(R.layout.activity_reward_list);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -80,6 +79,7 @@ public class RewardListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
+        thisAct = this;
         rewardsList = (ListView) findViewById(R.id.rewards_list);
         db = FirebaseDatabase.getInstance().getReference();
         if (getIntent().getExtras() != null) {
@@ -92,7 +92,7 @@ public class RewardListActivity extends AppCompatActivity {
     private void updateRewardList() {
         //get all rewards from family list of rewards
         DatabaseReference childRef = db.child("families/" + familyId + "/rewards");
-        childRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        childRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
@@ -124,7 +124,18 @@ public class RewardListActivity extends AppCompatActivity {
                                         rewardNames.add(reward);
                                         rewardAdapter = new RewardStatusListAdapter(thisAct,
                                             R.layout.activity_reward_status_listview, childId,
-                                            rewardNames, statuses);
+                                            rewardNames, statuses,
+                                            new OnCheckInterface<Reward, Boolean>() {
+                                                @Override
+                                                public void accept(Reward someReward, Boolean b) {
+                                                    DatabaseReference rewardRef = db.child("children/" + childId + "/rewards/" + someReward.rewardId);
+                                                    if (b) {
+                                                        rewardRef.setValue(0);
+                                                    } else {
+                                                        rewardRef.removeValue();
+                                                    }
+                                                }
+                                            });
                                         rewardsList.setAdapter(rewardAdapter);
                                         rewardAdapter.notifyDataSetChanged();
                                     }
@@ -147,8 +158,6 @@ public class RewardListActivity extends AppCompatActivity {
                 Log.e("rewardlistactivity", "onCancelled", databaseError.toException());
             }
         });
-        //initialize onclick of rewards to enable/disable within fam
-        //create button to navigate to marketplace
     }
 
     public void clickedCustomReward(View view) {
@@ -158,7 +167,8 @@ public class RewardListActivity extends AppCompatActivity {
     }
 
     public void clickedMarketplace(View view) {
-        startActivity(new Intent(this, MarketplaceActivity.class));
-        finish();
+        Intent intent = new Intent(this, MarketplaceActivity.class);
+        intent.putExtra("childId", childId);
+        startActivity(intent);
     }
 }

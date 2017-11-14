@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Kath on 11/13/2017.
@@ -26,9 +27,11 @@ public class RewardStatusListAdapter extends ArrayAdapter {
     private final List<Boolean> statuses;
     private final DatabaseReference db;
     private final String childId;
+    private OnCheckInterface<Reward, Boolean> onChecked;
 
     public RewardStatusListAdapter(@NonNull Activity activity, int resource, String childId,
-                                   @NonNull List<Reward> rewards, List<Boolean> statuses) {
+                                   @NonNull List<Reward> rewards, List<Boolean> statuses,
+                                   OnCheckInterface<Reward, Boolean> onChecked) {
         super(activity, resource, rewards);
         this.activity = activity;
         this.resource = resource;
@@ -36,6 +39,7 @@ public class RewardStatusListAdapter extends ArrayAdapter {
         this.statuses = statuses;
         this.db = FirebaseDatabase.getInstance().getReference();
         this.childId = childId;
+        this.onChecked = onChecked;
     }
 
     @NonNull
@@ -59,16 +63,12 @@ public class RewardStatusListAdapter extends ArrayAdapter {
 
         final Reward someReward = rewards.get(position);
         view.reward.setText(someReward.getName());
+        view.status.setOnCheckedChangeListener(null);
         view.status.setChecked(statuses.get(position));
         view.status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                DatabaseReference rewardRef = db.child("children/" + childId + "/rewards/" + someReward.rewardId);
-                if (b) {
-                    rewardRef.setValue(0);
-                } else {
-                    rewardRef.removeValue();
-                }
+                onChecked.accept(someReward, b);
             }
         });
 
