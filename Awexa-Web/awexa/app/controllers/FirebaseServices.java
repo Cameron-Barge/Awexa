@@ -17,20 +17,19 @@ public class FirebaseServices {
     public static FirebaseOptions fbOptions;
     public static boolean firebaseLoaded = initFirebase();
 
-    public FirebaseServices(){
+    public FirebaseServices() {
     }
 
+    private static boolean initFirebase() {
 
-    private static boolean initFirebase(){
-			
+        System.out.println("Apps: " + FirebaseApp.getApps().size());
 
-        System.out.println("Apps: " +  FirebaseApp.getApps().size());
-
-        if(FirebaseApp.getApps().isEmpty()){
+        if (FirebaseApp.getApps().isEmpty()) {
             System.out.println("Initialize Firebase");
-            try{
-							FileInputStream serviceAccount = new FileInputStream("conf/service-account.json");
-								fbOptions = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setDatabaseUrl("https://awexa-4bad0.firebaseio.com").build();
+            try {
+                FileInputStream serviceAccount = new FileInputStream("conf/service-account.json");
+                fbOptions = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .setDatabaseUrl("https://awexa-4bad0.firebaseio.com").build();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -47,7 +46,6 @@ public class FirebaseServices {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Global.curRef = dataSnapshot;
-
                 Global.waiting = false;
             }
 
@@ -58,49 +56,55 @@ public class FirebaseServices {
         });
 
         int count = 0;
-        while(Global.waiting){
+        while (Global.waiting) {
             count++;
-            if(count > 200){
+            if (count > 200) {
                 System.out.print(".");
                 count = 0;
             }
         }
-		}
-		
-		/**
-		 * adds object into database
-		 * @param path database reference path
-		 * @param obj obj data to be added
-		 * @return String uniquely generated key
-		 */
-		public static String pushNode(String path, Object obj) {
-			if (path != "" && obj != null) {
-				DatabaseReference nodeRef = database.getReference(path);
-				DatabaseReference newNode = nodeRef.push();
-				newNode.setValue(obj);
-				return newNode.getKey();
-			} else {
-				return "null";
-			}
-		}
+    }
 
-		/**
-		 * updates family node to firebase
-		 * @param family Family data
-		 */
-		public static void update(Family family) {
-			DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
-			Map<String, Object> familyUpdate = new HashMap<>();
-			Map<String, Object> familyMap = family.toMap();
-			familyUpdate.put("/families/" + family.getID(), familyMap);
-			familyRef.updateChildren(familyMap);
-		}
+    public static void createNode(String path, String key, Object obj) {
+        if (path != "" && obj != null) {
+            DatabaseReference nodeRef = database.getReference(path);
+            nodeRef.child(key).setValue(obj);
+        }
+    }
 
-		public static void setExists(String path, boolean exists) {
-			DatabaseReference reference = database.getReference(path);
-			reference.setValue(exists);
-		}
+    /**
+     * adds object into database
+     * @param path database reference path
+     * @param obj obj data to be added
+     * @return String uniquely generated key
+     */
+    public static String pushNode(String path, Object obj) {
+        if (path != "" && obj != null) {
+            DatabaseReference nodeRef = database.getReference(path);
+            DatabaseReference newNode = nodeRef.push();
+            newNode.setValue(obj);
+            return newNode.getKey();
+        } else {
+            return "null";
+        }
+    }
 
+    /**
+     * updates family node to firebase
+     * @param family Family data
+     */
+    public static void update(Family family) {
+        DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
+        Map<String, Object> familyUpdate = new HashMap<>();
+        Map<String, Object> familyMap = family.toMap();
+        familyUpdate.put("/families/" + family.getID(), familyMap);
+        familyRef.updateChildren(familyMap);
+    }
+
+    public static void setExists(String path, boolean exists) {
+        DatabaseReference reference = database.getReference(path);
+        reference.setValue(exists);
+    }
 
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
