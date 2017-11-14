@@ -1,4 +1,4 @@
-@(familyName: String)(parents : List[String])(kids : List[String])
+@(familyName: String)
 @dashboard{
  <!-- Service Section -->
  <section id="service" class="service sections margin-top-120">
@@ -6,7 +6,7 @@
 			<div class="row">
 					<div class="col-sm-12">
 							<div class="head_title text-center">
-									<h1>@familyName 's Dashboard</h1>
+									<h1>Dashboard</h1>
 							</div><!-- End of head title -->
 
 							<div class="main_service_area"> 
@@ -20,24 +20,12 @@
 													<div class="col-sm-5 col-sm-push-1">
 															<div class="single_service">
 																	<div class="separator2"></div>
-
-																	@if(parents != null) {
-																		@for(parent <- parents) {
-																			<a class ="btn btn-default" href ="@routes.DashboardController.parentRequest()">@parent</a>
-																		}
-																	}
-																	@if(kids != null) {
-																		@for(kid <- kids) {
-																			<a class ="btn btn-default" href ="@routes.DashboardController.childView()">@kid</a><br />
-																		}
-																	}
-
-
+																	<p>@familyName's Dashboard</p>
 																	<!-- TODO: Populate dashboard with necessary options and layout design. -->
-
-
+																	<a class ="btn btn-default" href ="@routes.DashboardController.parentRequest()">Parent View</a>
+																	<a class ="btn btn-default" href ="@routes.DashboardController.childView()">Child View</a><br />
 																	<a class ="btn btn-default" href ="@routes.LoginController.logout()">Logout</a>
-																	<a class ="btn btn-default" href ="@routes.DashboardController.addParent()">New parent</a><br />
+																	<a class ="btn btn-default" href ="@routes.DashboardController.addParent()">No parents</a><br />
 															</div>
 													</div>
 											</div>

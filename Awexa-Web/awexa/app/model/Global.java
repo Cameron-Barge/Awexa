@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot;
 public class Global {
     public static boolean waiting = true;
 
-    public static String username = "";
+    public static String familyName = "";
 
     //Login
     public static String loginUser = "";
@@ -19,7 +19,7 @@ public class Global {
     public static void reset(){
 				Global.family = null;
         Global.waiting = true;
-        Global.username = "";
+        Global.familyName = "";
         Global.loginPass = "";
         Global.loginUser = "";
         Global.auth = false;

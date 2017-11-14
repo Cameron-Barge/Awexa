@@ -13,16 +13,17 @@ public class Family {
 		public ArrayList<Child> children;
 		private ArrayList<String> childrenIDs;
 		public ArrayList<Chore> chores;
-		public ArrayList<String> parents;
+		public ArrayList<Parent> parents;
 		public ArrayList<Reward> rewards;
     public String familyPass;
-		private String familyName;
-	
+		public String familyName;
+		private String id;
+
     public Family(){
 			
     }
 
-    public Family(String familyName, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass, ArrayList<String> parents, ArrayList<Reward> rewards) {
+    public Family(String familyName, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass, ArrayList<Parent> parents, ArrayList<Reward> rewards) {
         this.children = children;
 				this.chores = chores;
         this.parents = parents;
@@ -36,13 +37,13 @@ public class Family {
 			this.familyPass = familyPass;
 			children = new ArrayList<Child>();
 			chores = new ArrayList<Chore>();
-			parents = new ArrayList<String>();
+			parents = new ArrayList<Parent>();
 			rewards = new ArrayList<Reward>();
 			childrenIDs = new ArrayList<String>();
 		}
 
     public void print(){
-        System.out.println("Username: " + familyName);
+        System.out.println("Family: " + familyName);
         System.out.println("Children:");
         for(Child c : children) {
             System.out.println(c);
@@ -51,14 +52,14 @@ public class Family {
         for(Chore c: chores) {
             System.out.println(c);
         }
+        System.out.println("Parents");
+        for(Parent p : parents) {
+        System.out.println(p);
+    }
         System.out.println("Rewards");
         for(Reward r : rewards) {
         System.out.println(r);
     }
-	}
-
-	public String getFamilyName() {
-		return familyName;
 	}
 
 	public void addChild(Child child) {
@@ -76,15 +77,16 @@ public class Family {
 		rewards.add(reward);
 	}
 
-	public void addParent(String parent) {
+	public void addParent(Parent parent) {
 		parents.add(parent);
 	}
 
+	public String getID() {
+		return id;
+	}
 
-	public void addParent(Parent parent) {
-		if (parent.getID() != null) {
-			parents.add(parent.getID());
-		}
+	public void setID(String id) {
+		this.id = id;
 	}
 
 	public String toString() {
@@ -96,7 +98,7 @@ public class Family {
 		resultMap.put("familyName", familyName);
 		resultMap.put("children", childrenIDs);
 		resultMap.put("parents", parents);
-		// resultMap.put("child_names", children);
+		resultMap.put("child_names", children);
 		resultMap.put("familyPass", familyPass);
 		return resultMap;
 	}

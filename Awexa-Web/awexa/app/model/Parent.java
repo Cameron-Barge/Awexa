@@ -5,31 +5,34 @@ import java.util.HashMap;
 public class Parent {
 		public String familyId;
 		private String id;
-		private String firstName;
-		private String lastName;
-		public String pass;
+		public String name;
+		private String pass;
 		
 		public Parent() {
 
 		}
 
-    public Parent(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Parent(String name, String pass){
+        this.pass = pass;
+        this.name = name;
 		}
 
-		public Parent(String firstName, String lastName, String familyId){
-			this.firstName = firstName;
-			this.lastName = lastName;
+		public Parent(String name, String pass, String familyId){
+			this.pass = pass;
+			this.name = name;
 			this.familyId = familyId;
 	}
+		
+		public Parent(String name) {
+			this.name = name;
+		}
 
     public String toString(){
-        return id;
+        return name;
 		}
 		
 		public String getName() {
-			return firstName + " " + lastName;
+			return name;
 		}
 
 		public String getID() {
@@ -43,11 +46,10 @@ public class Parent {
 		public String getFamilyId() {
 			return familyId;
 		}
-		
 
 		public Map<String, Object> toMap() {
 			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("name", firstName + " " + lastName);
+			resultMap.put("name", name);
 			resultMap.put("familyId", familyId);
 			resultMap.put("pass", pass);
 			return resultMap;
