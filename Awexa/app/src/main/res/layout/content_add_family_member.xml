@@ -41,7 +41,7 @@
             android:layout_weight="0.00"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Family Member Name" />
+            android:hint="Family Member Name" />
 
         <TextView
             android:id="@+id/familyMemberNameWarning"

@@ -1,6 +1,7 @@
 package com.awexa.awexa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference ref;
     public List<String> family = new ArrayList<>();
     public List<String> parents = new ArrayList<>();
+    public List<String> childIds = new ArrayList<>();
     public String familyPass = "";
     public boolean validParent = false;
     ArrayAdapter adapter = null;
@@ -89,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
         DatabaseReference familyPassRef = ref.child("/familyPass");
-        familyPassRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        familyPassRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 familyPass = dataSnapshot.getValue().toString();
@@ -103,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
-        
+
         DatabaseReference parentIDRef = db.child("families/" + currentFamily + "/parents");
-        parentIDRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        parentIDRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot parentSnapshot) {
                             family.add((String) parentSnapshot.getValue());
                             parents.add((String) parentSnapshot.getValue());
+                            Log.i(TAG, "parents array size: " + String.valueOf(parents.size()));
                             adapter.notifyDataSetChanged();
                         }
                         @Override
@@ -131,11 +134,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseReference childRef = db.child("families/" + currentFamily + "/child_names");
-        childRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        childRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     family.add(singleSnapshot.getKey());
+                    childIds.add((String) singleSnapshot.getValue());
+                    Log.i(TAG, (String) singleSnapshot.getValue());
+                    Log.i(TAG, "childIds size: " + String.valueOf(childIds.size()));
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -157,11 +163,13 @@ public class MainActivity extends AppCompatActivity {
                     if (validParent) {
                         Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
                         intent.putExtra("name", name);
+                        intent.putExtra("childId", childIds.get(position));
                         intent.putExtra("validParent", validParent);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(MainActivity.this, ChildProgressActivity.class);
                         intent.putExtra("name", name);
+                        intent.putExtra("childId", childIds.get(position));
                         startActivity(intent);
                     }
                 }
@@ -175,6 +183,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AddFamilyMemberActivity.class));
             }
         });
+
+        SharedPreferences sp = getSharedPreferences("AWEXA_APP", 0);
+        if (sp.getBoolean("TokenIDUpdated", true)) {
+            String token = sp.getString("IDToken", "default");
+            DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
+                + currentFamily + "/device_ids");
+            familyDb.child(token).setValue(true);
+        }
     }
 
     public void showPopupWindow(View view) {

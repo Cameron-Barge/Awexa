@@ -86,29 +86,29 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = mPassword.getText().toString();
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    newUser = false;
-                                    Log.d(TAG, "signInWithEmail:success");
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    try {
-                                        throw task.getException();
-                                    } catch (FirebaseAuthInvalidUserException e) {
-                                        mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString());
-                                        toastMessage("User created successfully...");
-                                        newUser = true;
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        newUser = false;
+                                        Log.d(TAG, "signInWithEmail:success");
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                        try {
+                                            throw task.getException();
+                                        } catch (FirebaseAuthInvalidUserException e) {
+                                            mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString());
+                                            toastMessage("User created successfully...");
+                                            newUser = true;
 
-                                    } catch (Exception e) {
-                                        Log.e(TAG, e.getMessage());
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.getMessage());
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
                 }else{
                     toastMessage("You didn't fill in all of the fields.");
                 }

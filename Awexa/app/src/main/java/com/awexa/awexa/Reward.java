@@ -4,9 +4,11 @@ package com.awexa.awexa;
  * Created by Kath on 10/16/2017.
  */
 
-public class Reward extends Family {
-    private String name;
-    private String description;
+public class Reward {
+    String name;
+    String description;
+    String rewardId;
+    int points;
 
     public Reward() {
         name = "";
@@ -27,15 +29,33 @@ public class Reward extends Family {
         return name;
     }
 
+    public void setRewardId(String rewardId) {
+        this.rewardId = rewardId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public String getDescription() {
-        return name;
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof Reward) && ((Reward) other).rewardId.equals(this.rewardId);
     }
 }

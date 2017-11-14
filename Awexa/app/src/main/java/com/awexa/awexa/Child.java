@@ -1,23 +1,29 @@
 package com.awexa.awexa;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by Kath on 10/16/2017.
  */
 
 public class Child {
-    private String name;
-    private Map<String, Boolean> chores; // These are chore IDs
-    private Map<String, Integer> rewards; // These are reward IDs
-    private int points;
-    private String familyId;
+    String name;
+    HashMap<String, String> chores; // These are chore IDs
+    HashMap<String, Integer> rewards; // These are chore IDs
+    int points;
+    String familyId;
+    String childId;
 
-    public Child() { }
+    public Child() {
+        chores = new HashMap<>();
+        rewards = new HashMap<>();
+    }
 
     public Child(String name, String familyId) {
         this.name = name;
         this.familyId = familyId;
+        chores = new HashMap<>();
+        rewards = new HashMap<>();
     }
 
     public String getName() {
@@ -28,20 +34,28 @@ public class Child {
         this.name = name;
     }
 
-    public Map<String, Boolean> getChores() {
-        return chores;
+    public void setChildId(String childId) {
+        this.childId = childId;
     }
 
-    public void setChores(Map<String, Boolean> chores) {
+    public void setFamilyId(String familyId) {
+        this.familyId = familyId;
+    }
+
+    public void setChores(HashMap<String, String> chores) {
         this.chores = chores;
     }
 
-    public Map<String, Integer> getRewards() {
-        return rewards;
+    public void setRewards(HashMap<String, Integer> rewards) {
+        this.rewards = rewards;
     }
 
-    public void setRewards(Map<String, Integer> rewards) {
-        this.rewards = rewards;
+    public HashMap<String, String> getChores() {
+        return chores;
+    }
+
+    public HashMap<String, Integer> getRewards() {
+        return rewards;
     }
 
     public int getPoints() {
@@ -52,11 +66,13 @@ public class Child {
         this.points = points;
     }
 
-    public String getFamilyId() {
-        return familyId;
+    @Override
+    public String toString() {
+        return this.name;
     }
 
-    public void setFamilyId(String familyId) {
-        this.familyId = familyId;
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof Child) && ((Child) other).childId.equals(this.childId);
     }
 }
