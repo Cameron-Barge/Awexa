@@ -46,6 +46,7 @@ public class ChildProgressActivity extends AppCompatActivity {
     private RewardAdapter rewardAdapter;
     List<Chore> chores = new ArrayList<>();
     List<Reward> rewards = new ArrayList<>();
+    List<Integer> rewardCounts = new ArrayList<>();
     List<String> statusList = new ArrayList<>();
     List<Integer> purchaseList = new ArrayList<>();
     Child c;
@@ -232,11 +233,13 @@ public class ChildProgressActivity extends AppCompatActivity {
                             int index = rewards.indexOf(reward);
                             rewards.remove(index);
                             rewards.add(index, reward);
+                            rewardCounts.add(index, c.rewards.get(reward.rewardId));
                         } else {
                             rewards.add(reward);
+                            rewardCounts.add(c.rewards.get(reward.rewardId));
                         }
                         rewardAdapter = new RewardAdapter(thisAct,
-                            R.layout.activity_reward_chore_listview, rewards);
+                            R.layout.activity_reward_chore_listview, rewards, rewardCounts);
                         rewardsList.setAdapter(rewardAdapter);
                         rewardAdapter.notifyDataSetChanged();
                     }
