@@ -86,6 +86,8 @@ public class Family {
 			parents.add(parent.getID());
 		}
 
+	public String toString() {
+		return name;
 	}
 
 	public Map<String, Object> toMap() {
