@@ -3,10 +3,10 @@ package com.awexa.awexa;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +23,8 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class RewardListActivity extends AppCompatActivity {
@@ -152,5 +149,16 @@ public class RewardListActivity extends AppCompatActivity {
         });
         //initialize onclick of rewards to enable/disable within fam
         //create button to navigate to marketplace
+    }
+
+    public void clickedCustomReward(View view) {
+        Intent intent = new Intent(this, AddRewardActivity.class);
+        intent.putExtra("childId", childId);
+        startActivity(intent);
+    }
+
+    public void clickedMarketplace(View view) {
+        startActivity(new Intent(this, MarketplaceActivity.class));
+        finish();
     }
 }

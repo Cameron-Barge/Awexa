@@ -23,6 +23,7 @@
     <string name="title_activity_edit_reward">Edit Reward</string>
     <string name="title_activity_child_progress">Child\'s Progress</string>
     <string name="title_activity_confirm_chore">Confirm Chore Completion</string>
+    <string name="title_activity_marketplace">Marketplace</string>
     <string name="action_settings">Settings</string>
     <string name="child_progress_title">%1$s\'s Progress</string>
     <string-array name="dummy_chores">
@@ -104,7 +105,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value"/>
+    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
@@ -122,4 +123,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="custom_reward">Add Custom Reward</string>
+    <string name="marketplace">Marketplace</string>
 </resources>

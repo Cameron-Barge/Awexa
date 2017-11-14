@@ -19,20 +19,37 @@
         layout="@layout/content_reward_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_input_add"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="18dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="15dp" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/customRewardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickedCustomReward"
+            android:text="@string/custom_reward"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="463dp" />
+
+        <Button
+            android:id="@+id/marketplaceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickedMarketplace"
+            android:text="@string/marketplace" />
+
+    </LinearLayout>
 
 </RelativeLayout>
 
