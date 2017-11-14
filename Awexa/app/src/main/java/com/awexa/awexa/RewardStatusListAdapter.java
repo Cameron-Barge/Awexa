@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -20,14 +24,18 @@ public class RewardStatusListAdapter extends ArrayAdapter {
     private final int resource;
     private final List<Reward> rewards;
     private final List<Boolean> statuses;
+    private final DatabaseReference db;
+    private final String childId;
 
-    public RewardStatusListAdapter(@NonNull Activity activity, int resource,
+    public RewardStatusListAdapter(@NonNull Activity activity, int resource, String childId,
                                    @NonNull List<Reward> rewards, List<Boolean> statuses) {
         super(activity, resource, rewards);
         this.activity = activity;
         this.resource = resource;
         this.rewards = rewards;
         this.statuses = statuses;
+        this.db = FirebaseDatabase.getInstance().getReference();
+        this.childId = childId;
     }
 
     @NonNull
@@ -49,9 +57,20 @@ public class RewardStatusListAdapter extends ArrayAdapter {
             view = (ViewHolder) rowView.getTag();
         }
 
-        Reward someReward = rewards.get(position);
+        final Reward someReward = rewards.get(position);
         view.reward.setText(someReward.getName());
         view.status.setChecked(statuses.get(position));
+        view.status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                DatabaseReference rewardRef = db.child("children/" + childId + "/rewards/" + someReward.rewardId);
+                if (b) {
+                    rewardRef.setValue(0);
+                } else {
+                    rewardRef.removeValue();
+                }
+            }
+        });
 
         return rowView;
     }

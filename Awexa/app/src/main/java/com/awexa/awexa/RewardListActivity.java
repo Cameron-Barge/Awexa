@@ -126,7 +126,8 @@ public class RewardListActivity extends AppCompatActivity {
                                         statuses.add(enabledRewardIds.contains(rewardId));
                                         rewardNames.add(reward);
                                         rewardAdapter = new RewardStatusListAdapter(thisAct,
-                                            R.layout.activity_reward_status_listview, rewardNames, statuses);
+                                            R.layout.activity_reward_status_listview, childId,
+                                            rewardNames, statuses);
                                         rewardsList.setAdapter(rewardAdapter);
                                         rewardAdapter.notifyDataSetChanged();
                                     }

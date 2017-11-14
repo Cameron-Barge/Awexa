@@ -178,7 +178,7 @@ public class ChildProgressActivity extends AppCompatActivity {
         calendar.setTime(now);
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         final Date tomorrow = calendar.getTime();
-
+        chores = new ArrayList<>();
         for (final String choreId: c.chores.keySet()) {
             Log.d("chore", choreId);
             choresDb.child(choreId)
@@ -200,13 +200,7 @@ public class ChildProgressActivity extends AppCompatActivity {
                         }
 
                         chore.setChoreId(choreId);
-                        if (chores.contains(chore)) {
-                            int index = chores.indexOf(chore);
-                            chores.remove(index);
-                            chores.add(index, chore);
-                        } else {
-                            chores.add(chore);
-                        }
+                        chores.add(chore);
                         choreAdapter = new ChoreAdapter(thisAct,
                             R.layout.activity_reward_chore_listview, chores, statusList);
                         choreList.setAdapter(choreAdapter);
@@ -221,7 +215,7 @@ public class ChildProgressActivity extends AppCompatActivity {
         }
 
         DatabaseReference rewardsDb = database.getReference("rewards");
-
+        rewards = new ArrayList<>();
         for (final String rewardId: c.rewards.keySet()) {
             rewardsDb.child(rewardId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -229,15 +223,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         Reward reward = snapshot.getValue(Reward.class);
                         reward.setRewardId(rewardId);
-                        if (rewards.contains(reward)) {
-                            int index = rewards.indexOf(reward);
-                            rewards.remove(index);
-                            rewards.add(index, reward);
-                            rewardCounts.add(index, c.rewards.get(reward.rewardId));
-                        } else {
-                            rewards.add(reward);
-                            rewardCounts.add(c.rewards.get(reward.rewardId));
-                        }
+                        rewards.add(reward);
+                        rewardCounts.add(c.rewards.get(reward.rewardId));
                         rewardAdapter = new RewardAdapter(thisAct,
                             R.layout.activity_reward_chore_listview, rewards, rewardCounts);
                         rewardsList.setAdapter(rewardAdapter);
