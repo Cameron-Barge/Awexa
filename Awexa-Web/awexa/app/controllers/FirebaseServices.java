@@ -21,7 +21,6 @@ public class FirebaseServices {
     }
 
     private static boolean initFirebase() {
-
         System.out.println("Apps: " + FirebaseApp.getApps().size());
 
         if (FirebaseApp.getApps().isEmpty()) {
@@ -94,10 +93,10 @@ public class FirebaseServices {
      * @param family Family data
      */
     public static void update(Family family) {
-        DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
+        DatabaseReference familyRef = database.getReference("/families/" + family.getFamilyName() + "/");
         Map<String, Object> familyUpdate = new HashMap<>();
         Map<String, Object> familyMap = family.toMap();
-        familyUpdate.put("/families/" + family.getID(), familyMap);
+        familyUpdate.put("/families/" + family.getFamilyName(), familyMap);
         familyRef.updateChildren(familyMap);
     }
 

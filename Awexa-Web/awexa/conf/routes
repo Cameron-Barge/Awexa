@@ -6,8 +6,6 @@
 GET     /                            controllers.HomeController.index
 GET	    /postLogin				     controllers.HomeController.getHome
 
-
-
 POST    /login                       controllers.LoginController.login
 GET     /login                       controllers.LoginController.getLogin
 
@@ -23,7 +21,7 @@ GET     /child                       controllers.DashboardController.childView
 GET     /newparent                   controllers.DashboardController.addParent
 
 GET     /parent                      controllers.DashboardController.parentView
-POST		/parent												controllers.DashboardController.saveNewData
+POST	/parent						 controllers.DashboardController.saveNewData
 
 GET     /parentauth                  controllers.DashboardController.parentRequest
 POST    /parentauth                  controllers.DashboardController.parentAuth

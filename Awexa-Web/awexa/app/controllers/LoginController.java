@@ -8,7 +8,6 @@ import model.*;
 import play.data.Form;
 import play.data.FormFactory;
 
-
 import play.mvc.*;
 import javax.inject.*;
 import java.io.FileInputStream;
@@ -19,13 +18,12 @@ import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
 import static play.mvc.Results.redirect;
 
-
 public class LoginController {
-    @Inject FormFactory formFactory;
+    @Inject
+    FormFactory formFactory;
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private String familyRef = "";
-
 
     public Result login() {
         System.out.println("?");
@@ -42,9 +40,9 @@ public class LoginController {
         FirebaseServices.updateSnapshot("families/" + Global.familyName);
         System.out.println("2");
 
-        if(Global.curRef.getValue() != null) {
+        if (Global.curRef.getValue() != null) {
             //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());
-            if(Global.loginPass.equals(Global.curRef.child("familyPass").getValue())){
+            if (Global.loginPass.equals(Global.curRef.child("familyPass").getValue())) {
                 Global.auth = true;
             } else {
                 Global.auth = false;
@@ -53,44 +51,40 @@ public class LoginController {
             Global.auth = false;
         }
 
-
         System.out.println("Authenticated: " + Global.auth);
 
         // Login Authenticated
         Global.familyName = Global.loginUser;
         Global.loginUser = "";
         Global.loginPass = "";
-        if(Global.auth) {
+        if (Global.auth) {
             Global.auth = false;
             session("connected", Global.familyName);
             return redirect(routes.DashboardController.postLogin());
-        }
-        else {
+        } else {
             session().clear();
             return ok(views.html.login.render("Login", "Incorrect Login", false));
         }
     }
 
-
-    public void updateName(String name){
+    public void updateName(String name) {
         System.out.println("updated name");
         familyRef = name;
     }
 
     public Result getLogin() {
-        if(session("connected") != null)
+        if (session("connected") != null)
             return redirect(routes.DashboardController.postLogin());
 
-        return ok(views.html.login.render("Login","", false));
+        return ok(views.html.login.render("Login", "", false));
 
     }
 
-
     public Result getRegistration() {
-        if(session("connected") != null)
+        if (session("connected") != null)
             return redirect(routes.DashboardController.postLogin());
 
-        return ok(views.html.register.render("Register","", session("connected") != null));
+        return ok(views.html.register.render("Register", "", session("connected") != null));
     }
 
     public Result logout() {
@@ -103,44 +97,42 @@ public class LoginController {
 
         Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
-				/*
+        /*
         System.out.println(data.get("user"));
         System.out.println(data.get("pass"));
-				System.out.println(data.get("pass2"));
-				*/
+        System.out.println(data.get("pass2"));
+        */
 
-        if(!data.get("pass").equals(data.get("pass2")))
-            return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
+        if (!data.get("pass").equals(data.get("pass2")))
+            return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
 
-
-				Global.familyName = data.get("user");
-				DatabaseReference familyRef = database.getReference("families");
-				familyRef.setValue(Global.familyName);
+        Global.familyName = data.get("user");
+        DatabaseReference familyRef = database.getReference("families");
+        familyRef.setValue(Global.familyName);
         FirebaseServices.updateSnapshot("families/" + Global.familyName);
 
-
-        if(Global.curRef.getValue() != null) {
+        if (Global.curRef.getValue() != null) {
             Global.familyName = "";
-            return ok(views.html.register.render("Register","Family Name already exists",session("connected") != null));
+            return ok(
+                    views.html.register.render("Register", "Family Name already exists", session("connected") != null));
         }
 
-				Global.auth = true;
+        Global.auth = true;
         return ok(views.html.newparent.render("Let's get your account set up!"));
-		}
-		
-		public Result register() {
-			Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
-			Map<String, String> data = loginForm.rawData();
+    }
 
-			if(!data.get("pass").equals(data.get("pass2"))) {
-				return ok(views.html.register.render("Register","Passwords do not match", session("connected") != null));
-			} else {
-				Family family = new Family(data.get("user"), data.get("pass"));
-				String familyKey = FirebaseServices.pushNode("/families", family);
-				family.setID(familyKey);
-				Global.family = family;
-				return ok(views.html.newparent.render("Let's get your account set up!"));
-			}
-		}
+    public Result register() {
+        Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
+        Map<String, String> data = loginForm.rawData();
+
+        if (!data.get("pass").equals(data.get("pass2"))) {
+            return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
+        } else {
+            Family family = new Family(data.get("user"), data.get("pass"));
+            FirebaseServices.update(family);
+            Global.family = family;
+            return ok(views.html.newparent.render("Let's get your account set up!"));
+        }
+    }
 
 }

@@ -57,9 +57,6 @@ public class DashboardController {
     }
 
     public Result parentAuth() {
-        if (session("connected") == null)
-            return redirect(routes.HomeController.index());
-
         return ok(views.html.parentview.render());
     }
 
@@ -81,8 +78,8 @@ public class DashboardController {
         Form<Child> newDataForm = formFactory.form(Child.class).bindFromRequest();
         Map<String, String> data = newDataForm.rawData();
         Child child = new Child(data.get("childName"), Global.family.getFamilyName());
-        Parent parent = new Parent(data.get("parentFirstName"), data.get("parentLastName"),
-                Global.family.getFamilyName());
+        Parent parent = new Parent(data.get("parentFirstName"), data.get("parentLastName"));
+        String familyKey = Global.family.getID();
         String childKey = FirebaseServices.pushNode("children/", child);
         child.setID(childKey);
         String parentKey = FirebaseServices.pushNode("parents/", parent);
