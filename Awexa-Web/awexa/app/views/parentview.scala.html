@@ -11,15 +11,26 @@
 									<div class="main_service_area"> 
 											<div class="single_service_area">
 													<div class="row">
-															<div class="col-sm-6">
-																	<div class="signle_service_left">
-																			<img src="assets/images/service4.jpg" alt="" />
-																	</div>
+														  <!-- TODO: organize table styling in main.css -->
+															<div class="col-sm-6 table-responsive" style="width:100%">
+																	<h3>Chores</h3>
+																	<table class="table-bordered table-striped table-hover" style="width:100%">
+																		<tr>
+																			<th>Name</th>
+																			<th>Description</th>
+																			<th>Points</th>
+																		</tr>
+																		<tr>
+																			<td>choreName</td>
+																			<td>A brief description.</td>
+																			<td>0</td>
+																		</tr>
+																	</table>
 															</div>
 															<div class="col-sm-5 col-sm-push-1">
 																	<div class="single_service">
 																			<div class="separator2"></div>
-																			<p>Parent View</p>
+																			<h5>Parent View</h5>
 																			<a class ="btn btn-default" href ="@routes.DashboardController.addChore()"> New Chore </a>
 																			<a class ="btn btn-default" href ="@routes.DashboardController.addReward()"> New Reward </a>
 																			<br />

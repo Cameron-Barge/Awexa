@@ -4,7 +4,7 @@
 
 # An example controller showing a sample home page
 GET     /                            controllers.HomeController.index
-GET	    /postLogin				     controllers.HomeController.getHome
+GET	    /postLogin				     controllers.DashboardController.postLogin
 
 
 
@@ -23,13 +23,16 @@ GET     /child                       controllers.DashboardController.childView
 GET     /newparent                   controllers.DashboardController.addParent
 
 GET     /parent                      controllers.DashboardController.parentView
-POST		/parent												controllers.DashboardController.saveNewData
+POST	/parent						 controllers.DashboardController.saveNewData
+
 
 GET     /parentauth                  controllers.DashboardController.parentRequest
 POST    /parentauth                  controllers.DashboardController.parentAuth
 
 GET     /newchore                    controllers.DashboardController.addChore
+POST		/newchore										 controllers.DashboardController.submitChore
 
 GET     /newreward                   controllers.DashboardController.addReward
+POST		/newreward									 controllers.DashboardController.submitReward
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

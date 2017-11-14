@@ -26,7 +26,8 @@
 																	<!-- TODO: Plan form to take necessary user data before account is available for use -->
 																	<form class ="form-horizontal" role ="form" action ="@CSRF(routes.DashboardController.saveNewData())" method="post">
 																		<div class ="form-group">
-																				<input type="text"  class="form-control" name="parentName" placeholder="Your Name">
+																			<input type="text"  class="form-control" name="parentFirstName" placeholder="Your First Name">
+																			<input type="text"  class="form-control" name="parentLastName" placeholder="Your Last Name">
 																			<input type="text"  class="form-control" name="childName" placeholder="Your Child's Name">
 																		</div>
 																		<div class="form-group">
