@@ -1,38 +1,55 @@
 @dashboard{
-		 <!-- Service Section -->
-		 <section id="service" class="service sections margin-top-120">
-			<div class="container">
-					<div class="row">
-							<div class="col-sm-12">
-									<div class="head_title text-center">
-											<h1>Dashboard</h1>
-									</div><!-- End of head title -->
-		
-									<div class="main_service_area"> 
-											<div class="single_service_area">
-													<div class="row">
-															<div class="col-sm-6">
-																	<div class="signle_service_left">
-																			<img src="assets/images/service4.jpg" alt="" />
-																	</div>
-															</div>
-															<div class="col-sm-5 col-sm-push-1">
-																	<div class="single_service">
-																			<div class="separator2"></div>
-																			<p>Parent View</p>
-																			<a class ="btn btn-default" href ="@routes.DashboardController.addChore()"> New Chore </a>
-																			<a class ="btn btn-default" href ="@routes.DashboardController.addReward()"> New Reward </a>
-																			<br />
-																			<a class ="btn btn-default" href ="@routes.DashboardController.postLogin()"> Return </a>
-																			<a class ="btn btn-default" href ="@routes.LoginController.logout()"> Logout </a>
-																			<br />
-																	</div>
-															</div>
-													</div>
-											</div><!-- End of single service area -->
-									</div>
-							</div><!-- End of col-sm-12 -->
-					</div><!-- End of row -->
-			</div><!-- End of Container -->
-		</section><!-- End of Service Section -->
+<!-- Service Section -->
+<section id="service" class="service sections margin-top-120">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="head_title text-center">
+					<h1>Dashboard</h1>
+				</div>
+				<!-- End of head title -->
+
+				<div class="main_service_area">
+					<div class="single_service_area">
+						<div class="row">
+							<!-- TODO: organize table styling in main.css -->
+							<div class="col-sm-6 table-responsive" style="width:100%">
+								<h3>Chores</h3>
+								<table class="table-bordered table-striped table-hover" style="width:100%">
+									<tr>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Points</th>
+									</tr>
+									<tr>
+										<td>choreName</td>
+										<td>A brief description.</td>
+										<td>0</td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-sm-5 col-sm-push-1">
+								<div class="single_service">
+									<div class="separator2"></div>
+									<h5>Parent View</h5>
+									<a class="btn btn-default" href="@routes.DashboardController.addChore()"> New Chore </a>
+									<a class="btn btn-default" href="@routes.DashboardController.addReward()"> New Reward </a>
+									<br />
+									<a class="btn btn-default" href="@routes.DashboardController.postLogin()"> Return </a>
+									<a class="btn btn-default" href="@routes.LoginController.logout()"> Logout </a>
+									<br />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End of single service area -->
+				</div>
+			</div>
+			<!-- End of col-sm-12 -->
+		</div>
+		<!-- End of row -->
+	</div>
+	<!-- End of Container -->
+</section>
+<!-- End of Service Section -->
 }
