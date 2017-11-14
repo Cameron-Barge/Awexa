@@ -40,8 +40,8 @@ public class RewardAdapter extends ArrayAdapter {
             rowView = inflater.inflate(resource, null);
 
             view = new ViewHolder();
-            view.choreOrReward = (TextView) rowView.findViewById(R.id.choreOrReward);
-            view.statusOrPurchases = (TextView) rowView.findViewById(R.id.statusOrPurchases);
+            view.reward = (TextView) rowView.findViewById(R.id.choreOrReward);
+            view.purchaseCount = (TextView) rowView.findViewById(R.id.statusOrPurchases);
 
             rowView.setTag(view);
         } else {
@@ -49,14 +49,14 @@ public class RewardAdapter extends ArrayAdapter {
         }
 
         Reward someReward = (Reward) rewards.get(position);
-        view.choreOrReward.setText(someReward.getName());
-        view.statusOrPurchases.setText(String.valueOf(rewardCounts.get(position)));
+        view.reward.setText(someReward.getName());
+        view.purchaseCount.setText(String.valueOf(rewardCounts.get(position)));
 
         return rowView;
     }
 
     protected static class ViewHolder {
-        protected TextView choreOrReward;
-        protected TextView statusOrPurchases;
+        protected TextView reward;
+        protected TextView purchaseCount;
     }
 }
