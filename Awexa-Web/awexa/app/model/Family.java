@@ -16,23 +16,23 @@ public class Family {
 		public ArrayList<String> parents;
 		public ArrayList<Reward> rewards;
     public String familyPass;
-		private String username;
-
+		private String familyName;
+	
     public Family(){
 			
     }
 
-    public Family(String username, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass, ArrayList<String> parents, ArrayList<Reward> rewards) {
+    public Family(String familyName, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass, ArrayList<String> parents, ArrayList<Reward> rewards) {
         this.children = children;
 				this.chores = chores;
         this.parents = parents;
         this.rewards = rewards;
 				this.familyPass = familyPass;
-        this.username = username;
+        this.familyName = familyName;
 		}
 		
-		public Family(String username, String familyPass) {
-			this.username = username;
+		public Family(String familyName, String familyPass) {
+			this.familyName = familyName;
 			this.familyPass = familyPass;
 			children = new ArrayList<Child>();
 			chores = new ArrayList<Chore>();
@@ -42,7 +42,7 @@ public class Family {
 		}
 
     public void print(){
-        System.out.println("Username: " + username);
+        System.out.println("Username: " + familyName);
         System.out.println("Children:");
         for(Child c : children) {
             System.out.println(c);
@@ -57,8 +57,8 @@ public class Family {
     }
 	}
 
-	public String getUsername() {
-		return username;
+	public String getFamilyName() {
+		return familyName;
 	}
 
 	public void addChild(Child child) {
@@ -85,13 +85,15 @@ public class Family {
 		if (parent.getID() != null) {
 			parents.add(parent.getID());
 		}
+	}
 
 	public String toString() {
-		return name;
+		return familyName;
 	}
 
 	public Map<String, Object> toMap() {
 		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("familyName", familyName);
 		resultMap.put("children", childrenIDs);
 		resultMap.put("parents", parents);
 		// resultMap.put("child_names", children);

@@ -97,10 +97,10 @@ public class FirebaseServices {
 		 * @param family Family data
 		 */
 		public static void update(Family family) {
-			DatabaseReference familyRef = database.getReference("/families/" + family.getUsername() + "/");
+			DatabaseReference familyRef = database.getReference("/families/" + family.getFamilyName() + "/");
 			Map<String, Object> familyUpdate = new HashMap<>();
 			Map<String, Object> familyMap = family.toMap();
-			familyUpdate.put("/families/" + family.getUsername(), familyMap);
+			familyUpdate.put("/families/" + family.getFamilyName(), familyMap);
 			familyRef.updateChildren(familyMap);
 		}
 
