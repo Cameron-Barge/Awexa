@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,8 +42,8 @@ public class ChildProgressActivity extends AppCompatActivity {
     ListView choreList;
     ListView rewardsList;
     FirebaseDatabase database;
-    private ChoreRewardAdapter choreAdapter;
-    private ChoreRewardAdapter rewardAdapter;
+    private ChoreAdapter choreAdapter;
+    private RewardAdapter rewardAdapter;
     List<Chore> chores = new ArrayList<>();
     List<Reward> rewards = new ArrayList<>();
     List<String> statusList = new ArrayList<>();
@@ -207,7 +206,7 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             chores.add(chore);
                         }
-                        choreAdapter = new ChoreRewardAdapter(thisAct,
+                        choreAdapter = new ChoreAdapter(thisAct,
                             R.layout.activity_reward_chore_listview, chores, statusList);
                         choreList.setAdapter(choreAdapter);
                         Log.d("update", "1");
@@ -236,8 +235,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                         } else {
                             rewards.add(reward);
                         }
-                        rewardAdapter = new ChoreRewardAdapter(thisAct,
-                            R.layout.activity_reward_chore_listview, rewards, purchaseList);
+                        rewardAdapter = new RewardAdapter(thisAct,
+                            R.layout.activity_reward_chore_listview, rewards);
                         rewardsList.setAdapter(rewardAdapter);
                         rewardAdapter.notifyDataSetChanged();
                     }
@@ -251,7 +250,7 @@ public class ChildProgressActivity extends AppCompatActivity {
 
     /** Called when the user taps the Add New Reward button */
     public void openNewRewardActivity(View view) {
-        Intent intent = new Intent(this, AddRewardActivity.class);
+        Intent intent = new Intent(this, RewardListActivity.class);
         intent.putExtra("childId", childId);
         startActivity(intent);
     }

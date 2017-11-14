@@ -104,7 +104,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value"/>
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
@@ -118,4 +118,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="confirm_chore_message">%s reported chore %s as completed for %d points.</string>
+    <string name="title_activity_reward_list">RewardListActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
