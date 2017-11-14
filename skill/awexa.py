@@ -24,17 +24,30 @@ ask = Ask(app, '/')
 @ask.launch
 def launch():
     set_state(NONE)
-    logger.info("User ID: {}".format(user_id()))
     return question("Hello, how can I help you today?") \
         .reprompt("I missed that. How can I help you today?")
 
 
 @ask.intent("LinkAccountIntent")
-def linkAccount():
+def linkAccount(code):
     if linked():
-        return statement("This device is already linked to an account.")
+        return getReprompt(
+            question("This device is already linked to an account"))
 
-    return statement("Please link your family's account.").link_account_card()
+    r = requests.get(link_endpoint(code))
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    if r.content == "null":
+        return question("{} is an incorrect code.".format(code)) \
+            .reprompt("Please retry using our app.")
+    family_id = r.content
+
+    r = requests.put(device_endpoint(user_id()), data=family_id)
+    if r.status_code != 200:
+        return statement(handleConnectionError(r))
+    else:
+        return getReprompt(
+            question("I linked this device! You can now start using Awexa."))
 
 
 @ask.intent("GetChoresIntent")
@@ -63,7 +76,8 @@ def getChores(child_name):
 
     # return speechlet
     num = str(len(chores)) + (" chores" if len(chores) != 1 else " chore")
-    return statement("You have {} : {}".format(num, listToAndString(chores)))
+    return getReprompt(
+        question("You have {} : {}".format(num, listToAndString(chores))))
 
 
 @ask.intent("GetRewardsIntent")
@@ -95,9 +109,9 @@ def getRewards(child_name):
     point_num_phrase = str(points) + (" points" if points != 1 else " point")
     reward_num_phrase = str(len(rewards)) \
         + (" rewards" if len(rewards) != 1 else " reward")
-    return statement("You have {}, applicable to {}: {}"
-                     .format(point_num_phrase, reward_num_phrase,
-                             listToAndString(rewards)))
+    return getReprompt(question("You have {}, applicable to {}: {}"
+                                .format(point_num_phrase, reward_num_phrase,
+                                        listToAndString(rewards))))
 
 
 @ask.intent("FinishChoreIntent")
@@ -133,14 +147,16 @@ def finishChore(child_name, chore):
         if r.status_code != 200:
             return statement(handleConnectionError(r))
         else:
-            return statement("I marked {} as finishing the chore: {}"
-                             .format(child_json['name'], guess))
+            return getReprompt(
+                question("I marked {} as finishing the chore: {}"
+                         .format(child_json['name'], guess)))
     except IndexError:
         if chores.keys() == []:
-            return statement("{} has no chores.".format(child_name))
-        return statement(
+            return getReprompt(
+                question("{} has no chores.".format(child_name)))
+        return getReprompt(question(
             "Sorry I couldn't find that chore. Pick a chore from this list: {}"
-            .format(listToAndString(chores.keys())))
+            .format(listToAndString(chores.keys()))))
 
 
 @ask.intent("BuyRewardIntent")
@@ -180,8 +196,9 @@ def buyReward(child_name, reward):
         if points < cost:
             pts_phrase = str(points) + (" points" if points != 1 else " point")
             cost_phrase = str(cost) + (" points" if cost != 1 else " point")
-            return statement("You only have {}, not enough to buy {}, which "
-                             "costs {}".format(pts_phrase, guess, cost_phrase))
+            return getReprompt(
+                question("You only have {}, not enough to buy {}, which "
+                         "costs {}".format(pts_phrase, guess, cost_phrase)))
 
         # update a child's count of the reward
         reward_id = rewards[guess][0]
@@ -190,14 +207,15 @@ def buyReward(child_name, reward):
         if r.status_code != 200:
             return statement(handleConnectionError(r))
         else:
-            return statement("{} bought the reward: {}"
-                             .format(child_json['name'], guess))
+            return getReprompt(question("{} bought the reward: {}"
+                                        .format(child_json['name'], guess)))
     except IndexError:
         if rewards.keys() == []:
-            return statement("{} has no available rewards.".format(child_name))
-        return statement(
+            return getReprompt(
+                question("{} has no available rewards.".format(child_name)))
+        return getReprompt(question(
             "Sorry I couldn't find that reward. Pick one from this list: {}"
-            .format(listToAndString(rewards.keys())))
+            .format(listToAndString(rewards.keys()))))
 
 
 @ask.intent("GetNameIntent")
@@ -232,9 +250,9 @@ def repeat():
 @ask.intent("AMAZON.HelpIntent")
 def help():
     if get_state() == NONE:
-        return statement("Ask me about your chores and rewards. "
-                         "You can also tell me if you finished a chore. "
-                         "Or I can help you buy a reward!")
+        return question("Ask me about your chores and rewards. "
+                        "You can also tell me if you finished a chore. "
+                        "Or I can help you buy a reward!")
     else:
         return question("What's your name?") \
             .reprompt("I need to know your name to finish this action.")
@@ -250,7 +268,7 @@ def stop():
 def cancel():
     set_state(NONE)
     set_saved_chore(None)
-    return statement("I canceled your action!")
+    return getReprompt(question("I canceled your action!"))
 
 
 #### HELPERS ####
@@ -291,6 +309,10 @@ def linked():
     return r.content != "null"  # True = linked, False = not linked
 
 
+def getReprompt(q):
+    return q.reprompt("Ask for help to see what Awexa can do for you!")
+
+
 def getChoreIdList(child_json):
     # get list(chore_id) from child_json
     return [c for c, flag in child_json['chores'].iteritems()
@@ -303,8 +325,7 @@ def getChild(child_name):
     if r.status_code != 200:
         return statement(handleConnectionError(r))
     if r.content == "null":
-        print handleUnregisteredDevice(user_id())
-        return statement(handleUnregisteredDevice(user_id()))
+        return handleUnregisteredDevice()
     family_id = r.content.replace('"', '')
 
     # get family_json from family_id
@@ -359,13 +380,17 @@ def handleNoChildError(child_name, family_json):
     return speech
 
 
-def handleUnregisteredDevice(device_id):
-    speech = "This device is not registered, please use our app to do so."
-    print speech
-    return speech
+def handleUnregisteredDevice():
+    return question("Please link this device to your family's Awexa account. "
+                    "What is your linking code?") \
+        .reprompt("Please tell me your linking code to set up this device.")
 
 
 #### ENDPOINT URL BUILDERS ####
+def link_endpoint(code):
+    return ENDPOINT + 'codeToFamily/' + code + '.json'
+
+
 def device_endpoint(device_id):
     return ENDPOINT + 'deviceToFamily/' + device_id + '.json'
 

@@ -1,4 +1,5 @@
-LinkAccountIntent Link my account
+LinkAccountIntent Link my account with {code}
+LinkAccountIntent {code}
 
 GetChoresIntent What chores does {child_name} have
 GetChoresIntent Tell me the chores for {child_name} 
