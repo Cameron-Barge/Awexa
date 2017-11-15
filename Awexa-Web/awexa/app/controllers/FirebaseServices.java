@@ -131,16 +131,42 @@ public class FirebaseServices {
         return chores;
     }
 
-    public static ArrayList<Reward> getRewardsFromDB() {
-        DatabaseReference dbRef = database.getReference("rewards");
-        ArrayList<Reward> rewards = new ArrayList<>();
-        dbRef.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+    public static ArrayList<Reward> getRewardsFromDB(String familyID) {
+        DatabaseReference familyRef = database.getReference("families/" + familyID + "/rewards");
+
+        ArrayList<String> rewardIDs = new ArrayList<>();
+        familyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
-                    Reward reward = rewardSnapshot.getValue(Reward.class);
-                    rewards.add(reward);
-                    System.out.println(rewards.size());
+                        rewardIDs.add(rewardSnapshot.getKey());
+                    }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+            Thread.sleep(500);
+        } catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+        return parseRewardIDs(rewardIDs);
+    }
+
+    public static ArrayList<Reward> parseRewardIDs(ArrayList<String> rewardIDs) {
+        DatabaseReference rewardsRef = database.getReference("rewards");
+        ArrayList<Reward> rewards = new ArrayList<>();
+
+        rewardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
+                    if (rewardIDs.indexOf(rewardSnapshot.getKey()) != -1)  {
+                        Reward reward = rewardSnapshot.getValue(Reward.class);
+                        rewards.add(reward);
+                    }
                 }
             }
 
@@ -148,13 +174,13 @@ public class FirebaseServices {
 
             }
         });
-        while (rewards.isEmpty()) {
-            try {
+        try {
                 Thread.sleep(500);
             } catch (java.lang.InterruptedException e) {
                 e.printStackTrace();
-            }
         }
+        
+        //return new ArrayList<Reward>(rewards.subList(1,5));
         return rewards;
     }
 

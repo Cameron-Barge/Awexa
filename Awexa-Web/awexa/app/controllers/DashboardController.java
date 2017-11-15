@@ -49,10 +49,7 @@ public class DashboardController {
             return redirect(routes.HomeController.index());
         } else {
             ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
-            ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB();
-            for (Chore chore : chores) {
-                System.out.println("Chore name:" + chore.toString());
-            }
+            ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
             return ok(views.html.parentview.render(chores, rewards));
         }
     }
@@ -66,10 +63,7 @@ public class DashboardController {
 
     public Result parentAuth() {
         ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
-        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB();
-        for (Reward reward : rewards) {
-            System.out.println("Chore name:" + reward.getName());
-        }
+        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         return ok(views.html.parentview.render(chores, rewards));
     }
 
@@ -109,6 +103,9 @@ public class DashboardController {
         Reward reward = new Reward(data.get("description"), data.get("name"), Integer.parseInt(data.get("points")));
         String rewardKey = FirebaseServices.pushNode("rewards/", reward);
         reward.setID(rewardKey);
+        if (Global.family == null) {
+            Global.family = new Family("user", "pass");
+        }
         Global.family.addReward(reward);
         FirebaseServices.update(Global.family);
         return ok(views.html.postlogin.render(session("connected")));

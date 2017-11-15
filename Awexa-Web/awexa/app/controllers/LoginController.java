@@ -34,7 +34,10 @@ public class LoginController {
         Map<String, String> data = loginForm.rawData();
         Global.familyName = data.get("user");
         Global.loginUser = data.get("user");
+        Global.id = data.get("user");
         Global.loginPass = data.get("pass");
+        Family family = new Family(data.get("user"), data.get("pass"));
+        Global.family = family;
 
         System.out.println("1");
         FirebaseServices.updateSnapshot("families/" + Global.familyName);
@@ -131,6 +134,8 @@ public class LoginController {
             Family family = new Family(data.get("user"), data.get("pass"));
             FirebaseServices.update(family);
             Global.family = family;
+            Global.id = data.get("user");
+            Global.family.setID(data.get("user"));
             return ok(views.html.newparent.render("Let's get your account set up!"));
         }
     }
