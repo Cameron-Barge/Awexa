@@ -1,3 +1,4 @@
+@(chores: List[model.Chore])(rewards: List[model.Reward])
 @dashboard{
 <!-- Service Section -->
 <section id="service" class="service sections margin-top-120">
@@ -21,11 +22,29 @@
 										<th>Description</th>
 										<th>Points</th>
 									</tr>
+									@for(chore <- chores) {
+										<tr>
+											<td>@chore.name</td>
+											<td>@chore.description</td>
+											<td>@chore.points</td>
+										</tr>
+									}
+								</table>
+								<br />
+								<h3>Rewards</h3>
+								<table class="table-bordered table-striped table-hover" style="width:100%">
 									<tr>
-										<td>choreName</td>
-										<td>A brief description.</td>
-										<td>0</td>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Points</th>
 									</tr>
+									@for(reward <- rewards) {
+										<tr>
+											<td>@reward.name</td>
+											<td>@reward.description</td>
+											<td>@reward.points</td>
+										</tr>
+									}
 								</table>
 							</div>
 							<div class="col-sm-5 col-sm-push-1">

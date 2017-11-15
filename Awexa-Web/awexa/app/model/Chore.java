@@ -33,6 +33,14 @@ public class Chore {
 		return name;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
 	public void setID(String id) {
 		this.id = id;
 	}

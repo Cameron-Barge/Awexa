@@ -13,6 +13,7 @@ import javax.inject.*;
 import java.io.FileInputStream;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
@@ -44,10 +45,16 @@ public class DashboardController {
     }
 
     public Result parentView() {
-        if (session("connected") == null)
+        if (session("connected") == null) {
             return redirect(routes.HomeController.index());
-
-        return ok(views.html.parentview.render());
+        } else {
+            ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
+            ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB();
+            for (Chore chore : chores) {
+                System.out.println("Chore name:" + chore.toString());
+            }
+            return ok(views.html.parentview.render(chores, rewards));
+        }
     }
 
     public Result childView() {
@@ -58,7 +65,12 @@ public class DashboardController {
     }
 
     public Result parentAuth() {
-        return ok(views.html.parentview.render());
+        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
+        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB();
+        for (Reward reward : rewards) {
+            System.out.println("Chore name:" + reward.getName());
+        }
+        return ok(views.html.parentview.render(chores, rewards));
     }
 
     public Result addChore() {

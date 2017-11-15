@@ -4,10 +4,10 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
-import model.Global;
-import model.Family;
+import model.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -103,6 +103,59 @@ public class FirebaseServices {
     public static void setExists(String path, boolean exists) {
         DatabaseReference reference = database.getReference(path);
         reference.setValue(exists);
+    }
+
+    public static ArrayList<Chore> getChoresFromDB() {
+        DatabaseReference dbRef = database.getReference("chores");
+        ArrayList<Chore> chores = new ArrayList<>();
+        dbRef.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot choreSnapshot : dataSnapshot.getChildren()) {
+                    Chore chore = choreSnapshot.getValue(Chore.class);
+                    chores.add(chore);
+                }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        while (chores.isEmpty()) {
+            try {
+                Thread.sleep(500);
+            } catch (java.lang.InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return chores;
+    }
+
+    public static ArrayList<Reward> getRewardsFromDB() {
+        DatabaseReference dbRef = database.getReference("rewards");
+        ArrayList<Reward> rewards = new ArrayList<>();
+        dbRef.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
+                    Reward reward = rewardSnapshot.getValue(Reward.class);
+                    rewards.add(reward);
+                    System.out.println(rewards.size());
+                }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        while (rewards.isEmpty()) {
+            try {
+                Thread.sleep(500);
+            } catch (java.lang.InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return rewards;
     }
 
     final static FirebaseDatabase database = FirebaseDatabase.getInstance();
