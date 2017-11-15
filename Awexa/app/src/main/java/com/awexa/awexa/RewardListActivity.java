@@ -155,6 +155,7 @@ public class RewardListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddRewardActivity.class);
         intent.putExtra("childId", childId);
         startActivity(intent);
+        finish();
     }
 
     public void clickedMarketplace(View view) {
