@@ -1,142 +1,152 @@
-@(message:String)(loggedIn : Boolean)
+@(message:String)(loggedIn : Boolean) @main("Awexa")(loggedIn) {
+<!-- Home Section -->
+<section id="home" class="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <div class="main_home_slider text-center">
 
-@main("Awexa")(loggedIn) {
-    <!-- Home Section -->
-    <section id="home" class="home">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    <div class="main_home_slider text-center">
+                    <div class="single_home_slider">
+                        <div class="home-overlay"></div>
+                        <div class="main_home wow fadeInUp" data-wow-duration="700ms">
 
-                        <div class="single_home_slider">
-                            <div class="home-overlay"></div>
-                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
-
-                                <h2>@message</h2>
-                                <div class="separator"></div>
-                                <p class="subtitle">Login now to get access <br />
-                                    to your child's chores and rewards.</p>
-                                <div class="home_btn">
-                                    <a href="@routes.LoginController.getLogin()" class="btn">Login</a>
-                                </div>
+                            <h2>@message</h2>
+                            <div class="separator"></div>
+                            <p class="subtitle">Login now to get access
+                                <br /> to your child's chores and rewards.</p>
+                            <div class="home_btn">
+                                <a href="@routes.LoginController.getLogin()" class="btn">Login</a>
                             </div>
-                        </div><!-- End of single_home_slider -->
-
-                        <div class="single_home_slider">
-                                <div class="home-overlay"></div>
-                                <div class="main_home wow fadeInUp" data-wow-duration="700ms">
-                                    <h2>Register</h2>
-                                    <div class="separator"></div>
-                                    <p class="subtitle">Don't have an account? <br />
-                                        Register now in 1 easy step!</p>
-                                    <div class="home_btn">
-                                        <a href="@routes.LoginController.getRegistration()" class="btn">Register</a>
-                                    </div>
-                                </div>
-                            </div><!-- End of single_home_slider -->
-
-                        <div class="single_home_slider">
-                            <div class="home-overlay"></div>
-                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
-                                <h2>The Alexa Skill</h2>
-                                <div class="separator"></div>
-                                <p class="subtitle">Planned and developed for the  <br />
-                                    Georgia Tech Convergence Innovation Competition 2017.</p>
-                                <div class="home_btn">
-                                    <a href="http://cic.gatech.edu/" class="btn">Learn More</a>
-                                </div>
-                            </div>
-                        </div><!-- End of single_home_slider -->
-
-                        <div class="single_home_slider">
-                            <div class="home-overlay"></div>
-                            <div class="main_home wow fadeInUp" data-wow-duration="700ms">
-                                <h2>The Android App</h2>
-                                <div class="separator"></div>
-                                <p class="subtitle">Keep track of progress<br />
-                                    through our new Android app!</p>
-                                <div class="home_btn">
-                                    <a href="#" class="btn">Download</a>
-                                </div>
-                            </div>
-                        </div><!-- End of single_home_slider -->
+                        </div>
                     </div>
+                    <!-- End of single_home_slider -->
+
+                    <div class="single_home_slider">
+                        <div class="home-overlay"></div>
+                        <div class="main_home wow fadeInUp" data-wow-duration="700ms">
+                            <h2>Register</h2>
+                            <div class="separator"></div>
+                            <p class="subtitle">Don't have an account?
+                                <br /> Register now in 1 easy step!</p>
+                            <div class="home_btn">
+                                <a href="@routes.LoginController.getRegistration()" class="btn">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of single_home_slider -->
+
+                    <div class="single_home_slider">
+                        <div class="home-overlay"></div>
+                        <div class="main_home wow fadeInUp" data-wow-duration="700ms">
+                            <h2>The Alexa Skill</h2>
+                            <div class="separator"></div>
+                            <p class="subtitle">Planned and developed for the
+                                <br /> Georgia Tech Convergence Innovation Competition 2017.</p>
+                            <div class="home_btn">
+                                <a href="http://cic.gatech.edu/" class="btn">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of single_home_slider -->
+
+                    <div class="single_home_slider">
+                        <div class="home-overlay"></div>
+                        <div class="main_home wow fadeInUp" data-wow-duration="700ms">
+                            <h2>The Android App</h2>
+                            <div class="separator"></div>
+                            <p class="subtitle">Keep track of progress
+                                <br /> through our new Android app!</p>
+                            <div class="home_btn">
+                                <a href="#" class="btn">Download</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of single_home_slider -->
                 </div>
             </div>
         </div>
-    </section><!-- End of Home Section -->
+    </div>
+</section>
+<!-- End of Home Section -->
 
-    <!-- Service Section -->
-    <section id="service" class="service sections lightbg">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="head_title text-center">
-                        <h1>what is awexa?</h1>
-                    </div><!-- End of head title -->
+<!-- Service Section -->
+<section id="service" class="service sections lightbg">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="head_title text-center">
+                    <h1>what is awexa?</h1>
+                </div>
+                <!-- End of head title -->
 
-                    <div class="single_service_area  margin-top-80">
+                <div class="single_service_area  margin-top-80">
+                    <div class="row">
+
+                        <div class="col-sm-6 col-sm-push-6">
+                            <div class="signle_service_left">
+                                <img src="assets/images/service2.png" alt="" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5 col-sm-pull-6">
+                            <div class="single_service">
+                                <h3>the</h3>
+                                <h2>problem</h2>
+                                <div class="separator2"></div>
+                                <p>Parents want to use technology to guide and manage household tasks without having to give
+                                    their kids electronic devices.</p>
+
+                                <p>Current solutions are generally mobile/web app-based and can not provide smart interaction
+                                    with kids through smart home technology.</p>
+
+                                <p>Alexa can provide a smart interface to guide and manage kids through smart reminders, progress
+                                    updates and incentivising verbal communication.</p>
+
+                                <a href="#" class="btn btn-default">learn more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of single service area -->
+
+                <div class="main_service_area">
+                    <div class="single_service_area">
                         <div class="row">
-
-                            <div class="col-sm-6 col-sm-push-6">
+                            <div class="col-sm-6">
                                 <div class="signle_service_left">
-                                    <img src="assets/images/service2.png" alt="" />
+                                    <img src="assets/images/service0.png" alt="" />
                                 </div>
                             </div>
-
-                            <div class="col-sm-5 col-sm-pull-6">
+                            <div class="col-sm-5 col-sm-push-1">
                                 <div class="single_service">
-                                    <h3>the</h3>
-                                    <h2>problem</h2>
+                                    <h3>our</h3>
+                                    <h2>solution</h2>
                                     <div class="separator2"></div>
-                                    <p>Parents want to use technology to guide and manage household tasks without
-                                        having to give their kids electronic devices.</p>
+                                    <p>Awexa exists as a multi-platform application for managing and interfacing with kids in
+                                        regards to household chores.</p>
 
-                                    <p>Current solutions are generally mobile/web app-based and can not provide
-                                         smart interaction with kids through smart home technology.</p>
+                                    <p>It primarily relies on parents using the Amazon Echo to track chore progress and trends,
+                                        and update new tasks and rewards. </p>
 
-                                    <p>Alexa can provide a smart interface to guide and manage kids through
-                                        smart reminders, progress updates and incentivising verbal communication.</p>
+                                    <p>Awexa is perfect for households with an Amazon Echo wanting a way to improve household
+                                        activities through smart home technology instead of mobile device micromanagement.
+                                        </p>
 
                                     <a href="#" class="btn btn-default">learn more</a>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End of single service area -->
-
-                    <div class="main_service_area">
-                        <div class="single_service_area">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="signle_service_left">
-                                        <img src="assets/images/service0.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-5 col-sm-push-1">
-                                    <div class="single_service">
-                                        <h3>our</h3>
-                                        <h2>solution</h2>
-                                        <div class="separator2"></div>
-                                        <p>Awexa exists as a multi-platform application for managing and interfacing
-                                            with kids in regards to household chores.</p>
-
-                                        <p>It primarily relies on parents using the Amazon Echo to track chore
-                                            progress and trends, and update new tasks and rewards. </p>
-
-                                        <p>Awexa is perfect for households with an Amazon Echo wanting a way to
-                                             improve household activities through smart home technology instead of
-                                             mobile device micromanagement. </p>
-
-                                        <a href="#" class="btn btn-default">learn more</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End of single service area -->
                     </div>
-                </div><!-- End of col-sm-12 -->
-            </div><!-- End of row -->
-        </div><!-- End of Container -->
-    </section><!-- End of Service Section -->
+                    <!-- End of single service area -->
+                </div>
+            </div>
+            <!-- End of col-sm-12 -->
+        </div>
+        <!-- End of row -->
+    </div>
+    <!-- End of Container -->
+</section>
+<!-- End of Service Section -->
 
 
 }
