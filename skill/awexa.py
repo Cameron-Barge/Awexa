@@ -346,8 +346,9 @@ def getChild(child_name):
             child_id = family_json.values()[0]
         else:
             return question("What's your name?")
-    except KeyError:
-        return statement(handleNoChildError(child_name, family_json))
+    except KeyError:  # child_name is not in the family_json
+        return getReprompt(
+            question(handleNoChildError(child_name, family_json)))
 
     # get child from children table
     r = requests.get(child_endpoint(child_id))
