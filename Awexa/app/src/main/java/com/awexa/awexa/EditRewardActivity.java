@@ -42,7 +42,7 @@ public class EditRewardActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.title_activity_edit_chore);
+        getSupportActionBar().setTitle(R.string.title_activity_edit_reward);
 
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
