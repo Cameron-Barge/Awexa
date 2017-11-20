@@ -25,10 +25,8 @@
     + "My development endpoint is a sub-domain of a domain that has a wildcard certificate from a certificate authority"
 
 ## Notes
-I made the lambda using this [zappa tutorial.](https://developer.amazon.com/blogs/post/8e8ad73a-99e9-4c0f-a7b3-60f92287b0bf/new-alexa-tutorial-deploy-flask-ask-skills-to-aws-lambda-with-zappa "zappa tutorial")
-
-If you don't feel like going through all that, feel free to use this endpoint I made as your service endpoint: <https://b7f4tdxhtd.execute-api.us-east-1.amazonaws.com/dev>.
+I made the lambda using this [zappa tutorial](https://developer.amazon.com/blogs/post/8e8ad73a-99e9-4c0f-a7b3-60f92287b0bf/new-alexa-tutorial-deploy-flask-ask-skills-to-aws-lambda-with-zappa "zappa tutorial").
 
 ## Developer Stuff
 + Use `zappa update dev` to push changes to the lambda function on S3.
-+ If you get `There was an error calling the remote endpoint` when testing, you can see logs by doing `zappa tail dev --since 1m --non-http`
++ If you get errors when testing, you can see logs by doing `zappa tail dev --since 1m --non-http`
