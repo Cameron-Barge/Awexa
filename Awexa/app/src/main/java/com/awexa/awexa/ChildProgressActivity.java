@@ -35,10 +35,7 @@ public class ChildProgressActivity extends AppCompatActivity {
     private static final String TAG = "ChildProgressActivity";
     boolean validParent;
 
-    ProgressBar dailyBar;
-    ProgressBar weeklyBar;
-    TextView dailyPts;
-    TextView weeklyPts;
+    TextView rewardPts;
     ListView choreList;
     ListView rewardsList;
     FirebaseDatabase database;
@@ -57,10 +54,7 @@ public class ChildProgressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_progress);
-        dailyBar = (ProgressBar) findViewById(R.id.dailyProgressBar);
-        weeklyBar = (ProgressBar) findViewById(R.id.weeklyProgressBar);
-        dailyPts = (TextView) findViewById(R.id.dailyPoints);
-        weeklyPts = (TextView) findViewById(R.id.weeklyPoints);
+        rewardPts = (TextView) findViewById(R.id.rewardsPoints);
         choreList = (ListView) findViewById(R.id.chores_list);
         rewardsList = (ListView) findViewById(R.id.rewards_list);
         database = FirebaseDatabase.getInstance();
@@ -68,7 +62,6 @@ public class ChildProgressActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getIntent().getExtras() != null) {
-            String child = getIntent().getStringExtra("name");
             validParent = getIntent().getBooleanExtra("validParent", false);
             View btnAddNewReward = findViewById(R.id.addNewReward);
             View btnAddNewChore = findViewById(R.id.addNewChore);
@@ -115,7 +108,7 @@ public class ChildProgressActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             childId = getIntent().getExtras().getString("childId","defaultKey");
             DatabaseReference childDb = database.getReference("children");
-            String title = getString(R.string.child_progress_title, "Loading");
+            String title = "Loading";
             getSupportActionBar().setTitle(title);
             childDb.child(childId)
                 .addValueEventListener(new ValueEventListener() {
@@ -143,7 +136,8 @@ public class ChildProgressActivity extends AppCompatActivity {
                     final Intent intent = new Intent(thisAct, EditChoreActivity.class);
                     intent.putExtra("choreId", chores.get(position).choreId);
                     intent.putExtra("childId", childId);
-                    startActivity(intent);
+                    intent.putExtra("validParent", validParent);
+                    startActivityForResult(intent, 1);
                 }
             });
             rewardsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -152,32 +146,25 @@ public class ChildProgressActivity extends AppCompatActivity {
                     final Intent intent = new Intent(thisAct, EditRewardActivity.class);
                     intent.putExtra("rewardId", rewards.get(position).rewardId);
                     intent.putExtra("childId", childId);
-                    startActivity(intent);
+                    intent.putExtra("validParent", validParent);
+                    startActivityForResult(intent, 0);
+                    Log.d(TAG, "onItemClick: ");
                 }
             });
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        updateView(c);
+    }
+
     private void updateView(final Child c) {
         //update the title
-        String title = getString(R.string.child_progress_title, c.name);
+        String title = c.name;
         getSupportActionBar().setTitle(title);
+        rewardPts.setText("Points: " + String.valueOf(c.points));
         DatabaseReference choresDb = database.getReference("chores");
-        dailyBar.setMax(c.chores.keySet().size());
-        final int[] numChoresForWeek = {0};
-        final int[] numChoresForDay = {0};
 
-        dailyBar.setProgress(0);
-        weeklyBar.setProgress(0);
-
-        Date now = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.add(Calendar.DAY_OF_YEAR, 7);
-        final Date inAWeek = calendar.getTime();
-        calendar.setTime(now);
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        final Date tomorrow = calendar.getTime();
         chores = new ArrayList<>();
         for (final String choreId: c.chores.keySet()) {
             Log.d("chore", choreId);
@@ -187,24 +174,11 @@ public class ChildProgressActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         Log.d(snapshot.toString(), "test");
                         Chore chore = snapshot.getValue(Chore.class);
-
-                        if ((chore.due == null || chore.due.before(inAWeek)) && c.chores.get(choreId).equals("completed")) {
-                            numChoresForWeek[0]++;
-                            weeklyBar.setMax(c.chores.keySet().size());
-                            weeklyBar.setProgress(numChoresForWeek[0]);
-                        }
-                        if ((chore.due == null || chore.due.before(tomorrow)) && c.chores.get(choreId).equals("completed")) {
-                            numChoresForDay[0]++;
-                            dailyBar.setMax(c.chores.keySet().size());
-                            dailyBar.setProgress(numChoresForDay[0]);
-                        }
-
                         chore.setChoreId(choreId);
                         chores.add(chore);
                         choreAdapter = new ChoreAdapter(thisAct,
                             R.layout.activity_reward_chore_listview, chores, statusList);
                         choreList.setAdapter(choreAdapter);
-                        Log.d("update", "1");
                         choreAdapter.notifyDataSetChanged();
                     }
 
@@ -242,14 +216,14 @@ public class ChildProgressActivity extends AppCompatActivity {
     public void openNewRewardActivity(View view) {
         Intent intent = new Intent(this, RewardListActivity.class);
         intent.putExtra("childId", childId);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
     }
 
     /** Called when the user taps the Add New Chore button */
     public void openNewChoreActivity(View view) {
         Intent intent = new Intent(this, AddChoreActivity.class);
         intent.putExtra("childId", childId);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     private void toastMessage(String message){

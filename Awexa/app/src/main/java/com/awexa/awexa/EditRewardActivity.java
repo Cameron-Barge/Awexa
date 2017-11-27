@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class EditRewardActivity extends AppCompatActivity {
     EditText nameEt;
     EditText pointsEt;
     EditText descriptionEt;
+    Button saveBtn;
+    private boolean validParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +81,12 @@ public class EditRewardActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             childId = getIntent().getExtras().getString("childId", "defaultKey");
             rewardId = getIntent().getExtras().getString("rewardId", "defaultKey");
+            validParent = getIntent().getExtras().getBoolean("validParent");
         }
         nameEt = (EditText) findViewById(R.id.newRewardName);
         pointsEt = (EditText) findViewById(R.id.cost);
         descriptionEt = (EditText) findViewById(R.id.description);
-
+        saveBtn = (Button) findViewById(R.id.createReward);
         FirebaseDatabase.getInstance().getReference("rewards").child(rewardId)
             .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -103,6 +107,14 @@ public class EditRewardActivity extends AppCompatActivity {
         nameEt.setText(r.name);
         descriptionEt.setText(r.description);
         pointsEt.setText(String.valueOf(r.points));
+        nameEt.setFocusableInTouchMode(validParent);
+        nameEt.setFocusable(validParent);
+        descriptionEt.setFocusableInTouchMode(validParent);
+        descriptionEt.setFocusable(validParent);
+        pointsEt.setFocusableInTouchMode(validParent);
+        pointsEt.setFocusable(validParent);
+
+        saveBtn.setVisibility(validParent ? View.VISIBLE : View.GONE);
     }
 
     public void addReward(View view) {
