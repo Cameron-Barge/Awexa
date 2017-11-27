@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -22,6 +25,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 public class AddRewardActivity extends AppCompatActivity {
     private static final String TAG = "AddRewardActivity";
     String childId;
+    String familyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,7 @@ public class AddRewardActivity extends AppCompatActivity {
         EditText pointsEt = (EditText)findViewById(R.id.cost);
         DatabaseReference rewardsDb = FirebaseDatabase.getInstance().getReference("rewards");
         Reward reward = new Reward();
-        String rewardId = rewardsDb.push().getKey();
+        final String rewardId = rewardsDb.push().getKey();
         reward.name = nameEt.getText().toString();
         reward.description = descriptionEt.getText().toString();
         reward.points = Integer.parseInt(pointsEt.getText().toString());
@@ -81,8 +85,24 @@ public class AddRewardActivity extends AppCompatActivity {
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
             + childId + "/rewards/" + rewardId);
         childDb.setValue(0);
+        final DatabaseReference childFamilyId = FirebaseDatabase.getInstance().getReference("children/"
+                + childId + "/familyId");
+        childFamilyId.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                familyId = (String) snapshot.getValue();
+                final DatabaseReference familyDb = FirebaseDatabase.getInstance().getReference("families/"
+                        + familyId + "/rewards/" + rewardId);
+                familyDb.setValue(true);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
         Toast.makeText(getApplicationContext(), reward + " was added...",
                 Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, RewardListActivity.class);
+        intent.putExtra("childId", childId);
+        startActivity(intent);
         finish();
     }
 
@@ -99,5 +119,9 @@ public class AddRewardActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
