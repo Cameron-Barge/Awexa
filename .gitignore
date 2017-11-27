@@ -2,3 +2,4 @@ venv
 zappa_settings.json
 Awexa-Web/.idea/workspace.xml
 Awexa-Web/awexa/conf/service-account.json
+*.class
