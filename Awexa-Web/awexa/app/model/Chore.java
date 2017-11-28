@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Chore {
 
 	private String id;
+	private String childId;
 	public String description;
 	public String name;
 	public int points;

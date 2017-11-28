@@ -139,6 +139,9 @@ public class DashboardController {
         // add chore object to firebase
         String choreKey = FirebaseServices.pushNode("chores/", chore);
         chore.setID(choreKey);
+        if (Global.family == null) {
+            Global.family = new Family("user", "pass");
+        }
         // update global family object with new chore and update to database
         Global.family.addChore(chore);
         FirebaseServices.update(Global.family);
