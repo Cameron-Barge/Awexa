@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -115,10 +116,13 @@ public class MainActivity extends AppCompatActivity {
                     parentRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot parentSnapshot) {
-                            family.add((String) parentSnapshot.getValue());
-                            parents.add((String) parentSnapshot.getValue());
-                            Log.i(TAG, "parents array size: " + String.valueOf(parents.size()));
-                            adapter.notifyDataSetChanged();
+                            String parentName = (String)parentSnapshot.getValue();
+                            if (!parents.contains(parentName)) {
+                                family.add(parentName);
+                                parents.add(parentName);
+                                Log.i(TAG, "parents array size: " + String.valueOf(parents.size()));
+                                adapter.notifyDataSetChanged();
+                            }
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -138,12 +142,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                    family.add(singleSnapshot.getKey());
-                    childIds.add((String) singleSnapshot.getValue());
-                    Log.i(TAG, (String) singleSnapshot.getValue());
-                    Log.i(TAG, "childIds size: " + String.valueOf(childIds.size()));
-                    adapter.notifyDataSetChanged();
+                    String childName = singleSnapshot.getKey();
+                    String childId = (String) singleSnapshot.getValue();
+                    if (!childIds.contains(childId)) {
+                        family.add(childName);
+                        childIds.add(childId);
+                        Log.i(TAG, childId);
+                        Log.i(TAG, "childIds size: " + String.valueOf(childIds.size()));
+                    }
                 }
+                Collections.sort(family);
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

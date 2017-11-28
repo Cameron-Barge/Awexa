@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ public class EditChoreActivity extends AppCompatActivity {
     private static final String TAG = "EditChoreActivity";
     String choreId;
     String childId;
+    boolean validParent;
     EditText nameEt;
     EditText rewardEt;
     EditText startTimeEt;
@@ -50,6 +52,9 @@ public class EditChoreActivity extends AppCompatActivity {
     RadioButton weeklyRepeatRadioBtn;
     RadioButton monthlyRepeatRadioBtn;
     LinearLayout daysLayout;
+    CheckBox sunCheckbox, monCheckbox, tuesCheckbox, wedCheckbox, thursCheckbox, friCheckbox,
+        satCheckbox;
+    Button saveChoresBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +106,25 @@ public class EditChoreActivity extends AppCompatActivity {
         startTv = (TextView)findViewById(R.id.startTime);
         endTv = (TextView)findViewById(R.id.endTime);
 
-        if (getIntent().getExtras() != null) {
-            choreId = getIntent().getExtras().getString("choreId", "defaultKey");
-            childId = getIntent().getExtras().getString("childId", "defaultKey");
-        }
-
         dailyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckDaily);
         weeklyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckWeekly);
         monthlyRepeatRadioBtn = (RadioButton) findViewById(R.id.repeatCheckMontly);
+
+        sunCheckbox = (CheckBox)findViewById(R.id.sunCheck);
+        monCheckbox = (CheckBox)findViewById(R.id.monCheck);
+        tuesCheckbox = (CheckBox)findViewById(R.id.tueCheck);
+        wedCheckbox = (CheckBox)findViewById(R.id.wedCheck);
+        thursCheckbox = (CheckBox)findViewById(R.id.thuCheck);
+        friCheckbox = (CheckBox)findViewById(R.id.friCheck);
+        satCheckbox = (CheckBox)findViewById(R.id.satCheck);
+
+        saveChoresBtn = (Button) findViewById(R.id.create_button);
+
+        if (getIntent().getExtras() != null) {
+            choreId = getIntent().getExtras().getString("choreId", "defaultKey");
+            childId = getIntent().getExtras().getString("childId", "defaultKey");
+            validParent = getIntent().getExtras().getBoolean("validParent");
+        }
 
         weeklyRepeatRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -208,6 +224,38 @@ public class EditChoreActivity extends AppCompatActivity {
             });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: " + validParent);
+        nameEt.setFocusableInTouchMode(validParent);
+        nameEt.setFocusable(validParent);
+        rewardEt.setFocusableInTouchMode(validParent);
+        rewardEt.setFocusable(validParent);
+        daysLayout.setClickable(validParent);
+        startTimeEt.setClickable(validParent);
+        startTimeEt.setFocusableInTouchMode(validParent);
+        nameEt.setFocusable(validParent);
+        endTimeEt.setFocusableInTouchMode(validParent);
+        endTimeEt.setFocusable(validParent);
+        descriptionEt.setFocusableInTouchMode(validParent);
+        descriptionEt.setFocusable(validParent);
+
+        dailyRepeatRadioBtn.setClickable(validParent);
+        weeklyRepeatRadioBtn.setClickable(validParent);
+        monthlyRepeatRadioBtn.setClickable(validParent);
+
+        sunCheckbox.setClickable(validParent);
+        monCheckbox.setClickable(validParent);
+        tuesCheckbox.setClickable(validParent);
+        wedCheckbox.setClickable(validParent);
+        thursCheckbox.setClickable(validParent);
+        friCheckbox.setClickable(validParent);
+        satCheckbox.setClickable(validParent);
+
+        saveChoresBtn.setVisibility(validParent ? View.VISIBLE : View.GONE);
+    }
+
     public void initializeView(Chore c) {
         nameEt.setText(c.name);
         descriptionEt.setText(c.description);
@@ -236,36 +284,36 @@ public class EditChoreActivity extends AppCompatActivity {
                 dailyRepeatRadioBtn.setChecked(true);
                 break;
             case "weekly":
-                ((CheckBox)findViewById(R.id.sunCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.monCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.tueCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.wedCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.thuCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.friCheck)).setChecked(false);
-                ((CheckBox)findViewById(R.id.satCheck)).setChecked(false);
+                sunCheckbox.setChecked(false);
+                monCheckbox.setChecked(false);
+                tuesCheckbox.setChecked(false);
+                wedCheckbox.setChecked(false);
+                thursCheckbox.setChecked(false);
+                friCheckbox.setChecked(false);
+                satCheckbox.setChecked(false);
                 weeklyRepeatRadioBtn.setChecked(true);
                 for (String i: ((HashMap<String, Boolean>)c.recurrence.get("days")).keySet()) {
                     switch (i) {
                         case "Su":
-                            ((CheckBox)findViewById(R.id.sunCheck)).setChecked(true);
+                            sunCheckbox.setChecked(true);
                             break;
                         case "M":
-                            ((CheckBox)findViewById(R.id.monCheck)).setChecked(true);
+                            monCheckbox.setChecked(true);
                             break;
                         case "Tu":
-                            ((CheckBox)findViewById(R.id.tueCheck)).setChecked(true);
+                            tuesCheckbox.setChecked(true);
                             break;
                         case "W":
-                            ((CheckBox)findViewById(R.id.wedCheck)).setChecked(true);
+                            wedCheckbox.setChecked(true);
                             break;
                         case "Th":
-                            ((CheckBox)findViewById(R.id.thuCheck)).setChecked(true);
+                            thursCheckbox.setChecked(true);
                             break;
                         case "F":
-                            ((CheckBox)findViewById(R.id.friCheck)).setChecked(true);
+                            friCheckbox.setChecked(true);
                             break;
                         case "Sa":
-                            ((CheckBox)findViewById(R.id.satCheck)).setChecked(true);
+                            satCheckbox.setChecked(true);
                             break;
                     }
                 }
@@ -302,19 +350,12 @@ public class EditChoreActivity extends AppCompatActivity {
         } else {
             daysLayout.setVisibility(View.GONE);
         }
-        CheckBox sunCheckbox = (CheckBox)findViewById(R.id.sunCheck);
         boolean sunRepeat = sunCheckbox.isChecked();
-        CheckBox monCheckbox = (CheckBox)findViewById(R.id.monCheck);
         boolean monRepeat = monCheckbox.isChecked();
-        CheckBox tuesCheckbox = (CheckBox)findViewById(R.id.tueCheck);
         boolean tuesRepeat = tuesCheckbox.isChecked();
-        CheckBox wedCheckbox = (CheckBox)findViewById(R.id.wedCheck);
         boolean wedRepeat = wedCheckbox.isChecked();
-        CheckBox thursCheckbox = (CheckBox)findViewById(R.id.thuCheck);
         boolean thursRepeat = thursCheckbox.isChecked();
-        CheckBox friCheckbox = (CheckBox)findViewById(R.id.friCheck);
         boolean friRepeat = friCheckbox.isChecked();
-        CheckBox satCheckbox = (CheckBox)findViewById(R.id.satCheck);
         boolean satRepeat = satCheckbox.isChecked();
 
         EditText descriptionField = (EditText)findViewById(R.id.description);
@@ -373,7 +414,7 @@ public class EditChoreActivity extends AppCompatActivity {
         choresDb.setValue(newChore);
         final DatabaseReference childDb = FirebaseDatabase.getInstance().getReference("children/"
             + childId + "/chores/" + choreId);
-        childDb.setValue(false);
+        childDb.setValue("assigned");
         finish();
     }
 
