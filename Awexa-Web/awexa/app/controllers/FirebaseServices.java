@@ -3,22 +3,18 @@ package controllers;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.*;
-import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.database.*;
 import model.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-import play.mvc.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FirebaseServices {
     public static FirebaseOptions fbOptions;
-    public static FirebaseAuth firebaseAuth;
     public static boolean firebaseLoaded = initFirebase();
 
     public FirebaseServices() {
@@ -37,7 +33,6 @@ public class FirebaseServices {
                 e.printStackTrace();
             }
             FirebaseApp.initializeApp(fbOptions);
-            firebaseAuth = FirebaseAuth.getInstance();
         }
         return true;
     }
@@ -82,11 +77,6 @@ public class FirebaseServices {
         } else {
             return "null";
         }
-    }
-
-    public static void createUser(String email, String password) {
-        CreateRequest request = new CreateRequest().setEmail(email).setPassword(password);
-        firebaseAuth.createUserAsync(request);
     }
 
     /**

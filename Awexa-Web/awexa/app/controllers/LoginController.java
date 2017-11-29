@@ -3,9 +3,6 @@ package controllers;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserRecord;
-import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.database.*;
 import model.*;
 import play.data.Form;
@@ -99,19 +96,47 @@ public class LoginController {
         return redirect(routes.HomeController.index());
     }
 
+    public Result register2() {
+
+        Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
+        Map<String, String> data = loginForm.rawData();
+        /*
+        System.out.println(data.get("user"));
+        System.out.println(data.get("pass"));
+        System.out.println(data.get("pass2"));
+        */
+
+        if (!data.get("pass").equals(data.get("pass2")))
+            return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
+
+        Global.familyName = data.get("user");
+        Global.id = Global.familyName;
+        Family family = new Family(data.get("user"), data.get("pass"));
+        Global.family = family;
+        DatabaseReference familyRef = database.getReference("families");
+        familyRef.setValue(Global.familyName);
+        FirebaseServices.updateSnapshot("families/" + Global.familyName);
+
+        if (Global.curRef.getValue() != null) {
+            Global.familyName = "";
+            return ok(
+                    views.html.register.render("Register", "Family Name already exists", session("connected") != null));
+        }
+
+        Global.auth = true;
+        return ok(views.html.newparent.render("Let's get your account set up!"));
+    }
+
     public Result register() {
         Form<Registration> loginForm = formFactory.form(Registration.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
-        
+
         if (!data.get("pass").equals(data.get("pass2"))) {
             return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
         } else {
-            String email = data.get("user");
-            String password = data.get("pass");
             Family family = new Family(data.get("user"), data.get("pass"));
-            FirebaseServices.createUser(email, password);
+            FirebaseServices.update(family);
             Global.family = family;
-            
             Global.id = data.get("user");
             Global.family.setID(data.get("user"));
             return ok(views.html.newparent.render("Let's get your account set up!"));
