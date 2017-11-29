@@ -45,8 +45,10 @@ public class DashboardController {
         if (session("connected") == null) {
             return redirect(routes.HomeController.index());
         } else {
-            ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
+            ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
             ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
+            Global.family.setRewards(rewards);
+            Global.family.setChores(chores);
             return ok(views.html.parentview.render(chores, rewards));
         }
     }
@@ -59,8 +61,10 @@ public class DashboardController {
     }
 
     public Result parentAuth() {
-        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
+        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
         ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
+        Global.family.setRewards(rewards);
+        Global.family.setChores(chores);
         return ok(views.html.parentview.render(chores, rewards));
     }
 
@@ -103,10 +107,12 @@ public class DashboardController {
         if (Global.family == null) {
             Global.family = new Family("thebestfamily", "loiloi");
         }
+        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
+        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
+        Global.family.setRewards(rewards);
+        Global.family.setChores(chores);
         Global.family.addReward(reward);
         FirebaseServices.update(Global.family);
-        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
-        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         return ok(views.html.parentview.render(chores, rewards));
     }
 
@@ -142,10 +148,12 @@ public class DashboardController {
             Global.family = new Family("thebestfamily", "loiloi");
         }
         // update global family object with new chore and update to database
+        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
+        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
+        Global.family.setRewards(rewards);
+        Global.family.setChores(chores);
         Global.family.addChore(chore);
         FirebaseServices.update(Global.family);
-        ArrayList<Chore> chores = FirebaseServices.getChoresFromDB();
-        ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         return ok(views.html.parentview.render(chores, rewards));
     }
 }

@@ -91,6 +91,22 @@ public class Family {
 		parentIDs.add(parent.getID());
 	}
 
+	public void setChores(ArrayList<Chore> chores) {
+		this.chores = chores;
+		this.choreIDs = new ArrayList<>();
+		for (Chore chore : chores) {
+			choreIDs.add(chore.getID());
+		}
+	}
+
+	public void setRewards(ArrayList<Reward> rewards) {
+		this.rewards = rewards;
+		this.rewardIDs = new ArrayList<>();
+		for (Reward reward : rewards) {
+			rewardIDs.add(reward.getID());
+		}
+	}
+
 	public String getID() {
 		return id;
 	}

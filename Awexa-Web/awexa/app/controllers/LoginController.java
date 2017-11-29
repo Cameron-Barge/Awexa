@@ -110,6 +110,7 @@ public class LoginController {
             return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
 
         Global.familyName = data.get("user");
+        Global.id = Global.familyName;
         Family family = new Family(data.get("user"), data.get("pass"));
         Global.family = family;
         DatabaseReference familyRef = database.getReference("families");

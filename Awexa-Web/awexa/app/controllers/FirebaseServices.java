@@ -96,7 +96,30 @@ public class FirebaseServices {
         reference.setValue(exists);
     }
 
-    public static ArrayList<Chore> getChoresFromDB() {
+    public static ArrayList<Chore> getChoresFromDB(String familyID) {
+        DatabaseReference familyRef = database.getReference("families/" + familyID + "/chores");
+
+        ArrayList<String> choreIDs = new ArrayList<>();
+        familyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot choreSnapshot : dataSnapshot.getChildren()) {
+                        choreIDs.add((String)choreSnapshot.getValue());
+                    }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+            Thread.sleep(500);
+        } catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+        return parseChoreIDs(choreIDs);
+
+        /*
         DatabaseReference dbRef = database.getReference("chores");
         ArrayList<Chore> chores = new ArrayList<>();
         dbRef.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -120,6 +143,35 @@ public class FirebaseServices {
             }
         }
         return chores;
+        */
+    }
+
+    public static ArrayList<Chore> parseChoreIDs(ArrayList<String> choreIDs) {
+        DatabaseReference choresRef = database.getReference("chores");
+        ArrayList<Chore> chores = new ArrayList<>();
+
+        choresRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot choreSnapshot : dataSnapshot.getChildren()) {
+                    if (choreIDs.indexOf(choreSnapshot.getKey()) != -1)  {
+                        Chore chore = choreSnapshot.getValue(Chore.class);
+                        chores.add(chore);
+                    }
+                }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+                Thread.sleep(500);
+            } catch (java.lang.InterruptedException e) {
+                e.printStackTrace();
+        }
+        
+        return chores;
     }
 
     public static ArrayList<Reward> getRewardsFromDB(String familyID) {
@@ -130,7 +182,7 @@ public class FirebaseServices {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
-                        rewardIDs.add(rewardSnapshot.getKey());
+                        rewardIDs.add((String)rewardSnapshot.getValue());
                     }
             }
 
