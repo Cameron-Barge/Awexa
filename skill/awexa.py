@@ -299,12 +299,12 @@ def set_saved_reward(reward):
     session.attributes['reward'] = reward
 
 
-def get_saved_childname():
-    return session.attributes.get('childname')
+def get_saved_childid():
+    return session.attributes.get('childid')
 
 
-def set_saved_childname(childname):
-    session.attributes['childname'] = childname
+def set_saved_childid(childid):
+    session.attributes['childid'] = childid
 
 
 def user_id():
@@ -349,13 +349,13 @@ def getChild(child_name):
     child_id = ''
     try:
         child_id = family_json[child_name.title()]
-        set_saved_childname(child_id)
+        set_saved_childid(child_id)
     except AttributeError:  # child_name is None
-        if get_saved_childname():
-            child_id = get_saved_childname()
+        if get_saved_childid():
+            child_id = get_saved_childid()
         elif len(family_json) == 1:
             child_id = family_json.values()[0]
-            set_saved_childname(child_id)
+            set_saved_childid(child_id)
         else:
             return question("What's your name?")
     except KeyError:  # child_name is not in the family_json
