@@ -65,8 +65,10 @@ public class DashboardController {
         ArrayList<Reward> marketrewards = FirebaseServices.getMarketplace();
         ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
         ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
-        Global.family.setRewards(rewards);
-        Global.family.setChores(chores);
+        if (Global.family != null) {
+            Global.family.setRewards(rewards);
+            Global.family.setChores(chores);
+        }
         return ok(views.html.parentview.render(chores, rewards, marketrewards));
     }
 

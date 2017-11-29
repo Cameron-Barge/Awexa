@@ -13,6 +13,7 @@ public class Global {
 		public static boolean auth = false;
 		public static Family family;
     public static String id = "";
+    public static String email = "";
 
     public static DataSnapshot curRef = null;
 
@@ -24,6 +25,7 @@ public class Global {
         Global.loginPass = "";
         Global.loginUser = "";
         Global.id = "";
+        Global.email = "";
         Global.auth = false;
         Global.curRef = null;
 		}
