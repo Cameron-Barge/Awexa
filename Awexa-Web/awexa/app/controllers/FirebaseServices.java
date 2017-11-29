@@ -97,6 +97,7 @@ public class FirebaseServices {
     }
 
     public static ArrayList<Chore> getChoresFromDB(String familyID) {
+        /*
         DatabaseReference familyRef = database.getReference("families/" + familyID + "/chores");
 
         ArrayList<String> choreIDs = new ArrayList<>();
@@ -119,7 +120,7 @@ public class FirebaseServices {
         }
         return parseChoreIDs(choreIDs);
 
-        /*
+        */
         DatabaseReference dbRef = database.getReference("chores");
         ArrayList<Chore> chores = new ArrayList<>();
         dbRef.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,7 +144,7 @@ public class FirebaseServices {
             }
         }
         return chores;
-        */
+        
     }
 
     public static ArrayList<Reward> getMarketplace() {
@@ -199,6 +200,27 @@ public class FirebaseServices {
     }
 
     public static ArrayList<Reward> getRewardsFromDB(String familyID) {
+        DatabaseReference familyRef = database.getReference("rewards");
+        ArrayList<String> rewardIDs = new ArrayList<>();
+        familyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
+                        rewardIDs.add(rewardSnapshot.getKey());
+                    }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+            Thread.sleep(500);
+        } catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+        return parseRewardIDs(rewardIDs);
+        /*
         DatabaseReference familyRef = database.getReference("families/" + familyID + "/rewards");
 
         ArrayList<String> rewardIDs = new ArrayList<>();
@@ -220,6 +242,7 @@ public class FirebaseServices {
             e.printStackTrace();
         }
         return parseRewardIDs(rewardIDs);
+        */
     }
 
     public static ArrayList<Reward> parseRewardIDs(ArrayList<String> rewardIDs) {
