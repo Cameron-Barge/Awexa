@@ -132,7 +132,7 @@ def finishChore(child_name, chore):
     # get list(chore_id) from child_json
     chore_id_list = getChoreIdList(child_json)
 
-    # get list(chore_name) from list(chore_ids)
+    # get map(chore_name -> chore_id) from list(chore_ids)
     chores = {}
     for chore_id in chore_id_list:
         r = requests.get(chores_endpoint(chore_id, "/name"))
@@ -299,6 +299,14 @@ def set_saved_reward(reward):
     session.attributes['reward'] = reward
 
 
+def get_saved_childname():
+    return session.attributes.get('childname')
+
+
+def set_saved_childname(childname):
+    session.attributes['childname'] = childname
+
+
 def user_id():
     # user id contains periods (problem bc url), so get the unique last quartet
     return session.user.userId.split('.')[-1]
@@ -341,9 +349,13 @@ def getChild(child_name):
     child_id = ''
     try:
         child_id = family_json[child_name.title()]
+        set_saved_childname(child_id)
     except AttributeError:  # child_name is None
-        if len(family_json) == 1:
+        if get_saved_childname():
+            child_id = get_saved_childname()
+        elif len(family_json) == 1:
             child_id = family_json.values()[0]
+            set_saved_childname(child_id)
         else:
             return question("What's your name?")
     except KeyError:  # child_name is not in the family_json
