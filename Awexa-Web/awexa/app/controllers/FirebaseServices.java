@@ -53,15 +53,6 @@ public class FirebaseServices {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-
-        int count = 0;
-        while (Global.waiting) {
-            count++;
-            if (count > 200) {
-                System.out.print(".");
-                count = 0;
-            }
-        }
     }
 
     public static void createNode(String path, String key, Object obj) {

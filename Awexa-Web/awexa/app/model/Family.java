@@ -15,7 +15,10 @@ public class Family {
 	private ArrayList<String> childrenIDs;
 	public ArrayList<Chore> chores;
 	public ArrayList<Parent> parents;
+	public ArrayList<String> parentIDs;
 	public ArrayList<Reward> rewards;
+	public ArrayList<String> choreIDs;
+	public ArrayList<String> rewardIDs;
 	public String familyPass;
 	public String familyName;
 	private String id;
@@ -42,6 +45,8 @@ public class Family {
 		parents = new ArrayList<Parent>();
 		rewards = new ArrayList<Reward>();
 		childrenIDs = new ArrayList<String>();
+		rewardIDs = new ArrayList<String>();
+		choreIDs = new ArrayList<String>();
 	}
 
 	public void print() {
@@ -73,14 +78,17 @@ public class Family {
 
 	public void addChore(Chore chore) {
 		chores.add(chore);
+		choreIDs.add(chore.getID());
 	}
 
 	public void addReward(Reward reward) {
 		rewards.add(reward);
+		rewardIDs.add(reward.getID());
 	}
 
 	public void addParent(Parent parent) {
 		parents.add(parent);
+		parentIDs.add(parent.getID());
 	}
 
 	public String getID() {
@@ -103,8 +111,9 @@ public class Family {
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("familyName", familyName);
 		resultMap.put("children", childrenIDs);
-		resultMap.put("parents", parents);
-		resultMap.put("child_names", children);
+		resultMap.put("parents", parentIDs);
+		resultMap.put("rewards", rewardIDs);
+		resultMap.put("chores", choreIDs);
 		resultMap.put("familyPass", familyPass);
 		return resultMap;
 	}

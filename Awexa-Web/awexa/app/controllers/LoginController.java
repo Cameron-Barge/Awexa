@@ -43,7 +43,7 @@ public class LoginController {
         FirebaseServices.updateSnapshot("families/" + Global.familyName);
         System.out.println("2");
 
-        if (Global.curRef.getValue() != null) {
+        if (Global.curRef != null) {
             //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());
             if (Global.loginPass.equals(Global.curRef.child("familyPass").getValue())) {
                 Global.auth = true;
@@ -110,6 +110,8 @@ public class LoginController {
             return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
 
         Global.familyName = data.get("user");
+        Family family = new Family(data.get("user"), data.get("pass"));
+        Global.family = family;
         DatabaseReference familyRef = database.getReference("families");
         familyRef.setValue(Global.familyName);
         FirebaseServices.updateSnapshot("families/" + Global.familyName);

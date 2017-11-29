@@ -46,6 +46,10 @@ public class Chore {
 		this.id = id;
 	}
 
+	public String getID() {
+		return id;
+	}
+
 	public Map<String, Object> toMap() {
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("name", name);

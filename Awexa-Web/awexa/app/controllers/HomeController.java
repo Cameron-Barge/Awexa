@@ -33,13 +33,16 @@ public class HomeController extends Controller {
     public Result index() {
 		return ok(views.html.index.render("Welcome to Awexa", session("connected")!=null));
 	}
+
+	public Result about() {
+		return ok(views.html.about.render("Welcome to Awexa", session("connected")!=null));
+	}
 		
 		/**
 		 * Returns either pre log-in index page or post log-in dashboard depending on user state
 		 * @return Result resulting action
 		 */
 		public Result getHome() {
-			System.out.println(Global.auth);
 			if (session("connected") != null) {
 				return ok(views.html.postlogin.render(Global.familyName));
 			} else {
