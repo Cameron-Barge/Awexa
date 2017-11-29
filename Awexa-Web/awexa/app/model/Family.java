@@ -27,8 +27,18 @@ public class Family {
 
 	}
 
-	public Family(String id, String familyPass) {
-		this.id = id;
+	public Family(String familyName, ArrayList<Child> children, ArrayList<Chore> chores, String familyPass,
+			ArrayList<Parent> parents, ArrayList<Reward> rewards) {
+		this.children = children;
+		this.chores = chores;
+		this.parents = parents;
+		this.rewards = rewards;
+		this.familyPass = familyPass;
+		this.familyName = familyName;
+	}
+
+	public Family(String familyName, String familyPass) {
+		this.familyName = familyName;
 		this.familyPass = familyPass;
 		children = new ArrayList<Child>();
 		chores = new ArrayList<Chore>();
@@ -37,7 +47,6 @@ public class Family {
 		childrenIDs = new ArrayList<String>();
 		rewardIDs = new ArrayList<String>();
 		choreIDs = new ArrayList<String>();
-		parentIDs = new ArrayList<String>();
 	}
 
 	public void print() {

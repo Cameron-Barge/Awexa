@@ -4,7 +4,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.*;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.database.*;
@@ -30,17 +29,43 @@ public class LoginController {
     private String familyRef = "";
 
     public Result login() {
+        System.out.println("?");
+
+        Global.waiting = true;
 
         Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
         Map<String, String> data = loginForm.rawData();
-        String email = data.get("email");
-        String pass = data.get("pass");
+        Global.familyName = data.get("user");
+        Global.loginUser = data.get("user");
+        Global.id = data.get("user");
+        Global.loginPass = data.get("pass");
+        Family family = new Family(data.get("user"), data.get("pass"));
+        Global.family = family;
 
-        FirebaseServices.login(email, pass);
+        System.out.println("1");
+        FirebaseServices.updateSnapshot("families/" + Global.familyName);
+        System.out.println("2");
 
+        if (Global.curRef != null) {
+            //System.out.println(Global.loginPass + " " + Global.curRef.child("familyPass").getValue());
+            if (Global.loginPass.equals(Global.curRef.child("familyPass").getValue())) {
+                Global.auth = true;
+            } else {
+                Global.auth = false;
+            }
+        } else {
+            Global.auth = false;
+        }
+
+        System.out.println("Authenticated: " + Global.auth);
+
+        // Login Authenticated
+        Global.familyName = Global.loginUser;
+        Global.loginUser = "";
+        Global.loginPass = "";
         if (Global.auth) {
             Global.auth = false;
-            session("connected");
+            session("connected", Global.familyName);
             return redirect(routes.DashboardController.postLogin());
         } else {
             session().clear();
@@ -81,15 +106,14 @@ public class LoginController {
         if (!data.get("pass").equals(data.get("pass2"))) {
             return ok(views.html.register.render("Register", "Passwords do not match", session("connected") != null));
         } else {
-            String email = data.get("email");
+            String email = data.get("user");
             String password = data.get("pass");
-            String uid = FirebaseServices.createUser(email, password);
-            Family family = new Family(uid, password);
+            Family family = new Family(data.get("user"), data.get("pass"));
+            FirebaseServices.createUser(email, password);
             Global.family = family;
-            Global.id = uid;
-            Global.email = email;
-            Global.family.setID(uid);
-            FirebaseServices.update(family);
+            
+            Global.id = data.get("user");
+            Global.family.setID(data.get("user"));
             return ok(views.html.newparent.render("Let's get your account set up!"));
         }
     }

@@ -43,6 +43,8 @@ public class FirebaseServices {
     }
 
     public static void updateSnapshot(String path) {
+
+        //String path = "families/" + Global.familyName;
         DatabaseReference ref = database.getReference(path);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,10 +67,6 @@ public class FirebaseServices {
         }
     }
 
-    public static void getUser(String email, String pass) {
-        
-    }
-
     /**
      * adds object into database
      * @param path database reference path
@@ -86,23 +84,9 @@ public class FirebaseServices {
         }
     }
 
-    public static String createUser(String email, String password) {
+    public static void createUser(String email, String password) {
         CreateRequest request = new CreateRequest().setEmail(email).setPassword(password);
         firebaseAuth.createUserAsync(request);
-        try {
-            Thread.sleep(500);
-        } catch (java.lang.InterruptedException e) {
-            e.printStackTrace();
-        }
-        Family family = new Family(email, password);
-        String uid = "";
-        try {
-            UserRecord userRecord = firebaseAuth.getUserByEmailAsync(email).get();
-            uid = userRecord.getUid();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return uid;
     }
 
     /**
@@ -110,10 +94,10 @@ public class FirebaseServices {
      * @param family Family data
      */
     public static void update(Family family) {
-        DatabaseReference familyRef = database.getReference("/families/" + family.getID() + "/");
+        DatabaseReference familyRef = database.getReference("/families/" + family.getFamilyName() + "/");
         Map<String, Object> familyUpdate = new HashMap<>();
         Map<String, Object> familyMap = family.toMap();
-        familyUpdate.put("/families/" + family.getID(), familyMap);
+        familyUpdate.put("/families/" + family.getFamilyName(), familyMap);
         familyRef.updateChildren(familyMap);
     }
 
