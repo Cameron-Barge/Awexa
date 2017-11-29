@@ -146,6 +146,29 @@ public class FirebaseServices {
         */
     }
 
+    public static ArrayList<Reward> getMarketplace() {
+        DatabaseReference familyRef = database.getReference("marketplace");
+        ArrayList<String> rewardIDs = new ArrayList<>();
+        familyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
+                        rewardIDs.add(rewardSnapshot.getKey());
+                    }
+            }
+
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+            Thread.sleep(500);
+        } catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+        return parseRewardIDs(rewardIDs);
+    }
+
     public static ArrayList<Chore> parseChoreIDs(ArrayList<String> choreIDs) {
         DatabaseReference choresRef = database.getReference("chores");
         ArrayList<Chore> chores = new ArrayList<>();
@@ -156,6 +179,7 @@ public class FirebaseServices {
                 for (DataSnapshot choreSnapshot : dataSnapshot.getChildren()) {
                     if (choreIDs.indexOf(choreSnapshot.getKey()) != -1)  {
                         Chore chore = choreSnapshot.getValue(Chore.class);
+                        chore.setID(choreSnapshot.getKey());
                         chores.add(chore);
                     }
                 }
@@ -208,6 +232,7 @@ public class FirebaseServices {
                 for (DataSnapshot rewardSnapshot : dataSnapshot.getChildren()) {
                     if (rewardIDs.indexOf(rewardSnapshot.getKey()) != -1)  {
                         Reward reward = rewardSnapshot.getValue(Reward.class);
+                        reward.setID(rewardSnapshot.getKey());
                         rewards.add(reward);
                     }
                 }

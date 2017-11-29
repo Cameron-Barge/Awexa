@@ -45,11 +45,12 @@ public class DashboardController {
         if (session("connected") == null) {
             return redirect(routes.HomeController.index());
         } else {
+            ArrayList<Reward> marketrewards = FirebaseServices.getMarketplace();
             ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
             ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
             Global.family.setRewards(rewards);
             Global.family.setChores(chores);
-            return ok(views.html.parentview.render(chores, rewards));
+            return ok(views.html.parentview.render(chores, rewards, marketrewards));
         }
     }
 
@@ -61,11 +62,12 @@ public class DashboardController {
     }
 
     public Result parentAuth() {
+        ArrayList<Reward> marketrewards = FirebaseServices.getMarketplace();
         ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
         ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         Global.family.setRewards(rewards);
         Global.family.setChores(chores);
-        return ok(views.html.parentview.render(chores, rewards));
+        return ok(views.html.parentview.render(chores, rewards, marketrewards));
     }
 
     public Result addChore() {
@@ -107,13 +109,14 @@ public class DashboardController {
         if (Global.family == null) {
             Global.family = new Family("thebestfamily", "loiloi");
         }
+        ArrayList<Reward> marketrewards = FirebaseServices.getMarketplace();
         ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
         ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         Global.family.setRewards(rewards);
-        Global.family.setChores(chores);
         Global.family.addReward(reward);
+        Global.family.setChores(chores);
         FirebaseServices.update(Global.family);
-        return ok(views.html.parentview.render(chores, rewards));
+        return ok(views.html.parentview.render(chores, rewards, marketrewards));
     }
 
     public Result submitChore() {
@@ -148,12 +151,13 @@ public class DashboardController {
             Global.family = new Family("thebestfamily", "loiloi");
         }
         // update global family object with new chore and update to database
+        ArrayList<Reward> marketrewards = FirebaseServices.getMarketplace();
         ArrayList<Chore> chores = FirebaseServices.getChoresFromDB(Global.id);
         ArrayList<Reward> rewards = FirebaseServices.getRewardsFromDB(Global.id);
         Global.family.setRewards(rewards);
         Global.family.setChores(chores);
         Global.family.addChore(chore);
         FirebaseServices.update(Global.family);
-        return ok(views.html.parentview.render(chores, rewards));
+        return ok(views.html.parentview.render(chores, rewards, marketrewards));
     }
 }
